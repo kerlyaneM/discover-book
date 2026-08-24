@@ -6,6 +6,12 @@
    
 }
 
+#wave {
+    width: 100%;
+    height: auto;
+    display: block; /* Remove o espaço de respiro da imagem */
+    margin-top: -1px; /* Sobrepõe levemente para selar a brecha */
+}
 
 html {
     font-size: 16px;
@@ -18,11 +24,11 @@ body {
 
 /* aqui fica o topo, onde esta o começo com a frase*/
 .topo {
-    background: #8472f4;
+    background: var(--cor-primaria, #8472f4);
     color: white;
     text-align: center;
     display: flex;
-    align-items: center;
+    align-items:center;
     gap: 6px;
     padding: 6px 15px;
 }
@@ -84,7 +90,7 @@ header {
 
 /* esse é o cadastro */
 .btn-login a {
-    background:#8472f4;
+    background:var(--cor-primaria, #8472f4);
     color: white;
     padding: 8px 14px;
     text-decoration: none;
@@ -95,8 +101,92 @@ header {
 .btn-login a:hover {
     background:#5f47ff;
 }
+ 
+/* 🔍 BARRA DE PESQUISA */
+.search-box input {
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    width: 220px;
+}
 
+.search-box input:focus {
+    outline: none;
+    border-color: var(--cor-primaria, #8472f4);
+}
 
+.search-container {
+    position: relative; /* MUITO IMPORTANTE */
+}
+
+.resultados {
+    position: absolute;
+    top: 110%; /* joga pra baixo certinho */
+    left: 0;
+    width: 100%;
+    max-width: 350px;
+
+    background: #f5f5f5;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+
+    padding: 15px;
+    display: none;
+    z-index: 999;
+}
+
+.resultado-item {
+    display: flex;
+    gap: 10px;
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+}
+
+.resultado-item img {
+    width: 40px;
+    height: 60px;
+    object-fit: cover;
+}
+
+.resultado-item:hover {
+    background: #f5f5f5;
+}
+
+.resultado-item h4 {
+    font-size: 14px;
+    margin: 0;
+}
+
+.resultado-item p {
+    font-size: 12px;
+    color: #777;
+    margin: 0;
+}
+
+.limpar {
+    position: absolute;
+    right: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 13px;
+    color: #777;
+    cursor: pointer;
+}
+
+.limpar:hover {
+    color: #000;
+}
+
+.ver-mais {
+    margin-top: 10px;
+    background: #777;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    border-radius: 20px;
+    cursor: pointer;
+}
 /* ===== MENU PROFISSIONAL ===== */
 .nav-menu ul {
     list-style: none;
@@ -146,7 +236,7 @@ header {
 
 .coluna h4 {
     margin-bottom: 10px;
-    color: #8472f4;
+    color: var(--cor-primaria, #8472f4);
 }
 
 .coluna a {
@@ -157,7 +247,7 @@ header {
 }
 
 .coluna a:hover {
-    color: #8472f4;
+    color: var(--cor-primaria, #8472f4);
 }
 
 /* ===== BARRA DE PESQUISA PROFISSIONAL ===== */
@@ -181,17 +271,19 @@ header {
 
 .search-container button {
     border: none;
-    background: #8472f4;
-    color: white;
-    padding: 8px 14px;
-    border-radius: 50%;
+    background: transparent; /* tira o fundo roxo */
+    padding: 8px;
     cursor: pointer;
-    transition: 0.2s;
 }
 
-.search-container button:hover {
-    background: #5f47ff;
+.search-container i {
+    font-size: 18px;
+    color: #555;
 }
+
+.search-container button:hover i {
+    color: var(--cor-primaria, #8472f4);
+}  
 .barra-categorias {
     width: 100%;
     background: white;
@@ -288,82 +380,868 @@ header {
     border-bottom: 2px solid #290341;
 }
 
-/* ===== SEÇÃO DOAÇÃO ===== */
-.doacao-container {
-    display: flex;
-    justify-content: center;
+
+/* ===== SEÇÃO DOAÇÃO (novo layout) ===== */
+.doar-page {
+    --db-roxo-profundo: #372467;
+    --db-roxo-escuro: var(--cor-primaria-escura, #6e5bd8);
+    --db-roxo: var(--cor-primaria, #8472f4);
+    --db-roxo-claro: #a48cff;
+    --db-lilas: #cdbfff;
+    --db-roxo-suave: #efeaff;
+    --db-roxo-neblina: #f6f3ff;
+    --db-papel: #fffdf7;
+    --db-tinta: #2c2440;
+    --db-tinta-suave: #6b6280;
+    --db-linha: #e7ddc8;
+    --db-ocre: #c98a2e;
+    --db-ocre-claro: #f1c887;
+    --db-ocre-suave: #fbecd0;
+    --db-verde-selo: #3f8f5f;
+    --db-vermelho: #c0392b;
+    --db-sombra: 0 10px 30px -12px rgba(44, 36, 64, .18);
+    --db-sombra-roxa: 0 16px 34px -14px rgba(76, 55, 163, .45);
+
+    /* fundo da página com um tom diferente do cartão do formulário,
+       pra o formulário se destacar em vez de "sumir" no fundo branco */
+    background: var(--db-roxo-neblina);
+}
+
+.doar-page h1,
+.doar-page h2,
+.doar-page h3,
+.doar-page h4 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    letter-spacing: -.01em;
+    color: var(--db-tinta);
+}
+
+.doar-page em {
+    color: var(--db-roxo);
+    font-style: italic;
+}
+
+/* ---------- hero ---------- */
+.doar-hero {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 48px;
     align-items: center;
-    gap: 40px;
-    background:#8472F4;
-    padding: 40px;
-    border-radius: 20px;
-    margin: 40px;
+    padding: 48px 40px 70px;
+    max-width: 1180px;
+    margin: 0 auto;
+    overflow: visible;
 }
 
-/* LADO ESQUERDO */
-.lado-esquerdo {
-    width: 40%;
-    text-align: center;
+.doar-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(2px);
+    z-index: 0;
+    pointer-events: none;
 }
 
-.lado-esquerdo img {
-    width: 100%;
-    border-radius: 20px;
-}
-
-.lado-esquerdo p {
-    color: white;
-    margin-top: 15px;
-    font-size: 15px;
-}
-
-/* FORMULÁRIO */
-.lado-direito {
-    background: #f5f5f5;
-    padding: 30px;
-    border-radius: 20px;
+.doar-blob-1 {
     width: 320px;
+    height: 320px;
+    top: -70px;
+    left: -110px;
+    background: radial-gradient(circle at 30% 30%, var(--db-lilas), var(--db-roxo-claro) 70%);
+    opacity: .3;
 }
 
-.lado-direito h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #8e5ea2;
+.doar-blob-2 {
+    width: 240px;
+    height: 240px;
+    bottom: -50px;
+    right: 4%;
+    background: radial-gradient(circle at 60% 40%, var(--db-roxo-claro), var(--db-roxo-profundo) 75%);
+    opacity: .18;
 }
 
-/* CAMPOS */
-.lado-direito form {
+.doar-hero-texto,
+.doar-explica-wrap {
+    position: relative;
+    z-index: 1;
+}
+
+.doar-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--db-ocre);
+    margin-bottom: 16px;
+}
+
+.doar-eyebrow::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--db-ocre);
+}
+
+.doar-hero-texto h1 {
+    font-size: 40px;
+    line-height: 1.12;
+    margin-bottom: 18px;
+}
+
+.doar-lead {
+    font-size: 16px;
+    color: var(--db-tinta-suave);
+    max-width: 460px;
+    margin-bottom: 26px;
+    line-height: 1.55;
+}
+
+.doar-lead a {
+    color: var(--db-roxo);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.doar-hero-stats {
+    display: flex;
+    gap: 28px;
+    margin-bottom: 28px;
+}
+
+.doar-hero-stats div {
     display: flex;
     flex-direction: column;
 }
 
-.lado-direito label {
-    margin-top: 10px;
+.doar-hero-stats strong {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    color: var(--db-roxo);
+}
+
+.doar-hero-stats span {
+    font-size: 12.5px;
+    color: var(--db-tinta-suave);
+}
+
+.doar-hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--db-roxo);
+    color: #fff;
+    font-weight: 700;
     font-size: 14px;
+    text-decoration: none;
+    padding: 13px 24px;
+    border-radius: 30px;
+    box-shadow: var(--db-sombra-roxa);
 }
 
-.lado-direito input {
-    padding: 10px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    margin-top: 5px;
+/* ---------- explica (video + como funciona) ---------- */
+.doar-explica-wrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 18px;
 }
 
-/* BOTÃO */
-.lado-direito button {
-    margin-top: 20px;
-    padding: 12px;
-    border: none;
+.doar-video {
+    width: 100%;
     border-radius: 20px;
-    background: #8e5ea2;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.2s;
+    box-shadow: var(--db-sombra);
+    display: block;
 }
 
-.lado-direito button:hover {
-    background: #6f4a82;
+.doar-explica {
+    width: 100%;
+    background: var(--db-roxo-escuro);
+    border-radius: 20px;
+    box-shadow: var(--db-sombra-roxa);
+    padding: 26px 24px 22px;
+    color: #fff;
+}
+
+.doar-explica-topo {
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, .18);
+}
+
+.doar-explica-rotulo {
+    display: inline-block;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    font-weight: 700;
+    color: var(--db-ocre-claro);
+    margin-bottom: 8px;
+}
+
+.doar-explica-topo h2 {
+    color: #fff;
+    font-size: 20px;
+    line-height: 1.25;
+}
+
+.doar-explica-passo {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 8px 0;
+}
+
+.doar-explica-icone {
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .14);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.doar-explica-icone svg {
+    width: 17px;
+    height: 17px;
+    color: var(--db-lilas);
+}
+
+.doar-explica-passo b {
+    display: block;
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 14.5px;
+    margin-bottom: 2px;
+    color: #fff;
+}
+
+.doar-explica-passo p {
+    font-size: 12.5px;
+    color: rgba(255, 255, 255, .75);
+    line-height: 1.4;
+}
+
+.doar-explica-selo {
+    display: inline-block;
+    margin-top: 14px;
+    background: rgba(255, 255, 255, .14);
+    color: #fff;
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 20px;
+}
+
+/* ---------- trilha "o que acontece depois" ---------- */
+.doar-trilha {
+    background: #fff;
+    border-top: 1px solid var(--db-linha);
+    border-bottom: 1px solid var(--db-linha);
+}
+
+.doar-trilha-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 36px 40px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.doar-passo {
+    position: relative;
+    background: var(--db-papel);
+    border: 1px solid var(--db-linha);
+    border-radius: 14px;
+    padding: 20px 20px 18px 72px;
+    box-shadow: var(--db-sombra);
+}
+
+.doar-passo-img {
+    position: absolute;
+    left: 18px;
+    top: 18px;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: var(--db-roxo);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.doar-passo-img svg {
+    width: 22px;
+    height: 22px;
+    color: #fff;
+}
+
+.doar-passo-num {
+    position: absolute;
+    right: 14px;
+    top: 12px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--db-ocre-suave);
+    color: var(--db-ocre);
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.doar-passo h3 {
+    font-size: 15.5px;
+    margin-bottom: 4px;
+}
+
+.doar-passo p {
+    font-size: 13.5px;
+    color: var(--db-tinta-suave);
+}
+
+/* ---------- form section ---------- */
+.doar-form-section {
+    padding: 56px 32px 80px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.doar-cabecalho {
+    text-align: center;
+    margin-bottom: 26px;
+}
+
+.doar-cabecalho-eyebrow {
+    display: inline-block;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--db-roxo);
+    background: var(--db-roxo-suave);
+    padding: 5px 12px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+}
+
+.doar-cabecalho h2 {
+    font-size: 27px;
+    margin-bottom: 8px;
+}
+
+.doar-cabecalho p {
+    color: var(--db-tinta-suave);
+    font-size: 14.5px;
+}
+
+.doar-mensagem {
+    max-width: 760px;
+    margin: 0 auto 20px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.doar-mensagem-sucesso {
+    background: #e8f6ee;
+    color: var(--db-verde-selo);
+    border: 1px solid #bfe6cf;
+}
+
+.doar-mensagem-erro {
+    background: #fbe9e7;
+    color: var(--db-vermelho);
+    border: 1px solid #f3c3bd;
+}
+
+.doar-form-wrap {
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+.doar-cartao-form {
+    background: var(--db-papel);
+    border: 1px solid var(--db-linha);
+    border-radius: 14px;
+    box-shadow: var(--db-sombra);
+    padding: 32px;
+}
+
+.doar-cartao-form fieldset {
+    border: none;
+    margin: 0 0 28px;
+    padding: 0;
+}
+
+.doar-cartao-form legend {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 15.5px;
+    color: var(--db-tinta);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.doar-bolha {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--db-roxo-suave);
+    color: var(--db-roxo);
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.doar-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.doar-cartao-form label {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--db-tinta-suave);
+    text-transform: uppercase;
+    letter-spacing: .03em;
+    margin: 0 0 6px;
+}
+
+.doar-cartao-form input[type="text"],
+.doar-cartao-form input[type="email"],
+.doar-cartao-form input[type="tel"],
+.doar-cartao-form input[type="number"] {
+    width: 100%;
+    padding: 11px 13px;
+    border: 1.5px solid var(--db-linha);
+    border-radius: 9px;
+    font-family: 'Karla', sans-serif;
+    font-size: 14.5px;
+    background: #fdfaf1;
+    margin-bottom: 16px;
+    color: var(--db-tinta);
+}
+
+.doar-cartao-form textarea {
+    width: 100%;
+    padding: 11px 13px;
+    border: 1.5px solid var(--db-linha);
+    border-radius: 9px;
+    font-family: 'Karla', sans-serif;
+    font-size: 14.5px;
+    background: #fdfaf1;
+    margin-bottom: 16px;
+    color: var(--db-tinta);
+    resize: vertical;
+    min-height: 90px;
+}
+
+.doar-cartao-form textarea:focus {
+    outline: none;
+    border-color: var(--db-roxo-claro);
+    background: #fff;
+}
+
+.doar-cartao-form input:focus {
+    outline: none;
+    border-color: var(--db-roxo-claro);
+    background: #fff;
+}
+
+.doar-input-curto {
+    max-width: 140px;
+}
+
+.doar-faixas {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.doar-faixa-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: 1.5px solid var(--db-linha);
+    border-radius: 11px;
+    padding: 12px;
+    position: relative;
+    background: #fdfaf1;
+    cursor: pointer;
+    transition: .15s;
+}
+
+.doar-faixa-card:hover {
+    border-color: var(--db-roxo-claro);
+}
+
+.doar-faixa-card input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.doar-faixa-card:has(input:checked) {
+    border-color: var(--db-roxo-claro);
+    background: var(--db-roxo-suave);
+}
+
+.doar-faixa-card-larga {
+    grid-column: 1 / -1;
+}
+
+.doar-faixa-icone {
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: var(--db-roxo-suave);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.doar-faixa-icone svg {
+    width: 22px;
+    height: 22px;
+    color: var(--db-roxo);
+}
+
+.doar-faixa-texto {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.doar-idade {
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--db-ocre);
+    text-transform: uppercase;
+    letter-spacing: .03em;
+}
+
+.doar-faixa-card h4 {
+    font-size: 14px;
+    margin: 2px 0 0;
+}
+
+.doar-check {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1.5px solid var(--db-linha);
+    background: #fff;
+}
+
+.doar-faixa-card:has(input:checked) .doar-check {
+    background: var(--db-roxo-claro);
+    border-color: var(--db-roxo-claro);
+}
+
+.doar-ajuda-dica {
+    display: flex;
+    gap: 8px;
+    background: var(--db-ocre-suave);
+    border-radius: 9px;
+    padding: 10px 13px;
+    font-size: 12.5px;
+    color: #6b4f18;
+    margin-top: 12px;
+}
+
+.doar-ajuda-dica svg {
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.doar-drop-foto {
+    display: block;
+    border: 1.5px dashed var(--db-linha);
+    border-radius: 11px;
+    padding: 22px;
+    text-align: center;
+    background: #fdfaf1;
+    color: var(--db-tinta-suave);
+    font-size: 13.5px;
+    cursor: pointer;
+    transition: .15s;
+}
+
+.doar-drop-foto.doar-drop-foto-ativo,
+.doar-drop-foto:hover {
+    border-color: var(--db-roxo-claro);
+    background: var(--db-roxo-suave);
+}
+
+.doar-drop-foto svg {
+    width: 26px;
+    height: 26px;
+    color: var(--db-roxo-claro);
+    margin: 0 auto 8px;
+}
+
+.doar-drop-foto b {
+    color: var(--db-roxo);
+    text-decoration: underline;
+}
+
+.doar-drop-foto input[type="file"] {
+    display: none;
+}
+
+.doar-nome-arquivo {
+    display: block;
+    margin-top: 6px;
+    font-size: 11.5px;
+    color: var(--db-tinta-suave);
+    font-weight: 600;
+}
+
+.doar-dica-campo {
+    display: block;
+    font-size: 11px;
+    color: var(--db-tinta-suave);
+    margin: -10px 0 4px;
+}
+
+.doar-botoes-form {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 14px;
+    margin-top: 6px;
+}
+
+.doar-btn-primario {
+    background: var(--db-roxo);
+    color: #fff;
+    border: none;
+    padding: 13px 28px;
+    border-radius: 9px;
+    font-weight: 700;
+    font-size: 14px;
+    box-shadow: var(--db-sombra-roxa);
+    cursor: pointer;
+    transition: .15s;
+}
+
+.doar-btn-primario:hover {
+    background: var(--db-roxo-escuro);
+}
+
+.doar-btn-secundario {
+    background: transparent;
+    color: var(--db-tinta-suave);
+    border: 1.5px solid var(--db-linha);
+    padding: 12px 24px;
+    border-radius: 9px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: .15s;
+}
+
+.doar-btn-secundario:hover {
+    background: #f4f2ea;
+    border-color: var(--db-roxo-claro);
+    color: var(--db-tinta);
+}
+
+/* ---------- FAQ ---------- */
+.doar-faq {
+    max-width: 760px;
+    margin: 48px auto 0;
+}
+
+.doar-faq h3 {
+    font-size: 19px;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.doar-faq-item {
+    background: var(--db-papel);
+    border: 1px solid var(--db-linha);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 12px;
+}
+
+.doar-faq-item b {
+    display: block;
+    font-family: 'Fraunces', serif;
+    font-size: 14.5px;
+    color: var(--db-tinta);
+    margin-bottom: 4px;
+}
+
+.doar-faq-item p {
+    font-size: 13.5px;
+    color: var(--db-tinta-suave);
+    line-height: 1.5;
+}
+
+.doar-faq-item a {
+    color: var(--db-roxo);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+@media (max-width: 880px) {
+    .doar-hero {
+        grid-template-columns: 1fr;
+        padding-top: 32px;
+    }
+
+    .doar-explica-wrap {
+        order: -1;
+        margin-bottom: 8px;
+    }
+
+    .doar-trilha-inner {
+        grid-template-columns: 1fr;
+    }
+
+    .doar-grid-2,
+    .doar-faixas {
+        grid-template-columns: 1fr;
+    }
+
+    .doar-faixa-card-larga {
+        grid-column: auto;
+    }
+}
+
+/* ---------- POP-UP FOFO DE "LIVRO DOADO COM SUCESSO" ---------- */
+.doar-sucesso-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(44, 36, 64, .55);
+    backdrop-filter: blur(2px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    padding: 20px;
+    animation: doarSucessoFade .25s ease;
+}
+
+.doar-sucesso-overlay[hidden] {
+    display: none;
+}
+
+@keyframes doarSucessoFade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.doar-sucesso-cartao {
+    position: relative;
+    background: linear-gradient(160deg, #fff 0%, var(--db-roxo-suave) 130%);
+    border: 2px solid var(--db-lilas);
+    border-radius: 26px;
+    max-width: 380px;
+    width: 100%;
+    padding: 38px 30px 30px;
+    text-align: center;
+    box-shadow: 0 24px 60px -18px rgba(76, 55, 163, .55);
+    overflow: hidden;
+    animation: doarSucessoPop .45s cubic-bezier(.26, 1.4, .5, 1);
+}
+
+@keyframes doarSucessoPop {
+    0% { transform: scale(.7) translateY(20px); opacity: 0; }
+    100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.doar-sucesso-confete {
+    position: absolute;
+    font-size: 22px;
+    opacity: .9;
+    animation: doarSucessoFlutua 2.6s ease-in-out infinite;
+}
+
+.doar-sucesso-confete { top: 14px; left: 18px; }
+.doar-sucesso-confete.c2 { top: 20px; right: 22px; animation-delay: .3s; font-size: 20px; }
+.doar-sucesso-confete.c3 { bottom: 18px; left: 24px; animation-delay: .6s; font-size: 18px; }
+.doar-sucesso-confete.c4 { bottom: 60%; right: 16px; animation-delay: .9s; font-size: 18px; }
+
+@keyframes doarSucessoFlutua {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-8px) rotate(8deg); }
+}
+
+.doar-sucesso-icone {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--db-roxo-claro), var(--db-roxo));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--db-sombra-roxa);
+}
+
+.doar-sucesso-icone svg {
+    width: 30px;
+    height: 30px;
+    color: #fff;
+}
+
+.doar-sucesso-cartao h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    color: var(--db-tinta);
+    margin-bottom: 10px;
+}
+
+.doar-sucesso-cartao p {
+    font-size: 14px;
+    color: var(--db-tinta-suave);
+    line-height: 1.55;
+    margin-bottom: 22px;
+}
+
+.doar-sucesso-btn {
+    background: var(--db-roxo);
+    color: #fff;
+    border: none;
+    padding: 12px 26px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: var(--db-sombra-roxa);
+    transition: .15s;
+}
+
+.doar-sucesso-btn:hover {
+    background: var(--db-roxo-escuro);
+    transform: translateY(-2px);
 }
 
 /* WHATSAPP FLUTUANTE */
@@ -395,7 +1273,7 @@ footer {
 
 /*PARTE ROXA */
 .footer-top {
-    background: #8472f4;
+    background: var(--cor-primaria, #8472f4);
     display: flex;
     justify-content: space-between;
     padding: 40px;

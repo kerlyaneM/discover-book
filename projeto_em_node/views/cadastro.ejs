@@ -16,6 +16,18 @@
         <p style="color:red; text-align:center; font-weight:bold;">
             Este e-mail já está cadastrado! Tente fazer login.
         </p>
+    <% } else if (erro === 'senha_fraca') { %>
+        <p style="color:red; text-align:center; font-weight:bold;">
+            A senha precisa ter pelo menos 8 caracteres, com letra e número.
+        </p>
+    <% } else if (erro === 'senha_diferente') { %>
+        <p style="color:red; text-align:center; font-weight:bold;">
+            As senhas digitadas não são iguais.
+        </p>
+    <% } else if (erro === 'dados') { %>
+        <p style="color:red; text-align:center; font-weight:bold;">
+            Preencha todos os campos obrigatórios.
+        </p>
     <% } else if (erro === 'sistema') { %>
         <p style="color:red; text-align:center; font-weight:bold;">
             Erro no sistema. Tente novamente mais tarde.
@@ -25,10 +37,23 @@
     <form action="/cadastro" method="POST">
         <input type="text" name="nome" placeholder="Nome completo" required>
         <input type="email" name="email" placeholder="E-mail" required>
+
         <div class="input-wrapper">
-            <input type="password" name="senha" placeholder="Senha" required>
+            <input type="password" name="senha" id="senha" placeholder="Senha" minlength="8" required>
             <i class="fa-solid fa-eye olho-senha"></i>
         </div>
+        <div class="forca-senha" id="forcaSenhaWrap" hidden>
+            <div class="forca-senha-barra"><span id="forcaSenhaBarra"></span></div>
+            <span class="forca-senha-texto" id="forcaSenhaTexto"></span>
+        </div>
+        <span class="dica-campo">Mínimo de 8 caracteres, com letra e número.</span>
+
+        <div class="input-wrapper">
+            <input type="password" name="confirmar_senha" id="confirmar_senha" placeholder="Confirme a senha" minlength="8" required>
+            <i class="fa-solid fa-eye olho-senha"></i>
+        </div>
+        <span class="dica-campo dica-campo-erro" id="avisoSenhaDiferente" hidden>As senhas não coincidem.</span>
+
         <select name="tipo" required>
             <option value="">Tipo de cadastro</option>
             <option value="escola">Escola</option>

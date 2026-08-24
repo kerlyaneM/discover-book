@@ -1,0 +1,85 @@
+# 📚 Discover Book
+
+Plataforma web para arrecadar livros usados e democratizar o acesso a eles em escolas públicas de Ribamar. Doadores cadastram livros disponíveis, escolas solicitam o que precisam, e a equipe administrativa acompanha e libera cada pedido.
+
+## Funcionalidades
+
+- **Cadastro e login** de usuários com dois perfis: `doador` e `escola` (`routes/auth.js`)
+- **Catálogo de doação** — doador cadastra um livro com foto, categoria e quantidade (`routes/doacao.js`, `views/doar.ejs`)
+- **Acervo** — listagem pública dos livros disponíveis para solicitação (`routes/doacao.js` → `/acervo`)
+- **Carrinho de solicitações** — escola adiciona livros ao carrinho e finaliza o pedido (`routes/carrinho.js`)
+- **Painel administrativo** — membros da equipe marcados como `admin` acompanham e avançam o status dos pedidos (`routes/admin.js` → `/admin/pedidos`)
+- **Repasse entre escolas** — uma escola oferece livros excedentes para outras escolas solicitarem (`routes/repasse.js`)
+- **Perfil e configurações** — edição de dados da conta, avatar, senha e exclusão de conta (`routes/perfil.js`, `routes/configuracoes.js`)
+
+## Perfis de usuário
+
+| Perfil | Como se torna | O que pode fazer |
+|---|---|---|
+| **Doador** | Escolhe "Doador" no cadastro | Doar livros, acompanhar as próprias doações |
+| **Escola** | Escolhe "Escola" no cadastro | Solicitar livros no acervo, usar o carrinho, participar do repasse entre escolas |
+| **Administrador** | Coluna `admin = 1` na tabela `usuarios` | Acessar `/admin/pedidos` e avançar/cancelar solicitações |
+
+### Como testar como administrador
+
+Não existe cadastro de administrador pela interface — é uma conta normal marcada manualmente no banco. Veja o passo a passo em:
+
+`documentacao/guia-de-testes/GUIA_DE_TESTES.md`
+
+## Tecnologias
+
+- **Backend:** Node.js + Express 5
+- **Views:** EJS (server-side rendering)
+- **Banco de dados:** SQLite3
+- **Autenticação:** express-session + bcrypt
+- **Upload de arquivos:** multer
+
+## Como instalar e rodar o projeto
+
+**Pré-requisito:** ter o Node.js instalado (versão 18 ou superior).
+
+```bash
+# 1. Entre na pasta do projeto
+cd projeto_em_node
+
+# 2. Instale as dependências
+npm install
+
+# 3. Rode o servidor
+npm start
+```
+
+O site estará disponível em:
+
+`http://localhost:3000`
+
+O banco de dados (`database/banco.db`) é criado e atualizado automaticamente na primeira execução — não é preciso rodar nenhum script manual.
+
+## Estrutura do projeto
+
+```text
+projeto_em_node/
+├── app.js                  # ponto de entrada do servidor
+├── routes/                 # uma rota por funcionalidade
+├── views/                  # páginas EJS
+├── public/                 # css, js do front-end, imagens, vídeos
+├── database/               # conexão sqlite + criação de tabelas
+└── documentacao/           # documentação do projeto
+```
+
+## Documentação
+
+Toda a documentação pedida pela professora está organizada em `documentacao/`:
+
+- **diagramas/** — diagrama de caso de uso e diagrama de componentes (arquitetura)
+- **banco-de-dados/** — modelo físico do banco
+- **guia-de-testes/** — passo a passo para testar cada funcionalidade, incluindo o perfil administrador
+- **design/** — referências visuais (cores, fontes, botões) usadas no site
+
+## Equipe
+
+- Vilson Tadeu Santos e Santos
+- Thifany dos Santos Viana
+- Kerlyane Martins Vieira Bezerra
+- Lauane Jessy da Silva dos Santos
+- Maria Rita Laune Andrade

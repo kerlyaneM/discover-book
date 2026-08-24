@@ -1,0 +1,333 @@
+/* =============================================================
+   CATEGORIAS-REALCE.CSS  (v2)
+   Camada de melhorias visuais para: Infantil, Ensino
+   Fundamental, Ensino Médio e Leituras — toda em tons de roxo.
+
+   O QUE ESTE ARQUIVO NÃO MEXE (fica igual ao original):
+   - o carrossel e as setas (esquerda/direita) continuam com a
+     mesma função de sempre;
+   - o banner "Livros selecionados por idade" (com "Garanta seu
+     livro para sua criança" e "A leitura transforma vidas");
+   - a seção "Encontre também para:" (troca de categoria).
+
+   O resto (hero, cards de livro, botão do carrinho, setas,
+   menu de categorias no cabeçalho, rodapé) foi redesenhado
+   aqui em cima, por isso é importante linkar este arquivo
+   DEPOIS do CSS da própria página (infantil.css /
+   idade3-5anos.css / idade6-10anos.css / leitura.css) — e
+   adicionar uma classe de tema no <body>:
+
+   tema-infantil | tema-fundamental | tema-medio | tema-leitura
+============================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Fraunces:ital,wght@0,600;0,700;0,800;1,600&display=swap');
+
+:root{
+  --realce-sombra: 0 14px 30px -14px rgba(50,20,90,.28);
+  --realce-sombra-forte: 0 22px 42px -16px rgba(50,20,90,.38);
+}
+
+/* ---------- paletas — tudo em tons de roxo ---------- */
+body.tema-infantil{
+  --realce-cor:#8472f4;
+  --realce-cor-clara:#a996ff;
+  --realce-cor-suave:#f1eeff;
+  --realce-cor-escura:#5f47ff;
+  --realce-fonte-titulo:'Baloo 2', Arial, sans-serif;
+  --realce-grad:linear-gradient(135deg,#8472f4 0%,#b09bff 100%);
+}
+body.tema-fundamental{
+  --realce-cor:#9b6bd6;
+  --realce-cor-clara:#c4a4ec;
+  --realce-cor-suave:#f4edfc;
+  --realce-cor-escura:#6c3fa0;
+  --realce-fonte-titulo:'Fraunces', Georgia, serif;
+  --realce-grad:linear-gradient(120deg,#7c5cd6 0%,#a97fe0 100%);
+}
+body.tema-medio{
+  --realce-cor:#5b4bb0;
+  --realce-cor-clara:#8472f4;
+  --realce-cor-suave:#ece7fb;
+  --realce-cor-escura:#2f2660;
+  --realce-fonte-titulo:'Fraunces', Georgia, serif;
+  --realce-grad:linear-gradient(135deg,#2f2660 0%,#5b4bb0 100%);
+}
+body.tema-leitura{
+  --realce-cor:#7b4fd1;
+  --realce-cor-clara:#a685f0;
+  --realce-cor-suave:#f1e6fc;
+  --realce-cor-escura:#4a1f8f;
+  --realce-fonte-titulo:'Fraunces', Georgia, serif;
+  --realce-grad:linear-gradient(120deg,#4a1f8f 0%,#7b4fd1 100%);
+}
+
+/* =========================================================
+   HERO — banner de topo, agora com ilustração ao lado e
+   título mais discreto
+========================================================= */
+.hero-categoria{
+  position:relative;
+  overflow:hidden;
+  padding:34px 24px 40px;
+  color:#fff;
+  background:var(--realce-grad, #8472f4);
+}
+.hero-categoria .forma{
+  position:absolute;
+  border-radius:50%;
+  background:rgba(255,255,255,.12);
+}
+.hero-categoria .forma.f1{ width:180px; height:180px; top:-70px; right:4%; }
+.hero-categoria .forma.f2{ width:90px; height:90px; bottom:-30px; left:6%; background:rgba(255,255,255,.08); }
+.hero-categoria .forma.f3{ width:26px; height:26px; top:30%; right:34%; background:rgba(255,255,255,.22); animation:realce-flutua 4s ease-in-out infinite; }
+.hero-categoria .forma.f4{ width:16px; height:16px; top:65%; right:12%; background:rgba(255,255,255,.3); animation:realce-flutua 3.2s ease-in-out infinite .6s; }
+
+.hero-inner{
+  position:relative; z-index:1;
+  max-width:1180px; margin:0 auto;
+  display:flex; align-items:center; justify-content:space-between;
+  gap:22px; flex-wrap:wrap;
+}
+.hero-texto{ max-width:480px; }
+
+/* variação centralizada do hero, sem ilustração ao lado */
+.hero-inner.centralizado{
+  justify-content:center;
+  text-align:center;
+}
+.hero-inner.centralizado .hero-texto{ max-width:560px; }
+.hero-inner.centralizado .hero-ic{ margin:0 auto 10px; }
+.hero-inner.centralizado .hero-chips{ justify-content:center; }
+.hero-ic{
+  width:46px; height:46px; margin-bottom:10px;
+  background:rgba(255,255,255,.18);
+  border:1.5px solid rgba(255,255,255,.32);
+  border-radius:14px;
+  display:flex; align-items:center; justify-content:center;
+}
+.hero-ic svg{ width:22px; height:22px; }
+.hero-categoria h1{
+  font-family:var(--realce-fonte-titulo);
+  font-size:clamp(19px,2.4vw,25px);
+  line-height:1.15;
+  color:#fff;
+  margin-bottom:6px;
+}
+.hero-categoria p{
+  font-size:13px;
+  font-weight:600;
+  color:rgba(255,255,255,.88);
+  max-width:400px;
+}
+.hero-ilustracao{
+  width:180px; height:180px;
+  flex-shrink:0;
+  filter:drop-shadow(0 14px 22px rgba(0,0,0,.22));
+  animation:realce-boiar 5s ease-in-out infinite;
+}
+
+@keyframes realce-flutua{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-10px);} }
+@keyframes realce-boiar{ 0%,100%{ transform:translateY(0) rotate(0deg);} 50%{ transform:translateY(-8px) rotate(-1.5deg);} }
+
+/* chips dentro do hero */
+.hero-chips{
+  display:flex; flex-wrap:wrap; gap:9px;
+  margin-top:16px;
+}
+.hero-chip{
+  background:rgba(255,255,255,.18);
+  padding:7px 14px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:700;
+  display:flex; align-items:center; gap:6px;
+  transition:.2s;
+  color:#fff !important;
+  text-decoration:none !important;
+}
+.hero-chip:hover{ background:rgba(255,255,255,.32); transform:translateY(-2px); color:#fff !important; }
+.hero-chip:visited{ color:#fff !important; }
+.hero-chip svg{ width:13px; height:13px; }
+
+/* faixa de ícones decorativos vira link clicável também */
+.faixa-decorativa a.item{
+  text-decoration:none !important;
+  color:var(--realce-cor-escura) !important;
+  cursor:pointer;
+}
+.faixa-decorativa a.item:visited{ color:var(--realce-cor-escura) !important; }
+.faixa-decorativa a.item:hover .bolha{
+  background:var(--realce-cor, #8472f4);
+  color:#fff;
+  transform:translateY(-3px);
+}
+.faixa-decorativa .bolha{ transition:.2s; }
+
+/* =========================================================
+   TÍTULO DE SEÇÃO COM ÍCONE
+========================================================= */
+.secao-titulo-realce{
+  display:flex; align-items:center; gap:10px;
+  justify-content:center;
+  margin-bottom:8px;
+}
+.secao-titulo-realce .ic{
+  width:36px; height:36px; border-radius:12px;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--realce-cor-suave);
+  color:var(--realce-cor-escura);
+  flex-shrink:0;
+}
+.secao-titulo-realce .ic svg{ width:18px; height:18px; }
+
+/* =========================================================
+   CARDS DE LIVRO — substitui a borda preta pesada por um
+   visual limpo, com selo colorido e efeito de flutuação
+========================================================= */
+.categoria-livros .livro-card{
+  background:#fff !important;
+  border:none !important;
+  border-radius:18px !important;
+  padding:0 !important;
+  box-shadow:var(--realce-sombra) !important;
+  overflow:hidden;
+  text-align:left !important;
+  transition:transform .3s, box-shadow .3s !important;
+  position:relative;
+}
+.categoria-livros .livro-card::before{
+  content:"";
+  position:absolute; top:0; left:0; right:0; height:5px;
+  background:var(--realce-grad, var(--realce-cor));
+  z-index:2;
+}
+.categoria-livros .livro-card:hover{
+  transform:translateY(-8px) rotate(-.6deg) !important;
+  box-shadow:var(--realce-sombra-forte) !important;
+}
+.categoria-livros .livro-card img{
+  width:100% !important;
+  height:230px !important;
+  border-radius:0 !important;
+  border:none !important;
+  display:block;
+}
+.categoria-livros .livro-card h3{
+  margin:14px 14px 4px !important;
+  font-size:15px !important;
+  min-height:auto !important;
+  color:#2b2140;
+  font-family:var(--realce-fonte-titulo);
+}
+.categoria-livros .livro-card .btn-carrinho{
+  display:flex !important;
+  align-items:center; justify-content:center; gap:6px;
+  width:calc(100% - 28px) !important;
+  margin:10px 14px 14px !important;
+  background:var(--realce-grad, var(--realce-cor)) !important;
+  color:#fff !important;
+  border-radius:999px !important;
+  padding:10px 8px !important;
+  font-weight:800 !important;
+  font-size:11.5px !important;
+  line-height:1.2;
+  text-align:center;
+  box-shadow:0 8px 16px -8px rgba(50,20,90,.5);
+}
+.categoria-livros .livro-card .btn-carrinho svg{
+  width:15px; height:15px; flex-shrink:0;
+}
+.categoria-livros .livro-card .btn-carrinho:hover{
+  filter:brightness(1.08);
+  transform:translateY(-1px);
+}
+
+/* =========================================================
+   SETAS DO CARROSSEL — mesma função, visual novo
+========================================================= */
+.categoria-livros .seta{
+  background:var(--realce-grad, var(--realce-cor)) !important;
+  box-shadow:var(--realce-sombra);
+}
+.categoria-livros .seta:hover{
+  background:var(--realce-grad, var(--realce-cor)) !important;
+  filter:brightness(1.1);
+  transform:scale(1.1) !important;
+}
+
+/* fundo levemente lilás por trás dos carrosséis, no lugar do
+   cinza padrão — só nas 4 páginas que usam este arquivo */
+.categoria-livros{
+  background:var(--realce-cor-suave) !important;
+}
+
+/* =========================================================
+   FAIXA DECORATIVA — ícones flutuantes entre o hero e os
+   carrosséis, só para dar mais "vida" à página
+========================================================= */
+.faixa-decorativa{
+  max-width:1180px; margin:22px auto 0; padding:0 24px;
+  display:flex; justify-content:center; gap:26px; flex-wrap:wrap;
+}
+.faixa-decorativa .item{
+  display:flex; flex-direction:column; align-items:center; gap:6px;
+  font-size:11px; font-weight:800; color:var(--realce-cor-escura);
+  text-align:center;
+}
+.faixa-decorativa .item .bolha{
+  width:52px; height:52px; border-radius:50%;
+  background:var(--realce-cor-suave);
+  color:var(--realce-cor-escura);
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:var(--realce-sombra);
+}
+.faixa-decorativa .item .bolha svg{ width:24px; height:24px; }
+
+/* =========================================================
+   CARD DE CHAMADA (DOAÇÃO) — antes do rodapé
+========================================================= */
+.chamada-doacao{
+  max-width:1180px;
+  margin:10px auto 50px;
+  padding:0 24px;
+}
+.chamada-doacao .cartao{
+  background:var(--realce-grad, var(--realce-cor));
+  border-radius:22px;
+  padding:26px 30px;
+  display:flex; align-items:center; gap:18px; flex-wrap:wrap;
+  color:#fff;
+}
+.chamada-doacao svg{ width:40px; height:40px; color:#fff; flex-shrink:0; opacity:.9; }
+.chamada-doacao h3{
+  font-family:var(--realce-fonte-titulo);
+  font-size:17px; margin-bottom:3px; color:#fff;
+}
+.chamada-doacao p{ font-size:13px; color:rgba(255,255,255,.85); font-weight:600; margin-right:auto; }
+.chamada-doacao a.btn-chamada{
+  background:#fff;
+  color:var(--realce-cor-escura);
+  padding:11px 22px;
+  border-radius:999px;
+  font-weight:800;
+  font-size:13px;
+  white-space:nowrap;
+}
+.chamada-doacao a.btn-chamada:hover{ opacity:.9; }
+
+/* =========================================================
+   RESPONSIVO
+========================================================= */
+@media (max-width:820px){
+  .hero-inner{ justify-content:center; text-align:center; }
+  .hero-texto{ max-width:100%; }
+  .hero-ic{ margin:0 auto 10px; }
+  .hero-chips{ justify-content:center; }
+  .hero-ilustracao{ width:140px; height:140px; }
+}
+@media (max-width:700px){
+  .hero-categoria{ padding:28px 18px 34px; }
+  .chamada-doacao .cartao{ text-align:center; justify-content:center; }
+  .chamada-doacao p{ margin-right:0; }
+  .faixa-decorativa{ gap:16px; }
+}

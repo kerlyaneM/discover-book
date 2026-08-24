@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações | DiscoverBook</title>
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/configuracoes.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css">
+</head>
+<body>
+
+<a href="#conteudo-principal" class="pular-conteudo">Pular para o conteúdo</a>
+
+<%- include('partials/topo') %>
+<%- include('partials/header') %>
+
+<%
+    const nomeExibido = usuario.username || usuario.nome;
+    const badgeTexto = usuario.tipo === "escola" ? "Escola/Instituição" : "Doador";
+%>
+
+<main class="config" id="conteudo-principal">
+
+    <div class="config-titulo">
+        <a href="/perfil" class="voltar-perfil" aria-label="Voltar para o perfil">
+            <i class="fi fi-rr-arrow-left" aria-hidden="true"></i>
+        </a>
+        <h1>Configurações</h1>
+    </div>
+
+    <div class="config-layout">
+
+        <nav class="config-abas" aria-label="Seções de configurações">
+            <ul role="tablist">
+                <li>
+                    <a href="/configuracoes?aba=conta" role="tab" aria-selected="<%= aba === 'conta' %>" class="<%= aba === 'conta' ? 'ativa' : '' %>">
+                        <i class="fi fi-rr-user" aria-hidden="true"></i> Conta
+                    </a>
+                </li>
+                <li>
+                    <a href="/configuracoes?aba=senha" role="tab" aria-selected="<%= aba === 'senha' %>" class="<%= aba === 'senha' ? 'ativa' : '' %>">
+                        <i class="fi fi-rr-lock" aria-hidden="true"></i> Senha
+                    </a>
+                </li>
+                <li>
+                    <a href="/configuracoes?aba=privacidade" role="tab" aria-selected="<%= aba === 'privacidade' %>" class="<%= aba === 'privacidade' ? 'ativa' : '' %>">
+                        <i class="fi fi-rr-shield-check" aria-hidden="true"></i> Privacidade
+                    </a>
+                </li>
+                <li>
+                    <a href="/configuracoes?aba=ajuda" role="tab" aria-selected="<%= aba === 'ajuda' %>" class="<%= aba === 'ajuda' ? 'ativa' : '' %>">
+                        <i class="fi fi-rr-interrogation" aria-hidden="true"></i> Ajuda
+                    </a>
+                </li>
+                <li class="config-abas-separador">
+                    <a href="/logout" class="config-aba-sair">
+                        <i class="fi fi-rr-sign-out-alt" aria-hidden="true"></i> Sair da conta
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="config-conteudo">
+
+            <% if (aba === "conta") { %>
+
+                <section class="config-card" aria-labelledby="titulo-conta">
+                    <h2 id="titulo-conta">Informações da conta</h2>
+
+                    <div class="categoria-conta">
+                        <div class="categoria-icone">
+                            <i class="fi <%= usuario.tipo === 'escola' ? 'fi-rr-graduation-cap' : 'fi-rr-heart' %>" aria-hidden="true"></i>
+                        </div>
+                        <div class="categoria-texto">
+                            <span class="categoria-rotulo">Categoria da conta</span>
+                            <strong class="categoria-nome"><%= badgeTexto %></strong>
+                            <p class="categoria-descricao">
+                                <% if (usuario.tipo === "escola") { %>
+                                    Contas de Instituição podem montar um carrinho de solicitações e acompanhar o histórico de pedidos enviados.
+                                <% } else { %>
+                                    Contas de Doador podem doar livros e acompanhar sua posição no ranking de doadores.
+                                <% } %>
+                            </p>
+                        </div>
+                    </div>
+
+                    <hr class="config-divisor">
+
+                    <h3 class="config-subtitulo">Informações públicas</h3>
+                    <p class="config-ajuda-texto">Visível para outras pessoas no DiscoverBook.</p>
+                    <dl class="config-lista-info">
+                        <dt>Nome de perfil</dt>
+                        <dd><%= nomeExibido %></dd>
+
+                        <dt>Categoria</dt>
+                        <dd><%= badgeTexto %></dd>
+
+                        <dt>Conta criada em</dt>
+                        <dd><%= dataFormatada %></dd>
+                    </dl>
+
+                    <hr class="config-divisor">
+
+                    <h3 class="config-subtitulo">Informações privadas</h3>
+                    <p class="config-ajuda-texto">Só você consegue ver.</p>
+                    <dl class="config-lista-info">
+                        <dt>E-mail</dt>
+                        <dd><%= usuario.email %></dd>
+                    </dl>
+
+                    <p class="config-dica">
+                        Para alterar seu nome de perfil ou avatar, acesse
+                        <a href="/perfil?editar=1">Editar perfil</a>.
+                    </p>
+                </section>
+
+            <% } else if (aba === "senha") { %>
+
+                <section class="config-card" aria-labelledby="titulo-senha">
+                    <h2 id="titulo-senha">Alterar senha</h2>
+
+                    <% if (erroSenha === "campos") { %>
+                        <p class="erro" role="alert">Preencha todos os campos.</p>
+                    <% } else if (erroSenha === "confirmacao") { %>
+                        <p class="erro" role="alert">A confirmação não confere com a nova senha.</p>
+                    <% } else if (erroSenha === "tamanho") { %>
+                        <p class="erro" role="alert">A nova senha deve ter pelo menos 6 caracteres.</p>
+                    <% } else if (erroSenha === "senha_atual") { %>
+                        <p class="erro" role="alert">A senha atual está incorreta.</p>
+                    <% } else if (erroSenha === "sistema") { %>
+                        <p class="erro" role="alert">Não foi possível alterar a senha. Tente novamente.</p>
+                    <% } %>
+
+                    <% if (sucessoSenha) { %>
+                        <p class="sucesso" role="status">Senha alterada com sucesso!</p>
+                    <% } %>
+
+                    <form action="/configuracoes/senha" method="POST" class="config-form">
+
+                        <label for="senha_atual">Senha atual</label>
+                        <input type="password" id="senha_atual" name="senha_atual" required autocomplete="current-password">
+
+                        <label for="nova_senha">Nova senha</label>
+                        <input type="password" id="nova_senha" name="nova_senha" required minlength="6" autocomplete="new-password">
+
+                        <label for="confirmar_senha">Confirmar nova senha</label>
+                        <input type="password" id="confirmar_senha" name="confirmar_senha" required minlength="6" autocomplete="new-password">
+
+                        <button type="submit" class="btn-salvar">Alterar senha</button>
+
+                    </form>
+                </section>
+
+            <% } else if (aba === "privacidade") { %>
+
+                <section class="config-card" aria-labelledby="titulo-privacidade">
+                    <h2 id="titulo-privacidade">Privacidade</h2>
+
+                    <p>
+                        Seus dados (nome, e-mail e histórico de doações ou solicitações) são usados
+                        apenas para o funcionamento da plataforma DiscoverBook e não são
+                        compartilhados com terceiros.
+                    </p>
+
+                    <hr class="config-divisor">
+
+                    <h3 class="config-subtitulo">Excluir minha conta</h3>
+                    <p>
+                        Essa ação apaga permanentemente sua conta e não pode ser desfeita.
+                    </p>
+
+                    <% if (erroConta === "senha") { %>
+                        <p class="erro" role="alert">Digite sua senha para confirmar.</p>
+                    <% } else if (erroConta === "senha_incorreta") { %>
+                        <p class="erro" role="alert">Senha incorreta.</p>
+                    <% } else if (erroConta === "sistema") { %>
+                        <p class="erro" role="alert">Não foi possível excluir a conta. Tente novamente.</p>
+                    <% } %>
+
+                    <form action="/configuracoes/excluir-conta" method="POST" class="config-form" onsubmit="return confirm('Tem certeza que deseja excluir sua conta? Essa ação não pode ser desfeita.');">
+                        <label for="senha_exclusao">Confirme sua senha</label>
+                        <input type="password" id="senha_exclusao" name="senha" required autocomplete="current-password">
+                        <button type="submit" class="btn-perigo">Excluir minha conta</button>
+                    </form>
+                </section>
+
+            <% } else if (aba === "ajuda") { %>
+
+                <section class="config-card" aria-labelledby="titulo-ajuda">
+                    <h2 id="titulo-ajuda">Ajuda</h2>
+
+                    <ul class="config-lista-ajuda">
+                        <li>
+                            <a href="/sobre">Sobre o DiscoverBook</a>
+                            <p>Conheça mais sobre o projeto e sua missão.</p>
+                        </li>
+                        <li>
+                            <a href="https://wa.me/5598999999999" target="_blank" rel="noopener">Falar com o suporte no WhatsApp</a>
+                            <p>Tire dúvidas sobre doações, solicitações ou sua conta.</p>
+                        </li>
+                        <li>
+                            <a href="/esqueci">Esqueci minha senha</a>
+                            <p>Recupere o acesso à sua conta.</p>
+                        </li>
+                    </ul>
+                </section>
+
+            <% } %>
+
+        </div>
+
+    </div>
+
+</main>
+
+<%- include('partials/footer') %>
+
+</body>
+</html>

@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sobre | DiscoverBook</title>
+    <title>Sobre nós | DiscoverBook</title>
     <link rel="stylesheet" href="/css/sobre.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Karla:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="/js/sobre.js" defer></script>
 </head>
 <body>
@@ -13,79 +15,144 @@
 <%- include('partials/header') %>
 <%- include('partials/nav-categorias') %>
 
-<main class="container-sobre">
-    <h1 class="titulo-quem-somos">Quem somos?</h1>
+<main class="pagina-sobre">
 
-    <div class="time-grid">
+    <!-- ================= HERO ================= -->
+    <section class="hero-sobre">
+        <div class="livro-flutuante lf1"><img src="/img/livrofa.jpg" alt=""></div>
+        <div class="livro-flutuante lf2"><img src="/img/livro3fa.jpg" alt=""></div>
+        <div class="hero-conteudo">
+            <span class="eyebrow">Quem somos</span>
+            <h1>Um projeto de estudantes que virou <em>ponte entre livros e leitores</em>.</h1>
+            <p>Nascemos no IFMA - Campus São José de Ribamar, com a ideia simples de que nenhum livro deveria ficar parado numa estante enquanto alguém, em algum lugar, está esperando por ele.</p>
+        </div>
+        <div class="stats-sobre">
+            <div class="stat-sobre"><strong>5</strong><span>estudantes fundadores</span></div>
+            <div class="stat-sobre"><strong>2026</strong><span>ano de criação</span></div>
+            <div class="stat-sobre"><strong>IFMA</strong><span>São José de Ribamar</span></div>
+        </div>
+    </section>
 
-        <div class="card-membro">
-            <div class="foto-membro">
-                <img src="/img/kerlyane.jpeg" alt="Kerlyane">
+    <!-- ================= COMO SURGIMOS ================= -->
+    <section class="secao-sobre">
+        <div class="secao-cabecalho">
+            <span class="eyebrow" style="justify-content:center;">Nossa história</span>
+            <h2>Como surgimos</h2>
+        </div>
+        <div class="timeline">
+            <div class="tl-item">
+                <span class="tl-ponto">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                </span>
+                <h3>Um projeto de sala de aula</h3>
+                <p>O DiscoverBook nasceu de um sonho compartilhado entre estudantes apaixonados por leitura no IFMA - Campus São José de Ribamar — o que começou como um projeto escolar, ganhou vida própria.</p>
             </div>
-            <div class="info-membro">
-                <h3 class="nome">Kerlyane Martins</h3>
-                <p class="funcao">JavaScript e CSS</p>
+            <div class="tl-item">
+                <span class="tl-ponto">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2 4 5v6c0 5 3.4 8.7 8 11 4.6-2.3 8-6 8-11V5l-8-3Z"/></svg>
+                </span>
+                <h3>Virou uma missão</h3>
+                <p>Passou a ser uma missão de vida: democratizar o acesso ao conhecimento através da economia circular de livros, ligando quem tem livros parados a quem precisa deles.</p>
+            </div>
+            <div class="tl-item">
+                <span class="tl-ponto">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 10 12 4 2 10l10 6 10-6Z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg>
+                </span>
+                <h3>Hoje</h3>
+                <p>Acreditamos que um livro parado na estante é um tesouro escondido — e trabalhamos pra que histórias encontrem novos leitores em escolas que mais precisam.</p>
             </div>
         </div>
+    </section>
 
-        <div class="card-membro">
-            <div class="foto-membro">
-                <img src="/img/vilson.jpeg" alt="Vilson">
+    <!-- ================= VALORES ================= -->
+    <section class="secao-sobre">
+        <div class="secao-cabecalho">
+            <span class="eyebrow" style="justify-content:center;">No que acreditamos</span>
+            <h2>Nossos valores</h2>
+        </div>
+        <div class="valores-grid">
+            <div class="valor-card">
+                <div class="valor-ic c1">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 0 4 22.5V4.5Z"/></svg>
+                </div>
+                <h3>Acesso à leitura</h3>
+                <p>Todo mundo merece ter livros bons por perto.</p>
             </div>
-            <div class="info-membro">
-                <h3 class="nome">Vilson Tadeu</h3>
-                <p class="funcao">Líder / Scrum Master</p>
+            <div class="valor-card">
+                <div class="valor-ic c2">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 3a5.5 5.5 0 0 0-5.5 4 5.5 5.5 0 0 0-9.5 4c0 6 9.5 11 9.5 11s9.5-5 9.5-11a5.5 5.5 0 0 0-4-4Z"/></svg>
+                </div>
+                <h3>Economia circular</h3>
+                <p>Um livro lido não precisa parar de circular.</p>
+            </div>
+            <div class="valor-card">
+                <div class="valor-ic c3">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+                <h3>Comunidade</h3>
+                <p>Conectamos doadores e escolas de verdade.</p>
+            </div>
+            <div class="valor-card">
+                <div class="valor-ic c4">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m22 10-10-5L2 10l10 5 10-5Z"/><path d="M6 12.5V17c0 1.1 2.7 2 6 2s6-.9 6-2v-4.5"/></svg>
+                </div>
+                <h3>Educação</h3>
+                <p>Acreditamos que ler transforma trajetórias.</p>
             </div>
         </div>
+    </section>
 
-        <div class="card-membro">
-            <div class="foto-membro">
-                <img src="/img/rita.jpeg" alt="Rita">
+    <!-- ================= EQUIPE ================= -->
+    <section class="secao-sobre equipe-secao">
+        <div class="secao-cabecalho">
+            <span class="eyebrow" style="justify-content:center;">Quem faz acontecer</span>
+            <h2>Nossa equipe</h2>
+            <p>Estudantes do IFMA - Campus São José de Ribamar por trás do projeto.</p>
+        </div>
+        <div class="equipe-grid">
+            <div class="membro-card">
+                <img src="/img/kerlyane.jpeg" alt="Kerlyane Martins">
+                <div class="membro-overlay"></div>
+                <div class="membro-info"><span class="membro-funcao-badge">JavaScript &amp; CSS</span><h3>Kerlyane Martins</h3></div>
             </div>
-            <div class="info-membro">
-                <h3 class="nome">Maria Rita</h3>
-                <p class="funcao">CSS</p>
+            <div class="membro-card">
+                <img src="/img/vilson.jpeg" alt="Vilson Tadeu">
+                <div class="membro-overlay"></div>
+                <div class="membro-info"><span class="membro-funcao-badge">Líder / Scrum Master</span><h3>Vilson Tadeu</h3></div>
+            </div>
+            <div class="membro-card">
+                <img src="/img/rita.jpeg" alt="Maria Rita">
+                <div class="membro-overlay"></div>
+                <div class="membro-info"><span class="membro-funcao-badge">CSS</span><h3>Maria Rita</h3></div>
+            </div>
+            <div class="membro-card">
+                <img src="/img/lauane.jpeg" alt="Lauane Jessy">
+                <div class="membro-overlay"></div>
+                <div class="membro-info"><span class="membro-funcao-badge">Banco de Dados</span><h3>Lauane Jessy</h3></div>
+            </div>
+            <div class="membro-card">
+                <img src="/img/thiffany.jpeg" alt="Thifany dos Santos">
+                <div class="membro-overlay"></div>
+                <div class="membro-info"><span class="membro-funcao-badge">CSS</span><h3>Thifany dos Santos</h3></div>
             </div>
         </div>
+    </section>
 
-        <div class="card-membro">
-            <div class="foto-membro">
-                <img src="/img/lauane.jpeg" alt="Lauane">
-            </div>
-            <div class="info-membro">
-                <h3 class="nome">Lauane Jessy</h3>
-                <p class="funcao">Gerenciamento do Banco de Dados</p>
+    <!-- ================= CTA FINAL ================= -->
+    <section>
+        <div class="cta-final">
+            <div class="cta-final-conteudo">
+                <h2>Quer fazer parte dessa história?</h2>
+                <p>Doe um livro que não usa mais e ajude a levar leitura pra quem precisa.</p>
+                <a href="/doar" class="btn-cta-final">
+                    Doar um livro
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </a>
             </div>
         </div>
+    </section>
 
-        <div class="card-membro">
-            <div class="foto-membro">
-                <img src="/img/thiffany.jpeg" alt="Thifanny">
-            </div>
-            <div class="info-membro">
-                <h3 class="nome">Thifany dos Santos</h3>
-                <p class="funcao">CSS</p>
-            </div>
-        </div>
-
-    </div>
 </main>
-
-<section class="como-surgimos">
-    <div class="conteudo-surgimos">
-        <h2>Como Surgimos?</h2>
-        <p>
-            O <strong>DiscoverBook</strong> nasceu de um sonho compartilhado entre estudantes apaixonados por leitura no
-            <strong>IFMA - Campus São José de Ribamar</strong>. O que começou como um projeto escolar, logo se transformou
-            em uma missão de vida: democratizar o acesso ao conhecimento através da economia circular de livros.
-        </p>
-        <p>
-            Acreditamos que um livro parado na estante é um tesouro escondido. Nossa plataforma serve como ponte para que
-            histórias encontrem novos leitores, provando que a educação e a solidariedade podem caminhar juntas para
-            transformar a nossa comunidade.
-        </p>
-    </div>
-</section>
 
 <%- include('partials/footer') %>
 

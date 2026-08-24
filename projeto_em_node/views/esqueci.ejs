@@ -14,6 +14,8 @@
 
     <% if (erro === 'senha_igual') { %>
         <p style="color:orange; text-align:center;">A nova senha não pode ser igual à atual!</p>
+    <% } else if (erro === 'senha_fraca') { %>
+        <p style="color:red; text-align:center;">A senha precisa ter pelo menos 8 caracteres, com letra e número.</p>
     <% } else if (erro === 'dados_invalidos') { %>
         <p style="color:red; text-align:center;">Nome ou E-mail incorretos.</p>
     <% } else if (erro === 'sistema') { %>
@@ -24,8 +26,12 @@
         <input type="email" name="email" placeholder="Seu E-mail cadastrado" required>
         <input type="text" name="nome" placeholder="Seu Nome Completo" required>
         <div class="input-wrapper">
-            <input type="password" name="nova_senha" placeholder="Nova Senha" required>
+            <input type="password" name="nova_senha" id="nova_senha" placeholder="Nova Senha" minlength="8" required>
             <i class="fa-solid fa-eye olho-senha"></i>
+        </div>
+        <div class="forca-senha" id="forcaSenhaWrap" hidden>
+            <div class="forca-senha-barra"><span id="forcaSenhaBarra"></span></div>
+            <span class="forca-senha-texto" id="forcaSenhaTexto"></span>
         </div>
         <button type="submit">Redefinir Senha</button>
     </form>

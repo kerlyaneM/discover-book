@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar doação | DiscoverBook</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,500&family=Karla:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/doar.css">
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css">
+</head>
+<body class="doar-page">
+
+<%- include('partials/topo') %>
+<%- include('partials/header') %>
+<%- include('partials/nav-categorias') %>
+
+<!-- ================= FORMULÁRIO DE EDIÇÃO ================= -->
+<section class="doar-form-section" id="form-doacao" style="margin-top: 30px;">
+
+    <div class="doar-cabecalho">
+        <span class="doar-cabecalho-eyebrow">Editar doação</span>
+        <h2>Ajustar os dados do livro</h2>
+        <p>
+            Essa doação ainda está <strong>pendente</strong> (menos de <%= horasPendente %>h desde o envio),
+            então você pode alterar o que quiser antes dela entrar no acervo.
+            Se preferir, também dá pra <a href="/perfil?aba=doados">cancelar a doação</a> por lá.
+        </p>
+    </div>
+
+    <% if (erro === "foto") { %>
+        <p class="doar-mensagem doar-mensagem-erro">
+            Não foi possível enviar a foto (verifique se ela foi selecionada e se é uma imagem de até 5MB). Tente novamente.
+        </p>
+    <% } else if (erro) { %>
+        <p class="doar-mensagem doar-mensagem-erro">
+            Erro ao salvar as alterações. Tente novamente.
+        </p>
+    <% } %>
+
+    <div class="doar-form-wrap">
+        <form class="doar-cartao-form" action="/doar/<%= doacao.id %>/editar" method="POST" enctype="multipart/form-data">
+
+            <fieldset>
+                <legend><span class="doar-bolha">1</span> Sobre o livro</legend>
+
+                <label for="livro">Título do livro *</label>
+                <input type="text" id="livro" name="livro" value="<%= doacao.livro %>" required>
+
+                <label for="quantidade">Quantidade *</label>
+                <input class="doar-input-curto" type="number" id="quantidade" name="quantidade" min="1" value="<%= doacao.quantidade %>" required>
+
+                <label for="descricao">Descreva o livro *</label>
+                <textarea id="descricao" name="descricao" class="doar-textarea" rows="4" placeholder="Estado de conservação, se está completo, se tem rabiscos, etc." required><%= doacao.descricao || '' %></textarea>
+            </fieldset>
+
+            <fieldset>
+                <legend><span class="doar-bolha">2</span> Categoria</legend>
+
+                <div class="doar-faixas">
+
+                    <label class="doar-faixa-card">
+                        <input type="radio" name="categoria" value="infantil" <%= doacao.categoria === 'infantil' ? 'checked' : '' %> required>
+                        <span class="doar-faixa-icone">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                        </span>
+                        <span class="doar-faixa-texto">
+                            <h4>Infantil</h4>
+                        </span>
+                        <span class="doar-check"></span>
+                    </label>
+
+                    <label class="doar-faixa-card">
+                        <input type="radio" name="categoria" value="fundamental" <%= doacao.categoria === 'fundamental' ? 'checked' : '' %> required>
+                        <span class="doar-faixa-icone">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 6.5C10.3 5 7.8 4 5 4v13c2.8 0 5.3 1 7 2.5C13.7 18 16.2 17 19 17V4c-2.8 0-5.3 1-7 2.5z"/></svg>
+                        </span>
+                        <span class="doar-faixa-texto">
+                            <h4>Ensino Fundamental</h4>
+                        </span>
+                        <span class="doar-check"></span>
+                    </label>
+
+                    <label class="doar-faixa-card">
+                        <input type="radio" name="categoria" value="medio" <%= doacao.categoria === 'medio' ? 'checked' : '' %> required>
+                        <span class="doar-faixa-icone">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m22 10-10-5L2 10l10 5 10-5Z"/><path d="M6 12.5V17c0 1.1 2.7 2 6 2s6-.9 6-2v-4.5"/><path d="M22 10v6"/></svg>
+                        </span>
+                        <span class="doar-faixa-texto">
+                            <h4>Ensino Médio</h4>
+                        </span>
+                        <span class="doar-check"></span>
+                    </label>
+
+                    <label class="doar-faixa-card">
+                        <input type="radio" name="categoria" value="leituras" <%= doacao.categoria === 'leituras' ? 'checked' : '' %> required>
+                        <span class="doar-faixa-icone">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                        </span>
+                        <span class="doar-faixa-texto">
+                            <h4>Leituras</h4>
+                        </span>
+                        <span class="doar-check"></span>
+                    </label>
+
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend><span class="doar-bolha">3</span> Foto do livro</legend>
+
+                <% if (doacao.foto) { %>
+                    <div class="doar-foto-atual">
+                        <img src="<%= doacao.foto %>" alt="Foto atual do livro" style="max-width:160px; border-radius:12px; margin-bottom:12px; display:block;">
+                        <span class="doar-dica-campo">Foto atual — escolha uma nova abaixo só se quiser trocar.</span>
+                    </div>
+                <% } %>
+
+                <label class="doar-drop-foto" id="doarDropFoto">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M8 6l2-3h4l2 3"/><circle cx="12" cy="13" r="3.5"/></svg>
+                    <span><b>Toque para trocar a foto</b> ou arraste uma nova imagem aqui</span>
+                    <input type="file" name="foto" id="foto" accept="image/png, image/jpeg, image/webp">
+                    <span class="doar-nome-arquivo" id="doarNomeArquivo"></span>
+                </label>
+                <span class="doar-dica-campo">Deixe em branco pra manter a foto atual (até 5MB).</span>
+            </fieldset>
+
+            <div class="doar-botoes-form">
+                <a href="/perfil?aba=doados" class="doar-btn-secundario">Cancelar edição</a>
+                <button type="submit" class="doar-btn-primario">Salvar alterações</button>
+            </div>
+        </form>
+    </div>
+
+</section>
+
+<%- include('partials/footer') %>
+
+<script>
+    const doarInputFoto = document.getElementById('foto');
+    const doarNomeArquivo = document.getElementById('doarNomeArquivo');
+    const doarDropFoto = document.getElementById('doarDropFoto');
+
+    if (doarInputFoto && doarNomeArquivo) {
+        doarInputFoto.addEventListener('change', () => {
+            const arquivo = doarInputFoto.files && doarInputFoto.files[0];
+            doarNomeArquivo.textContent = arquivo ? arquivo.name : '';
+        });
+    }
+
+    if (doarDropFoto && doarInputFoto) {
+        ['dragover', 'dragenter'].forEach((evento) => {
+            doarDropFoto.addEventListener(evento, (e) => {
+                e.preventDefault();
+                doarDropFoto.classList.add('doar-drop-foto-ativo');
+            });
+        });
+        ['dragleave', 'drop'].forEach((evento) => {
+            doarDropFoto.addEventListener(evento, (e) => {
+                e.preventDefault();
+                doarDropFoto.classList.remove('doar-drop-foto-ativo');
+            });
+        });
+        doarDropFoto.addEventListener('drop', (e) => {
+            const arquivos = e.dataTransfer.files;
+            if (arquivos && arquivos.length) {
+                doarInputFoto.files = arquivos;
+                doarNomeArquivo.textContent = arquivos[0].name;
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

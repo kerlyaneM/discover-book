@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Carrinho | DiscoverBook</title>
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/carrinho.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css">
+</head>
+<body>
+
+<a href="#conteudo-carrinho" class="pular-conteudo">Pular para o conteúdo</a>
+
+<%- include('partials/topo') %>
+<%- include('partials/header') %>
+<%- include('partials/nav-categorias') %>
+
+<main id="conteudo-carrinho" class="pagina-carrinho">
+
+    <div class="carrinho-titulo">
+        <h1>Meu carrinho</h1>
+        <span id="tituloContagem"><%= totalItens %> <%= totalItens === 1 ? "item" : "itens" %></span>
+    </div>
+
+    <% if (erro === "permissao") { %>
+        <div class="carrinho-mensagem erro">Apenas contas de Instituição podem finalizar uma solicitação.</div>
+    <% } else if (erro === "vazio") { %>
+        <div class="carrinho-mensagem erro">Seu carrinho está vazio.</div>
+    <% } else if (erro === "dados") { %>
+        <div class="carrinho-mensagem erro">Preencha escola, responsável, cidade e WhatsApp para finalizar.</div>
+    <% } else if (erro === "sistema") { %>
+        <div class="carrinho-mensagem erro">Não foi possível enviar sua solicitação. Tente novamente.</div>
+    <% } %>
+
+    <div class="carrinho-layout" id="carrinhoLayout">
+
+        <% if (itens.length === 0) { %>
+
+            <div class="carrinho-vazio-pagina" id="carrinhoVazio">
+                <i class="fi fi-rr-shopping-cart"></i>
+                <p>Seu carrinho ainda não tem livros.</p>
+                <a href="/home">Explorar livros</a>
+            </div>
+
+        <% } else { %>
+
+            <div class="carrinho-grade" id="carrinhoGrade">
+                <% itens.forEach(function(item) { %>
+                    <div class="carrinho-card" data-id="<%= item.id %>">
+                        <button type="button" class="carrinho-card-remover" onclick="removerDoCarrinho('<%= item.id %>')" aria-label="Remover <%= item.nome %>">✕</button>
+                        <img src="<%= item.imagem %>" alt="Capa do livro <%= item.nome %>">
+                        <div class="carrinho-card-corpo">
+                            <% if (item.categoria) { %>
+                                <span class="carrinho-card-categoria"><%= item.categoria %></span>
+                            <% } %>
+                            <h3><%= item.nome %></h3>
+                            <div class="carrinho-card-rodape">
+                                <div class="gaveta-item-qtd">
+                                    <button type="button" class="qtd-btn" onclick="alterarQuantidade('<%= item.id %>', <%= item.quantidade - 1 %>)" aria-label="Diminuir quantidade">−</button>
+                                    <span class="qtd-valor"><%= item.quantidade %></span>
+                                    <button type="button" class="qtd-btn" onclick="alterarQuantidade('<%= item.id %>', <%= item.quantidade + 1 %>)" aria-label="Aumentar quantidade">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+
+            <aside class="carrinho-lateral">
+                <h2>Resumo do pedido</h2>
+
+                <div class="linha-resumo">
+                    <span>Livros diferentes</span>
+                    <strong><%= itens.length %></strong>
+                </div>
+                <div class="linha-resumo">
+                    <span>Total de exemplares</span>
+                    <strong id="totalExemplares"><%= totalItens %></strong>
+                </div>
+
+                <hr>
+
+                <% if (usuario && usuarioTipo === "escola") { %>
+
+                    <form action="/carrinho/finalizar" method="POST" class="carrinho-form">
+                        <label for="escola">Nome da escola/instituição</label>
+                        <input type="text" id="escola" name="escola" required>
+
+                        <label for="responsavel">Responsável</label>
+                        <input type="text" id="responsavel" name="responsavel" required>
+
+                        <label for="cidade">Cidade</label>
+                        <input type="text" id="cidade" name="cidade" required>
+
+                        <label for="telefone">WhatsApp para contato</label>
+                        <input type="tel" id="telefone" name="telefone" placeholder="(98) 9 9999-9999" required>
+
+                        <label for="obs">Observações (opcional)</label>
+                        <textarea id="obs" name="obs" rows="3"></textarea>
+
+                        <div class="carrinho-retirada-aviso">
+                            <i class="fi fi-rr-marker" aria-hidden="true"></i>
+                            <div>
+                                <strong>Retirada: <%= retirada.local %></strong>
+                                <span><%= retirada.horario %></span>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-finalizar">Finalizar solicitação</button>
+                    </form>
+
+                <% } else if (usuario) { %>
+
+                    <p class="aviso-login-carrinho">
+                        Contas de <strong>Doador</strong> não enviam solicitações de livros.
+                        Esse carrinho é para instituições que desejam solicitar doações.
+                    </p>
+
+                <% } else { %>
+
+                    <p class="aviso-login-carrinho">
+                        Para finalizar sua solicitação, <a href="/login">entre</a> com uma conta de
+                        Instituição ou <a href="/cadastro">cadastre-se</a>.
+                    </p>
+
+                <% } %>
+            </aside>
+
+        <% } %>
+
+    </div>
+
+</main>
+
+<%- include('partials/footer') %>
+
+<script>
+    const USUARIO_LOGADO = <%- JSON.stringify(usuario) %>;
+    const TIPO_USUARIO = <%- JSON.stringify(usuarioTipo) %>;
+
+    function cardCarrinhoPagina(item) {
+        return `
+            <div class="carrinho-card" data-id="${item.id}">
+                <button type="button" class="carrinho-card-remover" onclick="removerDoCarrinho('${item.id}')" aria-label="Remover ${item.nome}">✕</button>
+                <img src="${item.imagem}" alt="Capa do livro ${item.nome}">
+                <div class="carrinho-card-corpo">
+                    ${item.categoria ? `<span class="carrinho-card-categoria">${item.categoria}</span>` : ""}
+                    <h3>${item.nome}</h3>
+                    <div class="carrinho-card-rodape">
+                        <div class="gaveta-item-qtd">
+                            <button type="button" class="qtd-btn" onclick="alterarQuantidade('${item.id}', ${item.quantidade - 1})" aria-label="Diminuir quantidade">−</button>
+                            <span class="qtd-valor">${item.quantidade}</span>
+                            <button type="button" class="qtd-btn" onclick="alterarQuantidade('${item.id}', ${item.quantidade + 1})" aria-label="Aumentar quantidade">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function renderizarPaginaCarrinho(itens, totalItens) {
+        const layout = document.getElementById("carrinhoLayout");
+        const contagem = document.getElementById("tituloContagem");
+        if (!layout) return;
+
+        if (contagem) contagem.textContent = `${totalItens} ${totalItens === 1 ? "item" : "itens"}`;
+
+        if (!itens || itens.length === 0) {
+            layout.innerHTML = `
+                <div class="carrinho-vazio-pagina" id="carrinhoVazio">
+                    <i class="fi fi-rr-shopping-cart"></i>
+                    <p>Seu carrinho ainda não tem livros.</p>
+                    <a href="/home">Explorar livros</a>
+                </div>
+            `;
+            return;
+        }
+
+        const totalExemplares = document.getElementById("totalExemplares");
+        const grade = document.getElementById("carrinhoGrade");
+
+        // Se a página começou vazia, recria o layout completo (grade + lateral)
+        if (!grade) {
+            location.reload();
+            return;
+        }
+
+        grade.innerHTML = itens.map(cardCarrinhoPagina).join("");
+
+        const livrosDiferentes = document.querySelector(".linha-resumo strong");
+        if (livrosDiferentes) livrosDiferentes.textContent = itens.length;
+        if (totalExemplares) totalExemplares.textContent = totalItens;
+    }
+</script>
+
+<!-- ================= POP-UP DE SUCESSO DO PEDIDO ================= -->
+<div class="pedido-sucesso-overlay" id="pedidoSucessoOverlay" role="dialog" aria-modal="true" aria-labelledby="pedidoSucessoTitulo" hidden>
+    <div class="pedido-sucesso-cartao">
+        <span class="pedido-sucesso-confete">📚</span>
+        <span class="pedido-sucesso-confete c2">🎉</span>
+        <span class="pedido-sucesso-confete c3">💜</span>
+        <span class="pedido-sucesso-confete c4">✨</span>
+
+        <div class="pedido-sucesso-icone">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>
+        </div>
+
+        <h3 id="pedidoSucessoTitulo">Pedido enviado! Seus livros vão te encontrar em breve 📚</h3>
+        <p>
+            Retirada: <strong><%= retirada.local %></strong><br>
+            <%= retirada.horario %>
+        </p>
+
+        <a href="#" target="_blank" rel="noopener" class="pedido-sucesso-btn-whats" id="pedidoSucessoWhats">
+            <img src="/img/whatsapp.png" alt="">
+            Confirmar pelo WhatsApp
+        </a>
+        <button type="button" class="pedido-sucesso-btn" id="pedidoSucessoFechar">Entendi ✨</button>
+    </div>
+</div>
+
+<script>
+    const pedidoSucessoOverlay = document.getElementById('pedidoSucessoOverlay');
+    const pedidoSucessoFechar = document.getElementById('pedidoSucessoFechar');
+    const pedidoSucessoWhats = document.getElementById('pedidoSucessoWhats');
+    const pedidoAberto = <%- pedidoFinalizado ? 'true' : 'false' %>;
+    const WHATSAPP_EQUIPE = <%- JSON.stringify(whatsappEquipe) %>;
+    const PEDIDO_FINALIZADO = <%- JSON.stringify(pedidoFinalizado) %>;
+
+    function montarMensagemWhatsapp(pedido) {
+        if (!pedido) return "";
+        const linhas = pedido.itens.map((item) => `- ${item.quantidade}x ${item.nome}`).join("\n");
+        const texto =
+            `Olá! Sou responsável pela escola "${pedido.escola}" e acabei de enviar um pedido de livros pelo site DiscoverBook.\n\n` +
+            `Livros solicitados:\n${linhas}\n\n` +
+            `Responsável: ${pedido.responsavel}\n` +
+            `Gostaria de confirmar o pedido, obrigado(a)!`;
+        return `https://wa.me/${WHATSAPP_EQUIPE}?text=${encodeURIComponent(texto)}`;
+    }
+
+    function abrirPedidoSucesso() {
+        if (!pedidoSucessoOverlay) return;
+        if (pedidoSucessoWhats) pedidoSucessoWhats.href = montarMensagemWhatsapp(PEDIDO_FINALIZADO);
+        pedidoSucessoOverlay.hidden = false;
+        document.body.style.overflow = 'hidden';
+    }
+
+    function fecharPedidoSucesso() {
+        if (!pedidoSucessoOverlay) return;
+        pedidoSucessoOverlay.hidden = true;
+        document.body.style.overflow = '';
+
+        // Limpa o ?sucesso=1 da URL pra não reabrir o pop-up se a pessoa recarregar a página
+        const url = new URL(window.location.href);
+        url.searchParams.delete('sucesso');
+        window.history.replaceState({}, '', url);
+    }
+
+    if (pedidoAberto) {
+        abrirPedidoSucesso();
+    }
+
+    if (pedidoSucessoFechar) {
+        pedidoSucessoFechar.addEventListener('click', fecharPedidoSucesso);
+    }
+
+    if (pedidoSucessoOverlay) {
+        pedidoSucessoOverlay.addEventListener('click', (e) => {
+            if (e.target === pedidoSucessoOverlay) fecharPedidoSucesso();
+        });
+    }
+</script>
+
+</body>
+</html>

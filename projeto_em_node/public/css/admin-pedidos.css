@@ -1,0 +1,155 @@
+.pagina-admin-pedidos {
+    max-width: 1200px;
+    margin: 30px auto 80px;
+    padding: 0 20px;
+}
+
+.admin-titulo {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.admin-titulo h1 {
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+    font-size: 22px;
+    color: #2b2140;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.admin-titulo span {
+    font-size: 13px;
+    color: #888;
+}
+
+.admin-mensagem {
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 18px;
+}
+
+.admin-mensagem.sucesso {
+    background: #e8f9ef;
+    color: #1b8a3d;
+}
+
+.admin-mensagem.erro {
+    background: #fdeaea;
+    color: #d33;
+}
+
+.admin-tabela-wrap {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 14px;
+    overflow-x: auto;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+.admin-tabela {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    min-width: 920px;
+}
+
+.admin-tabela th {
+    text-align: left;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+    color: #8a84a0;
+    background: #faf9ff;
+    padding: 12px 14px;
+    border-bottom: 1px solid #eee;
+    white-space: nowrap;
+}
+
+.admin-tabela td {
+    padding: 12px 14px;
+    border-bottom: 1px solid #f3f1fa;
+    color: #2b2140;
+    vertical-align: middle;
+}
+
+.admin-tabela tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.admin-tabela tbody tr:hover {
+    background: #fbfaff;
+}
+
+.admin-sub {
+    display: block;
+    font-size: 11.5px;
+    color: #8a84a0;
+    margin-top: 2px;
+}
+
+.admin-link-whats {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #1b8a3d;
+    text-decoration: none;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.admin-link-whats img {
+    width: 15px;
+    height: 15px;
+}
+
+.admin-link-whats:hover {
+    text-decoration: underline;
+}
+
+.admin-acoes {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 130px;
+}
+
+.admin-btn-avancar,
+.admin-btn-cancelar {
+    width: 100%;
+    border: none;
+    border-radius: 999px;
+    padding: 7px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .15s;
+}
+
+.admin-btn-avancar {
+    background: var(--cor-primaria, #8472f4);
+    color: #fff;
+}
+
+.admin-btn-avancar:hover {
+    background: var(--cor-primaria-escura, #6e5bd8);
+}
+
+.admin-btn-cancelar {
+    background: #fbe0df;
+    color: #c0392b;
+}
+
+.admin-btn-cancelar:hover {
+    background: #f6c9c6;
+}
+
+@media (max-width: 700px) {
+    .admin-tabela {
+        min-width: 760px;
+    }
+}

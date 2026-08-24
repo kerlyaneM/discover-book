@@ -1,0 +1,352 @@
+.pular-conteudo {
+    position: absolute;
+    left: -999px;
+    top: auto;
+    background: var(--cor-primaria, #8472f4);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 0 0 10px 0;
+    z-index: 1000;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.pular-conteudo:focus {
+    left: 0;
+    top: 0;
+}
+
+.config {
+    max-width: 900px;
+    margin: 40px auto 80px;
+    padding: 0 20px;
+}
+
+.config-titulo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+}
+
+.config-titulo h1 {
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+    font-size: 24px;
+    color: #2b2140;
+}
+
+.voltar-perfil {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    color: #555;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.voltar-perfil:hover,
+.voltar-perfil:focus-visible {
+    background: #f1eeff;
+    color: var(--cor-primaria, #8472f4);
+}
+
+.config-layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 30px;
+    align-items: start;
+}
+
+/* ---------- ABAS ---------- */
+.config-abas ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.config-abas a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #444;
+    font-size: 14px;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.config-abas a:hover {
+    background: #f1eeff;
+    color: var(--cor-primaria-escura, #6e5bd8);
+}
+
+.config-abas a.ativa {
+    background: var(--cor-primaria, #8472f4);
+    color: #fff;
+}
+
+.config-abas-separador {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+}
+
+.config-aba-sair {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #d33;
+    font-size: 14px;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.config-aba-sair:hover {
+    background: #fdeaea;
+}
+
+/* ---------- CONTEÚDO ---------- */
+.config-card {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 16px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+    padding: 28px 30px 32px;
+}
+
+.config-card h2 {
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+    font-size: 19px;
+    color: #2b2140;
+    margin-bottom: 18px;
+}
+
+.categoria-conta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: linear-gradient(135deg, #f1eeff, #faf9ff);
+    border: 1px solid #e7e2fb;
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 4px;
+}
+
+.categoria-icone {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--cor-primaria, #8472f4);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+}
+
+.categoria-texto {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.categoria-rotulo {
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: var(--cor-primaria, #8472f4);
+}
+
+.categoria-nome {
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+    font-size: 17px;
+    color: #2b2140;
+}
+
+.categoria-descricao {
+    font-size: 13px;
+    color: #666;
+    margin-top: 2px;
+    margin-bottom: 0;
+}
+
+.config-ajuda-texto {
+    font-size: 12px;
+    color: #999;
+    margin-top: -4px;
+    margin-bottom: 10px;
+}
+
+.config-subtitulo {
+    font-size: 16px;
+    color: #2b2140;
+    margin-bottom: 8px;
+}
+
+.config-card p {
+    color: #555;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+.config-divisor {
+    border: none;
+    border-top: 1px solid #eee;
+    margin: 24px 0;
+}
+
+.config-lista-info {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 8px 20px;
+}
+
+.config-lista-info dt {
+    font-size: 13px;
+    font-weight: bold;
+    color: #888;
+}
+
+.config-lista-info dd {
+    font-size: 14px;
+    color: #222;
+}
+
+.config-dica {
+    margin-top: 20px;
+    font-size: 13px;
+}
+
+.config-dica a {
+    color: var(--cor-primaria, #8472f4);
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.config-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 420px;
+}
+
+.config-form label {
+    font-size: 13px;
+    font-weight: bold;
+    color: #444;
+    margin-top: 10px;
+}
+
+.config-form input {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+.btn-salvar {
+    margin-top: 20px;
+    background: var(--cor-primaria, #8472f4);
+    color: #fff;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-salvar:hover {
+    background: var(--cor-primaria-escura, #6e5bd8);
+}
+
+.btn-perigo {
+    margin-top: 16px;
+    background: #fff;
+    color: #d33;
+    border: 1px solid #d33;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-perigo:hover {
+    background: #d33;
+    color: #fff;
+}
+
+.erro {
+    color: #d33;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.sucesso {
+    color: #1b8a3d;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.config-lista-ajuda {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.config-lista-ajuda a {
+    color: var(--cor-primaria, #8472f4);
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.config-lista-ajuda p {
+    margin-top: 2px;
+    font-size: 13px;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+    outline: 2px solid var(--cor-primaria-escura, #6e5bd8);
+    outline-offset: 2px;
+}
+
+/* ---------- RESPONSIVO ---------- */
+@media (max-width: 700px) {
+    .config-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .config-abas ul {
+        flex-direction: row;
+        overflow-x: auto;
+        padding-bottom: 4px;
+    }
+
+    .config-abas a {
+        white-space: nowrap;
+    }
+
+    .config-card {
+        padding: 22px 18px 26px;
+    }
+}

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acervo - DiscoverBook</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Karla:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/acervo.css">
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css">
+</head>
+
+<body>
+
+<%- include("partials/topo") %>
+<%- include("partials/header") %>
+<%- include("partials/nav-categorias") %>
+
+<%
+    // Rótulo, cor e ícone (SVG) de cada categoria. Usa as mesmas
+    // categorias e nomes já usados no formulário de doação (views/doar.ejs)
+    // pra manter a linguagem igual em todo o site.
+    const categorias = {
+        "infantil": {
+            rotulo: "Infantil",
+            classe: "infantil",
+            icone: '<path d="M12 2a4 4 0 0 1 4 4c0 1.5-.8 2.4-1.5 3.2-.5.6-1 1.1-1 1.8H10.5c0-.7-.5-1.2-1-1.8C8.8 8.4 8 7.5 8 6a4 4 0 0 1 4-4Z"/><path d="M9 12v6a3 3 0 0 0 6 0v-6"/>'
+        },
+        "fundamental": {
+            rotulo: "Ensino Fundamental",
+            classe: "fund1",
+            icone: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>'
+        },
+        "medio": {
+            rotulo: "Ensino Médio",
+            classe: "medio",
+            icone: '<path d="m22 10-10-5L2 10l10 5 10-5Z"/><path d="M6 12.5V17c0 1.1 2.7 2 6 2s6-.9 6-2v-4.5"/><path d="M22 10v6"/>'
+        },
+        "leituras": {
+            rotulo: "Leituras",
+            classe: "primeiras",
+            icone: '<path d="M12 2 14.5 8.5 21 9.5l-4.7 4.4L17.4 20 12 16.8 6.6 20l1.1-6.1L3 9.5l6.5-1Z"/>'
+        }
+    };
+
+    const infoCategoria = (chave) => categorias[chave] || { rotulo: chave, classe: "medio", icone: categorias["medio"].icone };
+    const estat = typeof stats !== "undefined" ? stats : { exemplares: 0, titulos: 0, doadores: 0 };
+%>
+
+<section class="acervo-hero">
+    <div class="acervo-banner">
+        <div>
+            <span class="acervo-eyebrow">Acervo</span>
+            <h1>Livros prontos pra <em>encontrar</em><br>a próxima turma.</h1>
+            <p class="acervo-subtitulo">
+                Todos os livros doados por quem passou pelo DiscoverBook aparecem aqui.
+                Quer doar o seu também? <a href="/doar">Doe um livro</a>.
+            </p>
+        </div>
+
+        <% if (livros.length > 0) { %>
+            <div class="acervo-stats">
+                <div class="acervo-stat-card">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 0 4 22.5V4.5Z"/></svg>
+                    <strong><%= estat.exemplares %></strong><span>livros disponíveis</span>
+                </div>
+                <div class="acervo-stat-card">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 6a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v14a1.5 1.5 0 0 0-1.5-1.5H2Z"/><path d="M22 6a2 2 0 0 0-2-2h-6a2 2 0 0 0-2 2v14a1.5 1.5 0 0 1 1.5-1.5H22Z"/></svg>
+                    <strong><%= estat.titulos %></strong><span>títulos diferentes</span>
+                </div>
+                <div class="acervo-stat-card">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    <strong><%= estat.doadores %></strong><span>doadores ativos</span>
+                </div>
+            </div>
+        <% } %>
+    </div>
+</section>
+
+<% if (livros.length === 0) { %>
+
+    <p class="acervo-vazio">
+        Ainda não há livros disponíveis no acervo.
+        <a href="/doar">Seja a primeira pessoa a doar um livro!</a>
+    </p>
+
+<% } else { %>
+
+    <div class="acervo-filtros-wrap">
+        <div class="acervo-filtros">
+            <div class="acervo-busca">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                <input type="text" id="acervoBusca" placeholder="Buscar por título...">
+            </div>
+
+            <div class="acervo-chips" id="acervoChips">
+                <span class="acervo-chip acervo-chip-todos ativo" data-filtro="todos">Todos</span>
+                <% Object.keys(categorias).forEach((chave) => { %>
+                    <span class="acervo-chip acervo-chip-<%= categorias[chave].classe %>" data-filtro="<%= chave %>">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><%- categorias[chave].icone %></svg>
+                        <%= categorias[chave].rotulo %>
+                    </span>
+                <% }) %>
+            </div>
+        </div>
+    </div>
+
+    <section class="acervo-container">
+
+        <div class="acervo-grid" id="acervoGrid">
+
+            <% livros.forEach(function(l) { %>
+                <%
+                    const info = infoCategoria(l.categoria);
+                    const escasso = l.quantidade > 0 && l.quantidade <= 2;
+                    const nivelEstoque = Math.max(12, Math.min(100, Math.round((l.quantidade / 10) * 100)));
+                %>
+                <div class="livro-card" data-livro="<%= l.livro %>" data-imagem="<%= l.fotoExibida || '' %>" data-categoria="<%= info.rotulo %>" data-filtro="<%= l.categoria %>">
+                    <div class="faixa-top <%= info.classe %>"></div>
+
+                    <div class="capa <%= info.classe %>">
+                        <% if (escasso) { %>
+                            <span class="acervo-escasso">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
+                                Só <%= l.quantidade %> restando
+                            </span>
+                        <% } %>
+
+                        <% if (l.fotoExibida) { %>
+                            <img src="<%= l.fotoExibida %>" alt="Capa do livro <%= l.livro %>">
+                        <% } else { %>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><%- info.icone %></svg>
+                        <% } %>
+                    </div>
+
+                    <div class="acervo-corpo">
+                        <span class="acervo-badge <%= info.classe %>"><%= info.rotulo %></span>
+                        <h3><%= l.livro %></h3>
+
+                        <p class="acervo-doado-em">
+                            <% if (l.dataFormatada) { %>Doado em <%= l.dataFormatada %><% } %>
+                        </p>
+
+                        <div class="acervo-qtd-linha">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 0 4 22.5V4.5Z"/></svg>
+                            <span>
+                                <b><%= l.quantidade %></b> disponíve<%= l.quantidade === 1 ? "l" : "is" %>
+                                <% if (l.totalDoadores > 1) { %> · doados por <%= l.totalDoadores %> pessoas<% } %>
+                            </span>
+                        </div>
+                        <div class="acervo-barra"><i class="<%= info.classe %>" style="width:<%= nivelEstoque %>%"></i></div>
+
+                        <% if (usuarioTipo === "escola") { %>
+                            <button type="button" class="acervo-btn-pedir" onclick="adicionarAoCarrinho(this)">
+                                Pedir pra escola
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                            </button>
+                        <% } %>
+                    </div>
+                </div>
+            <% }) %>
+
+        </div>
+
+        <p class="acervo-sem-resultado" id="acervoSemResultado" hidden>
+            Nenhum livro encontrado com esse filtro.
+        </p>
+
+    </section>
+
+<% } %>
+
+<%- include("partials/footer") %>
+
+<script src="/js/acervo.js"></script>
+
+</body>
+</html>

@@ -4,50 +4,270 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doar | DiscoverBook</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,500&family=Karla:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/doar.css">
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css">
 </head>
-<body>
+<body class="doar-page">
 
 <%- include('partials/topo') %>
 <%- include('partials/header') %>
 <%- include('partials/nav-categorias') %>
 
-<section class="doacao-container">
-    <div class="lado-esquerdo">
-        <video autoplay muted loop class="video">
-            <source src="/video/bannerofc.mp4" type="video/mp4">
-        </video>
+<!-- ================= HERO ================= -->
+<section class="doar-hero">
+    <div class="doar-blob doar-blob-1"></div>
+    <div class="doar-blob doar-blob-2"></div>
+
+    <div class="doar-hero-texto">
+        <span class="doar-eyebrow">Doação de livros</span>
+        <h1>Seu livro parado<br>vira <em>leitura viva</em><br>numa escola.</h1>
+        <p class="doar-lead">
+            Conte pra gente sobre o livro que você quer doar. Assim que você envia,
+            ele fica <strong>pendente por 48 horas</strong> — tempo em que você
+            ainda pode editar os dados ou cancelar — e depois entra automaticamente
+            no <a href="/acervo">acervo</a>, disponível para uma escola solicitar.
+        </p>
+
+        <div class="doar-hero-stats">
+            <div><strong><%= statsAcervo.exemplares %></strong><span>exemplares no acervo</span></div>
+            <div><strong><%= statsAcervo.titulos %></strong><span>títulos diferentes</span></div>
+        </div>
+
+        <a href="#form-doacao" class="doar-hero-cta">Quero doar agora ↓</a>
     </div>
 
-    <div class="lado-direito">
-        <h2>Doe seu livro</h2>
+    <div class="doar-explica-wrap">
+        <div class="doar-explica">
+            <div class="doar-explica-topo">
+                <span class="doar-explica-rotulo">Como funciona</span>
+                <h2>Do seu armário<br>pra sala de aula</h2>
+            </div>
 
-        <% if (sucesso) { %>
-            <p style="color:green; text-align:center;">Doação registrada com sucesso!</p>
-        <% } %>
-        <% if (erro) { %>
-            <p style="color:red; text-align:center;">Erro ao registrar doação. Tente novamente.</p>
-        <% } %>
+            <div class="doar-explica-passo">
+                <span class="doar-explica-icone">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                </span>
+                <div>
+                    <b>Você conta sobre o livro</b>
+                    <p>Título, quantidade e a faixa escolar dele.</p>
+                </div>
+            </div>
 
-        <form action="/doar" method="POST">
-            <label>Nome</label>
-            <input type="text" name="nome" placeholder="Seu nome" required>
+            <div class="doar-explica-passo">
+                <span class="doar-explica-icone">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M8 6l2-3h4l2 3"/><circle cx="12" cy="13" r="3.5"/></svg>
+                </span>
+                <div>
+                    <b>Manda uma foto do livro</b>
+                    <p>Obrigatória — ajuda a escola a reconhecer o exemplar.</p>
+                </div>
+            </div>
 
-            <label>Email</label>
-            <input type="email" name="email" placeholder="Seu email" required>
+            <div class="doar-explica-passo">
+                <span class="doar-explica-icone">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10 12 4 2 10l10 6 10-6z"/><path d="M6 12v5c0 1.5 2.5 3 6 3s6-1.5 6-3v-5"/></svg>
+                </span>
+                <div>
+                    <b>O livro entra no acervo</b>
+                    <p>E fica visível para quem for solicitar.</p>
+                </div>
+            </div>
 
-            <label>Telefone</label>
-            <input type="tel" name="telefone" placeholder="(00) 00000-0000" required>
+            <span class="doar-explica-selo">✓ A gente combina a entrega com você depois</span>
+        </div>
+    </div>
+</section>
 
-            <label>Nome do Livro</label>
-            <input type="text" name="livro" placeholder="Ex: Harry Potter" required>
+<!-- ================= O QUE ACONTECE DEPOIS ================= -->
+<div class="doar-trilha">
+    <div class="doar-trilha-inner">
 
-            <label>Quantidade</label>
-            <input type="number" name="quantidade" min="1" required>
+        <div class="doar-passo">
+            <div class="doar-passo-img">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 6 9 17l-5-5"/></svg>
+            </div>
+            <div class="doar-passo-num">1</div>
+            <h3>Você envia a doação</h3>
+            <p>Preenche o formulário abaixo com os dados do livro e envia.</p>
+        </div>
 
-            <button type="submit">Enviar</button>
+        <div class="doar-passo">
+            <div class="doar-passo-img">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 10 12 4 2 10l10 6 10-6z"/><path d="M6 12v5c0 1.5 2.5 3 6 3s6-1.5 6-3v-5"/></svg>
+            </div>
+            <div class="doar-passo-num">2</div>
+            <h3>O livro aparece no acervo</h3>
+            <p>Na hora, disponível para escolas verem e solicitarem.</p>
+        </div>
+
+        <div class="doar-passo">
+            <div class="doar-passo-img">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v12H5.17L4 17.17V4z"/><path d="M8 9h8M8 12h5"/></svg>
+            </div>
+            <div class="doar-passo-num">3</div>
+            <h3>A gente entra em contato</h3>
+            <p>Usamos seu telefone ou email só para combinar a entrega ou retirada.</p>
+        </div>
+
+    </div>
+</div>
+
+<!-- ================= FORMULÁRIO ================= -->
+<section class="doar-form-section" id="form-doacao">
+
+    <div class="doar-cabecalho">
+        <span class="doar-cabecalho-eyebrow">Ficha de doação</span>
+        <h2>Vamos catalogar seu livro</h2>
+        <p>Leva menos de 3 minutos — os campos com * são obrigatórios.</p>
+    </div>
+
+    <% if (erro === "foto") { %>
+        <p class="doar-mensagem doar-mensagem-erro">
+            Não foi possível enviar a foto (verifique se ela foi selecionada e se é uma imagem de até 5MB). Tente novamente.
+        </p>
+    <% } else if (erro) { %>
+        <p class="doar-mensagem doar-mensagem-erro">
+            Erro ao registrar doação. Tente novamente.
+        </p>
+    <% } %>
+
+    <div class="doar-form-wrap">
+        <form class="doar-cartao-form" action="/doar" method="POST" enctype="multipart/form-data">
+
+            <fieldset>
+                <legend><span class="doar-bolha">1</span> Sobre o livro</legend>
+
+                <label for="livro">Título do livro *</label>
+                <input type="text" id="livro" name="livro" placeholder="Ex: Sítio do Picapau Amarelo" required>
+
+                <label for="quantidade">Quantidade *</label>
+                <input class="doar-input-curto" type="number" id="quantidade" name="quantidade" min="1" value="1" required>
+
+                <label for="descricao">Descreva o livro *</label>
+                <textarea id="descricao" name="descricao" class="doar-textarea" rows="4" placeholder="Conte um pouco sobre o exemplar: estado de conservação (novo, seminovo, com marcas de uso), se está completo, se tem rabiscos ou páginas soltas, etc." required></textarea>
+            </fieldset>
+
+            <fieldset>
+                <legend><span class="doar-bolha">2</span> Categoria</legend>
+
+                <div class="doar-faixas">
+
+                    <label class="doar-faixa-card">
+                        <input type="radio" name="categoria" value="infantil" required>
+                        <span class="doar-faixa-icone">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                        </span>
+                        <span class="doar-faixa-texto">
+                            <h4>Infantil</h4>
+                        </span>
+                        <span class="doar-check"></span>
+                    </label>
+
+                    <label class="doar-faixa-card">
+                        <input type="radio" name="categoria" value="fundamental" required>
+                        <span class="doar-faixa-icone">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 6.5C10.3 5 7.8 4 5 4v13c2.8 0 5.3 1 7 2.5C13.7 18 16.2 17 19 17V4c-2.8 0-5.3 1-7 2.5z"/></svg>
+                        </span>
+                        <span class="doar-faixa-texto">
+                            <h4>Ensino Fundamental</h4>
+                        </span>
+                        <span class="doar-check"></span>
+                    </label>
+
+                    <label class="doar-faixa-card">
+                        <input type="radio" name="categoria" value="medio" required>
+                        <span class="doar-faixa-icone">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m22 10-10-5L2 10l10 5 10-5Z"/><path d="M6 12.5V17c0 1.1 2.7 2 6 2s6-.9 6-2v-4.5"/><path d="M22 10v6"/></svg>
+                        </span>
+                        <span class="doar-faixa-texto">
+                            <h4>Ensino Médio</h4>
+                        </span>
+                        <span class="doar-check"></span>
+                    </label>
+
+                    <label class="doar-faixa-card">
+                        <input type="radio" name="categoria" value="leituras" required>
+                        <span class="doar-faixa-icone">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                        </span>
+                        <span class="doar-faixa-texto">
+                            <h4>Leituras</h4>
+                        </span>
+                        <span class="doar-check"></span>
+                    </label>
+
+                </div>
+
+                <div class="doar-ajuda-dica">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                    <span>Não sabe qual categoria marcar? Escolha a que mais combina com o livro — a equipe pode ajustar depois se precisar.</span>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend><span class="doar-bolha">3</span> Seus dados</legend>
+
+                <div class="doar-grid-2">
+                    <div>
+                        <label for="nome">Nome *</label>
+                        <input type="text" id="nome" name="nome" placeholder="Seu nome" value="<%= doadorNome %>" required>
+                    </div>
+                    <div>
+                        <label for="telefone">Telefone *</label>
+                        <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" required>
+                    </div>
+                </div>
+
+                <label for="email">Email *</label>
+                <input type="email" id="email" name="email" placeholder="Seu email" value="<%= doadorEmail %>" required>
+
+                <span class="doar-dica-campo">Usamos seu telefone ou email só se precisarmos combinar a entrega ou retirada do livro com você.</span>
+            </fieldset>
+
+            <fieldset>
+                <legend><span class="doar-bolha">4</span> Foto do livro (obrigatória)</legend>
+
+                <label class="doar-drop-foto" id="doarDropFoto">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M8 6l2-3h4l2 3"/><circle cx="12" cy="13" r="3.5"/></svg>
+                    <span><b>Toque para escolher uma foto</b> ou arraste a imagem da capa aqui</span>
+                    <input type="file" name="foto" id="foto" accept="image/png, image/jpeg, image/webp" required>
+                    <span class="doar-nome-arquivo" id="doarNomeArquivo"></span>
+                </label>
+                <span class="doar-dica-campo">A foto da capa é obrigatória e ajuda a escola a reconhecer o exemplar (até 5MB).</span>
+            </fieldset>
+
+            <div class="doar-botoes-form">
+                <button type="submit" class="doar-btn-primario">Enviar doação</button>
+            </div>
         </form>
     </div>
+
+    <div class="doar-faq">
+        <h3>O que acontece depois que eu enviar?</h3>
+
+        <div class="doar-faq-item">
+            <b>Meu livro já vai aparecer pra todo mundo?</b>
+            <p>Ele fica <strong>pendente por 48 horas</strong> primeiro — nesse tempo você pode editar os dados ou cancelar a doação pelo seu <a href="/perfil?aba=doados">perfil</a>. Depois disso, entra automaticamente no <a href="/acervo">acervo</a> como disponível.</p>
+        </div>
+
+        <div class="doar-faq-item">
+            <b>Preciso mesmo mandar foto?</b>
+            <p>Sim, a foto da capa é obrigatória: é o que ajuda a escola a reconhecer o exemplar exato quando ele chegar.</p>
+        </div>
+
+        <div class="doar-faq-item">
+            <b>Como a entrega acontece?</b>
+            <p>Depois que uma escola solicitar seu livro, entramos em contato pelo telefone ou email que você informou para combinar a melhor forma de entrega ou retirada.</p>
+        </div>
+
+        <div class="doar-faq-item">
+            <b>E se eu errar a faixa escolar?</b>
+            <p>Sem problema — é só uma referência para ajudar a organizar o acervo. A equipe do DiscoverBook pode ajustar depois, se precisar.</p>
+        </div>
+    </div>
+
 </section>
 
 <%- include('partials/footer') %>
@@ -55,6 +275,97 @@
 <a href="https://wa.me/5599999999999" class="whatsapp" target="_blank">
     <img src="/img/whatsapp.png" alt="WhatsApp">
 </a>
+
+<!-- ================= POP-UP DE SUCESSO DA DOAÇÃO ================= -->
+<div class="doar-sucesso-overlay" id="doarSucessoOverlay" role="dialog" aria-modal="true" aria-labelledby="doarSucessoTitulo" hidden>
+    <div class="doar-sucesso-cartao">
+        <span class="doar-sucesso-confete">🎉</span>
+        <span class="doar-sucesso-confete c2">📚</span>
+        <span class="doar-sucesso-confete c3">💜</span>
+        <span class="doar-sucesso-confete c4">✨</span>
+
+        <div class="doar-sucesso-icone">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>
+        </div>
+
+        <h3 id="doarSucessoTitulo">Livro doado com sucesso!</h3>
+        <p>Muito obrigado por espalhar leitura 💜 Seu livro já está brilhando no acervo, prontinho para encontrar uma escola.</p>
+
+        <button type="button" class="doar-sucesso-btn" id="doarSucessoFechar">Que alegria! ✨</button>
+    </div>
+</div>
+
+<script>
+    const doarSucessoOverlay = document.getElementById('doarSucessoOverlay');
+    const doarSucessoFechar = document.getElementById('doarSucessoFechar');
+    const doarSucesso = <%- sucesso ? 'true' : 'false' %>;
+
+    function abrirDoarSucesso() {
+        if (!doarSucessoOverlay) return;
+        doarSucessoOverlay.hidden = false;
+        document.body.style.overflow = 'hidden';
+    }
+
+    function fecharDoarSucesso() {
+        if (!doarSucessoOverlay) return;
+        doarSucessoOverlay.hidden = true;
+        document.body.style.overflow = '';
+
+        // Limpa o ?sucesso=1 da URL pra não reabrir o pop-up se a pessoa recarregar a página
+        const url = new URL(window.location.href);
+        url.searchParams.delete('sucesso');
+        window.history.replaceState({}, '', url);
+    }
+
+    if (doarSucesso) {
+        abrirDoarSucesso();
+    }
+
+    if (doarSucessoFechar) {
+        doarSucessoFechar.addEventListener('click', fecharDoarSucesso);
+    }
+
+    if (doarSucessoOverlay) {
+        doarSucessoOverlay.addEventListener('click', (e) => {
+            if (e.target === doarSucessoOverlay) fecharDoarSucesso();
+        });
+    }
+</script>
+
+<script>
+    const doarInputFoto = document.getElementById('foto');
+    const doarNomeArquivo = document.getElementById('doarNomeArquivo');
+    const doarDropFoto = document.getElementById('doarDropFoto');
+
+    if (doarInputFoto && doarNomeArquivo) {
+        doarInputFoto.addEventListener('change', () => {
+            const arquivo = doarInputFoto.files && doarInputFoto.files[0];
+            doarNomeArquivo.textContent = arquivo ? arquivo.name : '';
+        });
+    }
+
+    if (doarDropFoto && doarInputFoto) {
+        ['dragover', 'dragenter'].forEach((evento) => {
+            doarDropFoto.addEventListener(evento, (e) => {
+                e.preventDefault();
+                doarDropFoto.classList.add('doar-drop-foto-ativo');
+            });
+        });
+        ['dragleave', 'drop'].forEach((evento) => {
+            doarDropFoto.addEventListener(evento, (e) => {
+                e.preventDefault();
+                doarDropFoto.classList.remove('doar-drop-foto-ativo');
+            });
+        });
+        doarDropFoto.addEventListener('drop', (e) => {
+            const arquivos = e.dataTransfer.files;
+            if (arquivos && arquivos.length) {
+                doarInputFoto.files = arquivos;
+                doarNomeArquivo.textContent = arquivos[0].name;
+            }
+        });
+    }
+</script>
 
 </body>
 </html>

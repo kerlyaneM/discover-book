@@ -1,0 +1,1532 @@
+/* =========================
+   BASE GERAL
+========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+ 
+body {
+    background: #f5f5f5;
+    overflow-x: hidden;
+}
+
+/* aqui fica o topo, onde esta o começo com a frase*/
+.topo {
+    background: var(--cor-primaria, #8472f4);
+    color: white;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 15px;
+}
+
+.icon-book {
+    width: 16px;
+    height: 16px;
+    filter: brightness(0) invert(1);
+}
+
+
+/* MENU principal da aba de cima */
+.menu {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.menu li a {
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+    transition: 0.2s;
+    padding-bottom: 3px; 
+}
+
+.menu li a:hover {
+    color: #150122;
+    border-bottom: 2px solid #290341;
+}
+
+/* esse é o cadastro */
+.btn-login a {
+    background:var(--cor-primaria, #8472f4);
+    color: white;
+    padding: 8px 14px;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+.btn-login a:hover {
+    background:#5f47ff;
+}
+ 
+/* 🔍 BARRA DE PESQUISA */
+.search-box input {
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    width: 220px;
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: var(--cor-primaria, #8472f4);
+}
+
+.search-container {
+    position: relative; /* MUITO IMPORTANTE */
+}
+
+.resultados {
+    position: absolute;
+    top: 110%; /* joga pra baixo certinho */
+    left: 0;
+    width: 100%;
+    max-width: 350px;
+
+    background: #f5f5f5;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+
+    padding: 15px;
+    display: none;
+    z-index: 999;
+}
+
+.resultado-item {
+    display: flex;
+    gap: 10px;
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+}
+
+.resultado-item img {
+    width: 40px;
+    height: 60px;
+    object-fit: cover;
+}
+
+.resultado-item:hover {
+    background: #f5f5f5;
+}
+
+.resultado-item h4 {
+    font-size: 14px;
+    margin: 0;
+}
+
+.resultado-item p {
+    font-size: 12px;
+    color: #777;
+    margin: 0;
+}
+
+.limpar {
+    position: absolute;
+    right: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 13px;
+    color: #777;
+    cursor: pointer;
+}
+
+.limpar:hover {
+    color: #000;
+}
+
+.ver-mais {
+    margin-top: 10px;
+    background: #777;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+/* ===== MENU PROFISSIONAL ===== */
+.nav-menu ul {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+}
+
+/* DROPDOWN */
+.dropdown {
+    position: relative;
+}
+
+.mega-menu {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    width: 600px;
+    background: white;
+    display: flex;
+    gap: 40px;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s;
+    z-index: 999;
+}
+
+/* MOSTRAR AO PASSAR O MOUSE */
+.dropdown:hover .mega-menu {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* COLUNAS */
+.coluna {
+    display: flex;
+    flex-direction: column;
+}
+
+.coluna h4 {
+    margin-bottom: 10px;
+    color: var(--cor-primaria, #8472f4);
+}
+
+.coluna a {
+    margin: 5px 0;
+    color: #555;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.coluna a:hover {
+    color: var(--cor-primaria, #8472f4);
+}
+
+/* ===== BARRA DE PESQUISA PROFISSIONAL ===== */
+.search-container {
+    display: flex;
+    align-items: center;
+    background: white;
+    border-radius: 30px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.search-container input {
+    border: none;
+    outline: none;
+    padding: 10px 15px;
+    width: 220px;
+    border-radius: 30px;
+}
+
+.search-container button {
+    border: none;
+    background: transparent; /* tira o fundo roxo */
+    padding: 8px;
+    cursor: pointer;
+}
+
+.search-container i {
+    font-size: 18px;
+    color: #555;
+}
+
+.search-container button:hover i {
+    color: var(--cor-primaria, #8472f4);
+}  
+
+.barra-categorias {
+    width: 100%;
+    background: white;
+    padding: 12px 40px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Centralizar e alinhar */
+.barra-categorias .nav-menu ul {
+    justify-content: flex-start;
+}
+
+/* Ajuste do dropdown nessa nova barra */
+.barra-categorias .dropdown {
+    position: relative;
+}
+
+/* Ajustar posição do mega menu */
+.barra-categorias .mega-menu {
+    top: 45px;
+    left: 0;
+}
+/* MENU ESCONDIDO */
+.menu-categorias {
+    position: absolute;
+    top: 70px;
+    left: 20px;
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    display: none;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    z-index: 1000;
+    min-width: 200px;
+}
+
+/* LINKS */
+.menu-categorias a {
+    display: block;
+    margin: 8px 0;
+    text-decoration: none;
+    color: #333;
+    font-size: 15px;
+    transition: 0.2s;
+}
+
+.menu-categorias a:hover {
+    color: #8e44ad;
+}
+
+/* QUANDO ABRIR */
+.menu-categorias.ativo {
+    display: block;
+}
+/* SEÇÃO CATEGORIAS onde fica a parte de infatil e tals */
+.categorias {
+    background: #f8f2d8;
+    border-bottom: 1px solid #eee;
+    padding: 12px 40px;
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+}
+
+.categorias ul {
+    display: flex;
+    gap: 18px;
+    list-style: none;
+}
+
+.categorias li a {
+    color: #555;
+    font-size: 16px;
+    text-decoration: none;
+    transition: .2s;
+}
+
+.categorias li a:hover {
+   color: #150122;
+    border-bottom: 2px solid #290341;
+}
+
+
+.cat-direita li a {
+    text-decoration: none;
+    color: #333; 
+    font-size: 15px;
+    transition: 0.2s;
+    padding-bottom: 3px; 
+}
+
+.cat-direita li a:hover {
+    color: #150122;
+    border-bottom: 2px solid #290341;
+}
+
+
+
+/* aqui é o header onde fica a logo e alguns links*/
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 40px;
+    background: #f8f2d8;
+    border-bottom: 1px solid #ddd;
+}
+
+/*==================================================
+            PÁGINA INFANTIL
+==================================================*/
+
+body{
+    background:#fafafa;
+}
+
+/*==============================
+        TÍTULO
+===============================*/
+
+.titulo-pagina{
+    width:100%;
+    background:#b8a9ff;
+    padding:35px 0;
+    text-align:center;
+}
+
+.titulo-pagina h1{
+    font-size:40px;
+    color:#222;
+    font-weight:700;
+}
+
+
+/*==============================
+      CATEGORIAS
+===============================*/
+
+.categoria-livros{
+    width:92%;
+    margin:55px auto;
+    background:#f7f5fc;
+    border-radius:25px;
+    padding:30px;
+}
+.categoria-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:25px;
+
+}
+.categoria-livros h2{
+    text-align:center;
+    margin-bottom:35px;
+    font-size:34px;
+    color:#333;
+}
+.categoria-header h2{
+
+    font-size:33px;
+
+    color:#333;
+
+}
+
+
+/*==============================
+      BOTÕES LATERAIS
+===============================*/
+.seta{
+    width:55px;
+    height:55px;
+    border:none;
+    border-radius:50%;
+    background:#c1622f;
+    color:#fff;
+    font-size:28px;
+    cursor:pointer;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    margin:0 15px;
+    flex-shrink:0;
+}
+
+.seta:hover{
+
+    transform:scale(1.08);
+
+    background:#604be8;
+
+}
+
+/*==============================
+      CARROSSEL
+===============================*/
+.area-carrossel{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+
+.carrossel-livros{
+    display:flex;
+    gap:22px;
+    overflow-x:auto;
+    scroll-behavior:smooth;
+    scrollbar-width:none;
+    flex:1;
+}
+
+.carrossel-livros::-webkit-scrollbar{
+    display:none;
+}
+
+/*==============================
+      CARD
+===============================*/
+
+.livro-card{
+
+    min-width:210px;
+
+  background: #e58a56;
+  border: 1px solid #e6dcc0;
+
+    border-radius:20px;
+
+    padding:18px;
+
+    text-align:center;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+    transition:.35s;
+
+}
+
+.livro-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 15px 30px rgba(0,0,0,.15);
+
+}
+
+
+/*==============================
+      IMAGEM
+===============================*/
+
+.livro-card img{
+
+    width:150px;
+
+    height:220px;
+
+    object-fit:cover;
+
+    border-radius:12px;
+   border:1px solid #000000;
+
+}
+
+
+/*==============================
+      TÍTULO DO LIVRO
+===============================*/
+
+.livro-card h3{
+
+    margin-top:18px;
+
+    font-size:18px;
+
+    color:#333;
+
+    min-height:45px;
+
+}
+
+
+/*==============================
+      BOTÃO
+===============================*/
+
+.btn-carrinho{
+
+    display:inline-block;
+
+    margin-top:18px;
+
+    width:100%;
+
+    padding:12px;
+
+    background:#f2c9a8;
+
+    color:rgb(0, 0, 0);
+
+    text-decoration:none;
+
+    border-radius:30px;
+
+    font-weight:bold;
+
+    transition:.3s;
+
+}
+
+.btn-carrinho:hover{
+
+    background:#c1622f;
+
+}
+
+
+/*==============================
+      FAVORITO
+===============================*/
+
+.favorito{
+
+    position:absolute;
+
+    top:15px;
+
+    right:15px;
+
+    width:35px;
+
+    height:35px;
+
+    background:white;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    box-shadow:0 3px 8px rgba(0,0,0,.2);
+
+    cursor:pointer;
+
+}
+
+.favorito i{
+
+    color:#ff4d6d;
+
+}
+
+
+/*==============================
+      CARD RELATIVO
+===============================*/
+
+.livro-card{
+
+    position:relative;
+
+}
+
+
+/*==============================
+      EFEITO NA IMAGEM
+===============================*/
+
+.livro-card img{
+
+    transition:.4s;
+
+}
+
+.livro-card:hover img{
+
+    transform:scale(1.04);
+
+}
+/*==================================================
+                BANNER PRINCIPAL
+==================================================*/
+
+.banner-infantil{
+
+    width:92%;
+
+    margin:80px auto;
+
+    background:#F6EFCF;
+
+    border-radius:30px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:60px;
+
+    overflow:hidden;
+
+}
+
+/*==============================
+        TEXTO
+===============================*/
+
+.banner-texto{
+
+    width:50%;
+
+}
+
+.banner-texto h2{
+
+    font-size:42px;
+
+    color:#1f2f6b;
+
+    margin-bottom:25px;
+
+    line-height:1.2;
+
+}
+
+.banner-texto p{
+
+    font-size:20px;
+
+    color:#555;
+
+    margin-bottom:12px;
+
+}
+
+.banner-texto ul{
+
+    margin:25px 0;
+
+    padding-left:25px;
+
+}
+
+.banner-texto li{
+
+    font-size:22px;
+
+    margin-bottom:15px;
+
+    color:#444;
+
+}
+
+/*==============================
+      BOTÃO CADASTRAR
+===============================*/
+
+.btn-banner{
+
+    display:inline-block;
+
+    margin-top:20px;
+
+    padding:16px 50px;
+
+    background:#A423D8;
+
+    color:white;
+
+    text-decoration:none;
+
+    border-radius:35px;
+
+    font-size:22px;
+
+    font-weight:bold;
+
+    transition:.3s;
+
+}
+
+.btn-banner:hover{
+
+    background:#7E16A8;
+
+    transform:translateY(-3px);
+
+}
+
+/*==============================
+      IMAGEM
+===============================*/
+
+.banner-imagem{
+
+    width:45%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+.banner-imagem img{
+
+    width:100%;
+
+    max-width:430px;
+
+    animation:flutuar 3s ease-in-out infinite;
+
+}
+
+/*==============================
+      ANIMAÇÃO
+===============================*/
+
+@keyframes flutuar{
+
+    0%{
+
+        transform:translateY(0);
+
+    }
+
+    50%{
+
+        transform:translateY(-10px);
+
+    }
+
+    100%{
+
+        transform:translateY(0);
+
+    }
+
+}
+
+
+/*==================================================
+            ENCONTRE TAMBÉM
+==================================================*/
+
+.encontre-tambem{
+
+    width:92%;
+    margin:80px auto;
+
+}
+
+.encontre-tambem h2{
+    text-align:center;
+    margin-bottom:35px;
+    font-size:34px;
+    color:#333;
+}
+
+
+   
+
+/*==============================
+        CARROSSEL
+===============================*/
+
+.idades-carrossel{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:20px;
+
+}
+
+.idades{
+
+    display:flex;
+
+    gap:25px;
+
+    overflow-x:auto;
+
+    scroll-behavior:smooth;
+
+    padding:10px;
+
+}
+
+.idades::-webkit-scrollbar{
+
+    display:none;
+
+}
+
+/*==============================
+        CARD
+===============================*/
+
+.idade-card{
+ text-decoration: none;
+    color: inherit;
+    min-width:220px;
+
+    background:#fff;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+    transition:.35s;
+
+    cursor:pointer;
+
+}
+
+.idade-card:hover{
+
+    transform:translateY(-10px);
+
+    box-shadow:0 18px 35px rgba(0,0,0,.18);
+
+}
+
+/*==============================
+        IMAGEM
+===============================*/
+
+.idade-card img{
+
+    width:100%;
+
+    height:250px;
+
+    object-fit:cover;
+
+}
+
+/*==============================
+        TEXTO
+===============================*/
+
+.idade-card h3{
+
+    text-align:center;
+
+    padding:18px;
+
+    font-size:22px;
+
+    color:#333;
+
+}
+
+/*==============================
+      EFEITO
+===============================*/
+
+.idade-card img{
+
+    transition:.4s;
+
+}
+
+.idade-card:hover img{
+
+    transform:scale(1.05);
+
+}
+
+/*==============================
+        SETAS
+===============================*/
+
+.idades-carrossel .seta{
+
+    width:55px;
+
+    height:55px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:var(--cor-primaria, #8472f4);
+
+    color:white;
+
+    font-size:28px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.idades-carrossel .seta:hover{
+
+    background:#5f47ff;
+
+    transform:scale(1.1);
+
+}
+
+/*==============================
+      RESPONSIVO
+===============================*/
+
+@media(max-width:900px){
+
+    .encontre-tambem h2{
+
+        font-size:30px;
+
+    }
+
+    .idade-card{
+
+        min-width:180px;
+
+    }
+
+    .idade-card img{
+
+        height:200px;
+
+    }
+
+}
+
+/*parte 4*/
+/*==============================
+      RESPONSIVO
+===============================*/
+
+@media(max-width:900px){
+
+.banner-infantil{
+
+    flex-direction:column;
+
+    text-align:center;
+
+    padding:40px 25px;
+
+}
+
+.banner-texto{
+
+    width:100%;
+
+}
+
+.banner-imagem{
+
+    width:100%;
+
+    margin-top:40px;
+
+}
+
+.banner-texto h2{
+
+    font-size:34px;
+
+}
+
+.banner-texto li{
+
+    font-size:19px;
+
+}
+
+.btn-banner{
+
+    font-size:20px;
+
+}
+
+/*==================================================
+            ANIMAÇÕES E ACABAMENTO
+==================================================*/
+
+/* Fade ao carregar */
+.categoria-livros,
+.banner-infantil,
+.encontre-tambem{
+    animation: aparecer .7s ease;
+}
+
+@keyframes aparecer{
+    from{
+        opacity:0;
+        transform:translateY(30px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+
+/*==============================
+      EFEITO DOS BOTÕES
+===============================*/
+
+.btn-carrinho,
+.btn-banner{
+    transition:.3s;
+}
+
+.btn-carrinho:hover,
+.btn-banner:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 10px 20px rgba(132,114,244,.35);
+
+}
+
+
+/*==============================
+      EFEITO NAS SETAS
+===============================*/
+
+.seta:active{
+
+    transform:scale(.92);
+
+}
+
+
+/*==============================
+      HOVER DAS IMAGENS
+===============================*/
+
+.livro-card{
+
+    overflow:hidden;
+
+}
+
+.livro-card img{
+
+    transition:.35s;
+
+}
+
+.livro-card:hover img{
+
+    transform:scale(1.06);
+
+}
+
+
+/*==============================
+      SOMBRA
+===============================*/
+
+.livro-card,
+.idade-card{
+
+    border:1px solid #ececec;
+
+}
+
+
+/*==============================
+      SCROLL BONITO
+===============================*/
+
+html{
+
+    scroll-behavior:smooth;
+
+}
+
+
+/*==============================
+      SELEÇÃO
+===============================*/
+
+::selection{
+
+    background:var(--cor-primaria, #8472f4);
+
+    color:white;
+
+}
+
+
+/*==============================
+      RESPONSIVO TABLET
+===============================*/
+
+@media(max-width:1024px){
+
+.categoria-header h2{
+
+    font-size:28px;
+
+}
+
+.banner-texto h2{
+
+    font-size:32px;
+
+}
+
+.titulo-pagina h1{
+
+    font-size:34px;
+
+}
+
+}
+
+
+/*==============================
+      RESPONSIVO CELULAR
+===============================*/
+
+@media(max-width:768px){
+
+.titulo-pagina{
+
+    padding:25px;
+
+}
+
+.titulo-pagina h1{
+
+    font-size:26px;
+
+}
+
+.categoria-header{
+
+    flex-direction:column;
+
+    gap:15px;
+
+}
+
+.categoria-header h2{
+
+    font-size:24px;
+
+    text-align:center;
+
+}
+
+.carrossel-livros{
+
+    gap:15px;
+
+}
+
+.livro-card{
+
+    min-width:170px;
+
+    padding:12px;
+
+}
+
+.livro-card img{
+
+    width:120px;
+
+    height:180px;
+
+}
+
+.banner-infantil{
+
+    flex-direction:column;
+
+    text-align:center;
+
+    padding:35px 20px;
+
+}
+
+.banner-texto{
+
+    width:100%;
+
+}
+
+.banner-imagem{
+
+    width:100%;
+
+    margin-top:30px;
+
+}
+
+.banner-imagem img{
+
+    max-width:280px;
+
+}
+
+.idades{
+
+    gap:15px;
+
+}
+
+.idade-card{
+
+    min-width:160px;
+
+}
+
+.idade-card img{
+
+    height:180px;
+
+}
+
+.footer-top{
+
+    flex-direction:column;
+
+    gap:30px;
+
+    text-align:center;
+
+}
+
+.footer-bottom{
+
+    flex-direction:column;
+
+    gap:15px;
+
+}
+
+}
+
+
+/*==============================
+      TELAS GRANDES
+===============================*/
+
+@media(min-width:1600px){
+
+.categoria-livros,
+.banner-infantil,
+.encontre-tambem{
+
+    max-width:1500px;
+
+}
+
+}
+
+
+
+}
+.logo {
+    display: flex;
+    align-items: center;
+    max-height: 90px;
+}
+
+.logo-img {
+    width: 270px;
+    height: auto;
+    object-fit: contain;
+} 
+/* =========================
+   TÍTULO DA PÁGINA
+========================= */
+.titulo-pagina {
+    background: var(--cor-primaria, #8472f4);
+    color: white;
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.titulo-pagina h1 {
+    font-size: 27px;
+    margin-bottom: 5px;
+}
+
+/* =========================
+   WHATSAPP FLUTUANTE
+========================= */
+.whatsapp {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #25d366;
+    padding: 12px;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    z-index: 999;
+}
+
+.whatsapp img {
+    width: 30px;
+}
+
+.topo {
+    background-color: var(--cor-primaria, #8472f4);
+    color: white;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.icon-book {
+    width: 25px;
+    height: 25px;
+}
+
+
+/*roda pé*/
+footer {
+    width: 100%;
+    margin-top: 60px;
+    margin: 0;
+}
+
+/*PARTE ROXA */
+.footer-top {
+    background: var(--cor-primaria, #8472f4);
+    display: flex;
+    justify-content: space-between;
+    padding: 40px;
+    color: white;
+}
+
+/* COLUNA DE LINKS */
+.footer-links ul {
+    list-style: none;      
+    padding: 0;          
+    margin: 0;
+}
+
+.footer-links li {
+    margin-bottom: 6px;
+}
+
+.footer-links a {
+    color: white;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+    opacity: 0.85;
+}
+
+
+/* REDES SOCIAIS */
+.footer-social h3 {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.icons-redes img {
+    width: 28px;
+    margin-right: 8px;
+    cursor: pointer;
+    filter: brightness(0) invert(1);
+}
+
+.footer-social h4 {
+    margin-top: 18px;
+    margin-bottom: 8px;
+    font-size: 16px;
+    
+}
+
+
+/* pequenas imagens*/
+.footer-imgs img {
+    width: 210px;
+    margin-left: 10px;
+    
+}
+
+/* PARTE AZUL */
+.footer-bottom {
+    background: #00aac8;
+    display: flex;
+    justify-content: space-around;
+    padding: 18px 0;
+    color: white;
+    font-weight: bold;
+}
+
+.footer-bottom-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.footer-bottom-item img {
+    width: 26px;
+    filter: brightness(0) invert(1);
+}
+
+
+/* WHATSAPP FLUTUANTE */
+.whatsapp {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #25d366;
+    color: white;
+    font-size: 26px;
+    padding: 14px 16px;
+    border-radius: 50%;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    z-index: 999;
+}
+
+.whatsapp img {
+    width: 30px;
+    height: 30px;
+}
+
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+/* TABLET */
+@media (max-width: 1024px) {
+    .search-area input {
+        width: 80%;
+    }
+}
+
+/* CELULAR */
+@media (max-width: 768px) {
+    .titulo-pagina h1 {
+        font-size: 22px;
+    }
+
+    .livros-container {
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 15px;
+    }
+
+    .livro-card img {
+        width: 120px;
+        height: 170px;
+    }
+}

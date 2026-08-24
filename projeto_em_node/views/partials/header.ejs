@@ -1,16 +1,136 @@
 <header>
+     <link rel="stylesheet" href="/css/header.css">
+     <link rel="stylesheet" href="/css/carrinho.css">
     <div class="logo">
         <img src="/img/logo.png" alt="Logo DiscoverBook" class="logo-img">
     </div>
 
-    <% if (typeof usuario !== 'undefined' && usuario) { %>
-        <div class="btn-login">
-            <span>Olá, <%= usuario %></span>
-            <a href="/logout">Sair</a>
-        </div>
-    <% } else { %>
-        <div class="btn-login">
-            <a href="/cadastro">Cadastre-se</a>
-        </div>
+    <!-- BARRA DE PESQUISA -->
+    <div class="search-container">
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Buscar livros..."
+        >
+
+        <button>
+            <i class="fi fi-rr-search"></i>
+        </button>
+
+        <span class="limpar" onclick="limparBusca()">
+            Limpar
+        </span>
+
+        <div id="resultadosBusca" class="resultados"></div>
+    </div>
+
+<% if(usuario){ %>
+
+<div class="perfil-header">
+
+    <% if (usuarioTipo === "escola") { %>
+
+        <!-- CARRINHO: só para contas de Instituição -->
+        <button type="button" class="btn-abrir-carrinho" id="btnAbrirCarrinho" aria-label="Abrir carrinho" title="Carrinho">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <circle cx="9" cy="21" r="1"></circle>
+                <circle cx="20" cy="21" r="1"></circle>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            <span class="badge-carrinho" id="badgeCarrinho" hidden>0</span>
+        </button>
+
+        <!-- DOAÇÃO ENTRE ESCOLAS: ação separada, pra escola doar livro excedente pra outra escola -->
+        <a href="/repasse" class="btn-abrir-carrinho" aria-label="Doar livro para outra escola" title="Doar livro para outra escola">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <path d="M17 2l4 4-4 4"></path>
+                <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
+                <path d="M7 22l-4-4 4-4"></path>
+                <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+            </svg>
+        </a>
+
+    <% } else if (usuarioTipo === "doador") { %>
+
+        <!-- DOAÇÃO: só para contas de Doador -->
+        <a href="/doar" class="btn-abrir-carrinho" aria-label="Doar um livro" title="Doar um livro">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                <path d="M2 4.5A2.5 2.5 0 0 1 4.5 2H11a2 2 0 0 1 2 2v16a1.5 1.5 0 0 0-1.5-1.5H2z"></path>
+                <path d="M22 4.5A2.5 2.5 0 0 0 19.5 2H13a2 2 0 0 0-2 2v16a1.5 1.5 0 0 1 1.5-1.5H22z"></path>
+            </svg>
+        </a>
+
     <% } %>
+
+    <a href="/perfil" class="perfil-header-link">
+
+        <img
+            src="<%= usuarioFoto || '/img/perfil-padrao.jpg' %>"
+            class="foto-header"
+            alt="Foto de perfil de <%= usuario %>"
+        >
+
+    </a>
+
+    <a href="/configuracoes" class="btn-config" aria-label="Configurações da conta" title="Configurações">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+    </a>
+
+    <% if (usuarioAdmin) { %>
+        <a href="/admin/pedidos" class="btn-config" aria-label="Painel de pedidos da equipe" title="Painel de pedidos">
+            <i class="fi fi-rr-inbox-in" aria-hidden="true"></i>
+        </a>
+    <% } %>
+
+</div>
+
+<% } else { %>
+
+<div class="btn-login">
+
+    <a href="/cadastro">
+        Cadastre-se
+    </a>
+
+</div>
+
+<% } %>
+
 </header>
+
+<!-- GAVETA DO CARRINHO (disponível em todas as páginas, usada por contas de Instituição) -->
+<div class="overlay-carrinho" id="overlayCarrinho">
+    <aside class="gaveta-carrinho" role="dialog" aria-label="Carrinho de solicitações">
+        <div class="gaveta-cabecalho">
+            <h2>
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+                Seu carrinho
+            </h2>
+            <button type="button" class="gaveta-fechar" id="btnFecharCarrinho" aria-label="Fechar carrinho">✕</button>
+        </div>
+
+        <div class="gaveta-lista" id="gavetaLista">
+            <!-- preenchido via JS -->
+        </div>
+
+        <div class="gaveta-rodape">
+            <div class="gaveta-resumo">
+                <span>Itens no carrinho</span>
+                <strong id="gavetaTotalItens">0</strong>
+            </div>
+            <a href="/carrinho" class="gaveta-btn-ver">Ver carrinho completo</a>
+        </div>
+    </aside>
+</div>
+
+<script src="/js/carrinho.js" defer></script>
+<script src="/js/catalogo-livros.js"></script>
+<script src="/js/busca-global.js"></script>
+

@@ -24,11 +24,11 @@ body {
 
 /* aqui fica o topo, onde esta o começo com a frase*/
 .topo {
-    background: #8472f4;
+    background: var(--cor-primaria, #8472f4);
     color: white;
     text-align: center;
     display: flex;
-    align-items: center;
+    align-items:center;
     gap: 6px;
     padding: 6px 15px;
 }
@@ -90,7 +90,7 @@ header {
 
 /* esse é o cadastro */
 .btn-login a {
-    background:#8472f4;
+    background:var(--cor-primaria, #8472f4);
     color: white;
     padding: 8px 14px;
     text-decoration: none;
@@ -112,7 +112,7 @@ header {
 
 .search-box input:focus {
     outline: none;
-    border-color: #8472f4;
+    border-color: var(--cor-primaria, #8472f4);
 }
 
 .search-container {
@@ -236,7 +236,7 @@ header {
 
 .coluna h4 {
     margin-bottom: 10px;
-    color: #8472f4;
+    color: var(--cor-primaria, #8472f4);
 }
 
 .coluna a {
@@ -247,7 +247,7 @@ header {
 }
 
 .coluna a:hover {
-    color: #8472f4;
+    color: var(--cor-primaria, #8472f4);
 }
 
 /* ===== BARRA DE PESQUISA PROFISSIONAL ===== */
@@ -282,7 +282,7 @@ header {
 }
 
 .search-container button:hover i {
-    color: #8472f4;
+    color: var(--cor-primaria, #8472f4);
 }  
 .barra-categorias {
     width: 100%;
@@ -386,7 +386,7 @@ header {
     position: relative;
     padding: 60px 50px;
     /*background-color: #A683B6;*/
-    background-color:#8472F4;
+    background-color:var(--cor-primaria, #8472f4);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -615,7 +615,7 @@ footer {
 
 /*PARTE ROXA */
 .footer-top {
-    background: #8472f4;
+    background: var(--cor-primaria, #8472f4);
     display: flex;
     justify-content: space-between;
     padding: 40px;

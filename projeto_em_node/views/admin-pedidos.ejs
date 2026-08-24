@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de pedidos | DiscoverBook</title>
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/perfil.css">
+    <link rel="stylesheet" href="/css/admin-pedidos.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css">
+</head>
+<body>
+
+<a href="#conteudo-admin" class="pular-conteudo">Pular para o conteúdo</a>
+
+<%- include('partials/topo') %>
+<%- include('partials/header') %>
+
+<main id="conteudo-admin" class="pagina-admin-pedidos">
+
+    <div class="admin-titulo">
+        <h1><i class="fi fi-rr-inbox-in" aria-hidden="true"></i> Painel de pedidos</h1>
+        <span><%= pedidos.length %> <%= pedidos.length === 1 ? "pedido" : "pedidos" %> no total</span>
+    </div>
+
+    <% if (sucesso === "1") { %>
+        <p class="admin-mensagem sucesso" role="status">Pedido atualizado com sucesso.</p>
+    <% } %>
+
+    <% if (erro === "nao_cancelavel") { %>
+        <p class="admin-mensagem erro" role="status">Esse pedido já foi entregue e não pode mais ser cancelado.</p>
+    <% } else if (erro === "sem_avanco") { %>
+        <p class="admin-mensagem erro" role="status">Esse pedido já está no último passo do ciclo.</p>
+    <% } else if (erro) { %>
+        <p class="admin-mensagem erro" role="status">Não foi possível concluir essa ação.</p>
+    <% } %>
+
+    <% if (pedidos.length === 0) { %>
+
+        <p class="vazio">Nenhum pedido foi enviado ainda.</p>
+
+    <% } else { %>
+
+        <div class="admin-tabela-wrap">
+            <table class="admin-tabela">
+                <thead>
+                    <tr>
+                        <th>Escola</th>
+                        <th>Livro</th>
+                        <th>Qtd.</th>
+                        <th>WhatsApp</th>
+                        <th>Status</th>
+                        <th>Enviado em</th>
+                        <th>Última atualização</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% pedidos.forEach(function(p) { %>
+                        <tr>
+                            <td>
+                                <strong><%= p.escola %></strong>
+                                <span class="admin-sub"><%= p.responsavel %> · <%= p.cidade %></span>
+                            </td>
+                            <td><%= p.livro %></td>
+                            <td><%= p.quantidade %></td>
+                            <td>
+                                <% if (p.telefone) { %>
+                                    <a href="https://wa.me/<%= p.telefone.replace(/\D/g, '') %>" target="_blank" rel="noopener" class="admin-link-whats">
+                                        <img src="/img/whatsapp.png" alt=""> <%= p.telefone %>
+                                    </a>
+                                <% } else { %>
+                                    —
+                                <% } %>
+                            </td>
+                            <td>
+                                <span class="hist-status hist-status-<%= p.statusInfo.cor %>">
+                                    <i class="fi <%= p.statusInfo.icone %>" aria-hidden="true"></i>
+                                    <%= p.statusInfo.label %>
+                                </span>
+                            </td>
+                            <td><%= p.dataEnvioFormatada %></td>
+                            <td><%= p.dataAtualizacaoFormatada %></td>
+                            <td>
+                                <div class="admin-acoes">
+                                    <% if (p.proxima) { %>
+                                        <form action="/admin/pedidos/<%= p.id %>/avancar" method="POST">
+                                            <button type="submit" class="admin-btn-avancar"><%= p.proxima.acaoLabel %></button>
+                                        </form>
+                                    <% } %>
+                                    <% if (p.cancelavel) { %>
+                                        <form action="/admin/pedidos/<%= p.id %>/cancelar" method="POST">
+                                            <button type="submit" class="admin-btn-cancelar" onclick="return confirm('Cancelar este pedido?')">Cancelar</button>
+                                        </form>
+                                    <% } %>
+                                </div>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+
+    <% } %>
+
+</main>
+
+<%- include('partials/footer') %>
+
+</body>
+</html>

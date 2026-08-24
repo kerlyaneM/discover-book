@@ -18,7 +18,7 @@ body {
 
 /* aqui fica o topo, onde esta o começo com a frase*/
 .topo {
-    background: #8472f4;
+    background: var(--cor-primaria, #8472f4);
     color: white;
     text-align: center;
     display: flex;
@@ -84,7 +84,7 @@ header {
 
 /* esse é o cadastro */
 .btn-login a {
-    background:#8472f4;
+    background:var(--cor-primaria, #8472f4);
     color: white;
     padding: 8px 14px;
     text-decoration: none;
@@ -133,113 +133,466 @@ header {
 }
 
 /* MOSTRAR AO PASSAR O MOUSE */
-.dropdown:hover .mega-menu {
-    opacity: 1;
-    visibility: visible;
+
+/* =========================================================
+   VARIÁVEIS DA PÁGINA "SOBRE"
+   ========================================================= */
+:root {
+    --roxo: var(--cor-primaria-escura, #6e5bd8);
+    --roxo-claro: var(--cor-primaria, #8472f4);
+    --roxo-suave: #efeaff;
+    --papel: #ffffff;
+    --tinta: #211c33;
+    --tinta-suave: #524c68;
+    --linha: #e6e3f2;
+    --ocre: #c98520;
+    --ocre-suave: #faedd2;
+    --rosa: #e05a78;
+    --rosa-suave: #fce6ec;
+    --sombra: 0 12px 32px -14px rgba(33, 28, 51, .20);
+    --sombra-forte: 0 24px 50px -18px rgba(33, 28, 51, .32);
 }
 
-/* COLUNAS */
-.coluna {
-    display: flex;
-    flex-direction: column;
+.pagina-sobre {
+    background: #f5f4fb;
 }
 
-.coluna h4 {
-    margin-bottom: 10px;
-    color: #8472f4;
+.pagina-sobre h1,
+.pagina-sobre h2,
+.pagina-sobre h3 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    letter-spacing: -.01em;
+    color: var(--tinta);
 }
 
-.coluna a {
-    margin: 5px 0;
-    color: #555;
-    font-size: 14px;
-    transition: 0.2s;
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12.5px;
+    font-weight: 800;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--roxo);
+    margin-bottom: 14px;
 }
 
-.coluna a:hover {
-    color: #8472f4;
+.eyebrow::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--roxo);
 }
 
-/* --- QUEM SOMOS --- */
-.container-sobre {
-    padding: 60px 20px;
+/* ================= HERO ================= */
+.hero-sobre {
+    position: relative;
+    padding: 70px 32px 60px;
+    overflow: hidden;
     text-align: center;
-    background: #d3b1f3;
 }
 
-.titulo-quem-somos {
-    font-size: 2.5rem;
-    margin-bottom: 50px;
+.hero-sobre::before {
+    content: "";
+    position: absolute;
+    top: -80px;
+    left: 8%;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: var(--roxo-suave);
 }
 
-.time-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 40px;
-    max-width: 1200px;
+.hero-sobre::after {
+    content: "";
+    position: absolute;
+    bottom: -60px;
+    right: 10%;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: var(--ocre-suave);
+}
+
+.hero-conteudo {
+    position: relative;
+    z-index: 1;
+    max-width: 640px;
     margin: 0 auto;
 }
 
-.card-membro {
-    background-color: #8472f4;
-    width: 280px;
-    padding: 25px;
-    border-radius: 15px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+.hero-sobre .eyebrow {
+    justify-content: center;
 }
 
-.foto-membro {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    background-color: #e57bf3; /* Fundo branco para a foto */
-    border-radius: 10px;
+.hero-sobre h1 {
+    font-size: 42px;
+    line-height: 1.15;
+    margin-bottom: 16px;
+}
+
+.hero-sobre h1 em {
+    font-style: italic;
+    color: var(--roxo-claro);
+}
+
+.hero-sobre p {
+    font-size: 15.5px;
+    color: var(--tinta-suave);
+    font-weight: 500;
+}
+
+.livro-flutuante {
+    position: absolute;
+    border-radius: 14px;
+    box-shadow: var(--sombra-forte);
     overflow: hidden;
-    margin-bottom: 20px;
+    z-index: 1;
 }
 
-.foto-membro img {
+.lf1 {
+    width: 90px;
+    height: 120px;
+    top: 40px;
+    right: 14%;
+    transform: rotate(9deg);
+    animation: flutuar1 4.5s ease-in-out infinite;
+}
+
+.lf2 {
+    width: 70px;
+    height: 95px;
+    bottom: 20px;
+    left: 12%;
+    transform: rotate(-7deg);
+    animation: flutuar2 5s ease-in-out infinite;
+}
+
+@keyframes flutuar1 {
+    0%, 100% { transform: rotate(9deg) translateY(0); }
+    50% { transform: rotate(9deg) translateY(-14px); }
+}
+
+@keyframes flutuar2 {
+    0%, 100% { transform: rotate(-7deg) translateY(0); }
+    50% { transform: rotate(-7deg) translateY(-10px); }
+}
+
+.livro-flutuante img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-.nome { color: white; margin-bottom: 5px; }
-.funcao { color: #e0d9ff; font-weight: 300; }
-
-/* --- COMO SURGIMOS --- */
-.como-surgimos {
-    background-color: #f8f2d8; /* Cor bege da imagem */
-    padding: 80px 20px;
-    text-align: center;
+.stats-sobre {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 34px;
+    position: relative;
+    z-index: 1;
+    flex-wrap: wrap;
 }
 
-.conteudo-surgimos {
-    max-width: 800px;
+.stat-sobre {
+    background: var(--papel);
+    border: 1px solid var(--linha);
+    border-radius: 14px;
+    padding: 16px 22px;
+    box-shadow: var(--sombra);
+    min-width: 120px;
+}
+
+.stat-sobre strong {
+    display: block;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 24px;
+    color: var(--roxo);
+}
+
+.stat-sobre span {
+    font-size: 11.5px;
+    color: var(--tinta-suave);
+    font-weight: 600;
+}
+
+/* ================= SEÇÕES GERAIS ================= */
+.secao-sobre {
+    padding: 64px 32px;
+}
+
+.secao-cabecalho {
+    text-align: center;
+    max-width: 560px;
+    margin: 0 auto 46px;
+}
+
+.secao-cabecalho h2 {
+    font-size: 30px;
+}
+
+.secao-cabecalho p {
+    color: var(--tinta-suave);
+    font-size: 14.5px;
+    margin-top: 8px;
+    font-weight: 500;
+}
+
+/* ================= COMO SURGIMOS — timeline ================= */
+.timeline {
+    max-width: 760px;
+    margin: 0 auto;
+    position: relative;
+    padding-left: 38px;
+}
+
+.timeline::before {
+    content: "";
+    position: absolute;
+    left: 13px;
+    top: 6px;
+    bottom: 6px;
+    width: 2px;
+    background: var(--linha);
+}
+
+.tl-item {
+    position: relative;
+    padding-bottom: 34px;
+}
+
+.tl-item:last-child {
+    padding-bottom: 0;
+}
+
+.tl-ponto {
+    position: absolute;
+    left: -38px;
+    top: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--roxo);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 0 5px var(--roxo-suave);
+}
+
+.tl-ponto svg {
+    width: 13px;
+    height: 13px;
+}
+
+.tl-item h3 {
+    font-size: 16.5px;
+    margin-bottom: 6px;
+}
+
+.tl-item p {
+    font-size: 13.5px;
+    color: var(--tinta-suave);
+    font-weight: 500;
+    line-height: 1.6;
+}
+
+/* ================= VALORES ================= */
+.valores-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    max-width: 1220px;
     margin: 0 auto;
 }
 
-.como-surgimos h2 {
-    font-size: 2.8rem;
-    margin-bottom: 25px;
-    display: inline-block;
-    border-bottom: 4px solid #8472f4;
+.valor-card {
+    background: var(--papel);
+    border: 1px solid var(--linha);
+    border-radius: 16px;
+    padding: 24px 20px;
+    text-align: center;
+    box-shadow: var(--sombra);
+    transition: .25s;
 }
 
-.como-surgimos p {
-    font-size: 1.2rem;
-    line-height: 1.8;
-    color: #444;
-    margin-bottom: 20px;
-    text-align: justify;
+.valor-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--sombra-forte);
+    border-color: var(--roxo-claro);
+}
+
+.valor-ic {
+    width: 48px;
+    height: 48px;
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 14px;
+}
+
+.valor-ic svg {
+    width: 22px;
+    height: 22px;
+}
+
+.valor-ic.c1 { background: var(--roxo-suave); color: var(--roxo); }
+.valor-ic.c2 { background: var(--ocre-suave); color: var(--ocre); }
+.valor-ic.c3 { background: var(--roxo-suave); color: var(--roxo-claro); }
+.valor-ic.c4 { background: var(--rosa-suave); color: var(--rosa); }
+
+.valor-card h3 {
+    font-size: 15px;
+    margin-bottom: 6px;
+}
+
+.valor-card p {
+    font-size: 12.5px;
+    color: var(--tinta-suave);
+    font-weight: 500;
+}
+
+/* ================= EQUIPE ================= */
+.equipe-secao {
+    background: var(--papel);
+}
+
+.equipe-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 18px;
+    max-width: 1220px;
+    margin: 0 auto;
+}
+
+.membro-card {
+    position: relative;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: var(--sombra);
+    aspect-ratio: 3 / 4;
+}
+
+.membro-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: .4s;
+}
+
+.membro-card:hover img {
+    transform: scale(1.08);
+}
+
+.membro-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(33, 20, 60, .92) 0%, rgba(33, 20, 60, .15) 55%, transparent 75%);
+}
+
+.membro-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 18px 16px;
+    color: #fff;
+}
+
+.membro-funcao-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, .18);
+    backdrop-filter: blur(2px);
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+    margin-bottom: 6px;
+}
+
+.membro-info h3 {
+    color: #fff;
+    font-size: 15px;
+    margin-bottom: 2px;
+}
+
+.membro-info span {
+    font-size: 11.5px;
+    opacity: .85;
+}
+
+/* ================= CTA FINAL ================= */
+.cta-final {
+    position: relative;
+    margin: 20px 32px 70px;
+    border-radius: 24px;
+    overflow: hidden;
+    min-height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-shadow: var(--sombra-forte);
+    max-width: 1220px;
+    margin-left: auto;
+    margin-right: auto;
+    background: linear-gradient(120deg, var(--roxo) 0%, var(--roxo-claro) 100%);
+}
+
+.cta-final-conteudo {
+    position: relative;
+    z-index: 1;
+    padding: 44px 30px;
+    color: #fff;
+    max-width: 560px;
+}
+
+.cta-final-conteudo h2 {
+    color: #fff;
+    font-size: 26px;
+    margin-bottom: 12px;
+}
+
+.cta-final-conteudo p {
+    font-size: 14.5px;
+    opacity: .9;
+    margin-bottom: 22px;
+    font-weight: 500;
+}
+
+.btn-cta-final {
+    background: #fff;
+    color: var(--roxo);
+    padding: 14px 26px;
+    border-radius: 11px;
+    font-weight: 800;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    transition: .2s;
+}
+
+.btn-cta-final:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px -8px rgba(0, 0, 0, .3);
+}
+
+@media (max-width: 980px) {
+    .valores-grid { grid-template-columns: repeat(2, 1fr); }
+    .equipe-grid { grid-template-columns: repeat(2, 1fr); }
+    .livro-flutuante { display: none; }
 }
 
 /* --- FOOTER --- */
 .footer-top {
-    background: #8472f4;
+    background: var(--cor-primaria, #8472f4);
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -285,14 +638,6 @@ header {
     .logo-img {
         width: 200px;
     }
-
-    .time-grid {
-        gap: 20px;
-    }
-
-    .card-membro {
-        width: 45%; /* Mostra dois por linha */
-    }
 }
 
 /* 2. CELULARES GRANDES (Até 768px) */
@@ -314,18 +659,6 @@ header {
         gap: 40px;
         text-align: center;
     }
-
-    .card-membro {
-        width: 80%; /* Quase a largura toda no celular */
-    }
-
-    .titulo-quem-somos {
-        font-size: 2rem;
-    }
-
-    .como-surgimos h2 {
-        font-size: 2rem;
-    }
 }
 
 /* 3. CELULARES PEQUENOS (Até 480px) */
@@ -343,32 +676,29 @@ header {
         width: 180px;
     }
 
-    .card-membro {
-        width: 100%; /* Um membro por linha ocupando tudo */
-    }
-
-    .como-surgimos p {
-        font-size: 1rem;
-        text-align: left; /* Melhor leitura em telas muito pequenas */
-    }
-
     .footer-imgs img {
         width: 200px; /* Reduz a ilustração no rodapé */
     }
+
+    .hero-sobre h1 { font-size: 32px; }
+    .secao-cabecalho h2 { font-size: 24px; }
+    .valores-grid, .equipe-grid { grid-template-columns: 1fr; }
+    .cta-final-conteudo h2 { font-size: 21px; }
 }
 
 /* 4. TVs E MONITORES ULTRA-WIDE (Acima de 1800px) */
 @media (min-width: 1800px) {
-    .container-sobre, .conteudo-surgimos {
-        max-width: 1400px; /* Evita que o texto fique esticado demais */
-        margin: 0 auto;
+    .secao-sobre, .hero-sobre {
+        max-width: 1500px;
+        margin-left: auto;
+        margin-right: auto;
     }
 
-    .titulo-quem-somos, .como-surgimos h2 {
-        font-size: 4rem;
+    .hero-sobre h1 {
+        font-size: 54px;
     }
 
-    .como-surgimos p {
-        font-size: 1.5rem;
+    .secao-cabecalho h2 {
+        font-size: 38px;
     }
 }
