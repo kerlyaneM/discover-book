@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/css/configuracoes.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap">
     <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css">
+    <script src="/js/configuracoes.js" defer></script>
 </head>
 <body>
 
@@ -18,44 +19,96 @@
 <%- include('partials/header') %>
 
 <%
+    const ehEscola = usuario.tipo === "escola";
     const nomeExibido = usuario.username || usuario.nome;
-    const badgeTexto = usuario.tipo === "escola" ? "Escola/Instituição" : "Doador";
+    const badgeTexto = ehEscola ? "Escola/Instituição" : "Doador";
+    const linkPerfil = ehEscola ? "/escola/" + usuario.id : "/perfil";
+    const linkEditar = "/perfil?editar=1";
+
+    // Menu lateral agrupado por assunto (o que a pessoa quer resolver, não o nome técnico)
+    const grupos = [
+        { titulo: "Conta", itens: [
+            { aba: "conta", icone: "fi-rr-user", nome: "Minha conta" },
+            { aba: "seguranca", icone: "fi-rr-lock", nome: "Segurança" }
+        ]},
+        { titulo: "Personalização", itens: [
+            { aba: "preferencias", icone: "fi-rr-settings-sliders", nome: "Preferências" }
+        ]},
+        { titulo: "Privacidade", itens: [
+            { aba: "dados", icone: "fi-rr-shield-check", nome: "Meus dados" }
+        ]},
+        { titulo: "Suporte", itens: [
+            { aba: "ajuda", icone: "fi-rr-interrogation", nome: "Ajuda" }
+        ]}
+    ];
+
+    // Checklist "perfil completo": cada item aponta para onde se resolve
+    const itensPerfil = ehEscola
+        ? [
+            { ok: !!usuario.username, texto: "Nome de perfil" },
+            { ok: !!usuario.avatar, texto: "Avatar" },
+            { ok: !!(usuario.bio && usuario.bio.trim()), texto: "Descrição da escola" },
+            { ok: !!usuario.cidade, texto: "Cidade" },
+            { ok: !!usuario.etapas, texto: "Etapas de ensino" },
+            { ok: !!(usuario.necessidades && usuario.necessidades.trim()), texto: "Livros que a escola procura" }
+        ]
+        : [
+            { ok: !!usuario.username, texto: "Nome de perfil" },
+            { ok: !!usuario.avatar, texto: "Avatar" }
+        ];
+    const feitos = itensPerfil.filter((i) => i.ok).length;
+    const porcentagem = Math.round((feitos / itensPerfil.length) * 100);
+
+    const emailComErro = mensagem && mensagem.tipo === "erro" && ["email_invalido", "email_igual", "email_em_uso", "senha_incorreta"].includes(mensagem.chave) && aba === "conta";
 %>
 
 <main class="config" id="conteudo-principal">
 
     <div class="config-titulo">
-        <a href="/perfil" class="voltar-perfil" aria-label="Voltar para o perfil">
+        <a href="<%= linkPerfil %>" class="voltar-perfil" aria-label="Voltar para o perfil">
             <i class="fi fi-rr-arrow-left" aria-hidden="true"></i>
         </a>
-        <h1>Configurações</h1>
+        <div>
+            <h1>Configurações</h1>
+            <p class="config-subtitulo-pagina">Gerencie sua conta, segurança e como você aparece no DiscoverBook.</p>
+        </div>
     </div>
+
+    <!-- Resumo: confirma "quem sou eu aqui" antes de mexer em qualquer coisa -->
+    <section class="config-resumo" aria-label="Resumo da conta">
+        <img src="<%= usuarioFoto || '/img/perfil-padrao.jpg' %>" alt="" class="config-resumo-avatar">
+        <div class="config-resumo-info">
+            <strong class="config-resumo-nome"><%= nomeExibido %></strong>
+            <span class="config-resumo-email"><%= usuario.email %></span>
+            <span class="config-resumo-tags">
+                <span class="config-selo"><i class="fi <%= ehEscola ? 'fi-rr-graduation-cap' : 'fi-rr-heart' %>" aria-hidden="true"></i> <%= badgeTexto %></span>
+                <span class="config-resumo-desde">Membro desde <%= dataFormatada %></span>
+            </span>
+        </div>
+        <div class="config-resumo-numero">
+            <strong><%= resumo.valor %></strong>
+            <span><%= resumo.rotulo %></span>
+        </div>
+        <a href="<%= linkPerfil %>" class="config-resumo-link">Ver meu perfil</a>
+    </section>
 
     <div class="config-layout">
 
         <nav class="config-abas" aria-label="Seções de configurações">
-            <ul role="tablist">
+            <% grupos.forEach(function(grupo) { %>
+                <p class="config-grupo-titulo"><%= grupo.titulo %></p>
+                <ul>
+                    <% grupo.itens.forEach(function(item) { %>
+                        <li>
+                            <a href="/configuracoes?aba=<%= item.aba %>" class="<%= aba === item.aba ? 'ativa' : '' %>" <%- aba === item.aba ? 'aria-current="page"' : '' %>>
+                                <i class="fi <%= item.icone %>" aria-hidden="true"></i> <%= item.nome %>
+                            </a>
+                        </li>
+                    <% }); %>
+                </ul>
+            <% }); %>
+            <ul class="config-abas-sair">
                 <li>
-                    <a href="/configuracoes?aba=conta" role="tab" aria-selected="<%= aba === 'conta' %>" class="<%= aba === 'conta' ? 'ativa' : '' %>">
-                        <i class="fi fi-rr-user" aria-hidden="true"></i> Conta
-                    </a>
-                </li>
-                <li>
-                    <a href="/configuracoes?aba=senha" role="tab" aria-selected="<%= aba === 'senha' %>" class="<%= aba === 'senha' ? 'ativa' : '' %>">
-                        <i class="fi fi-rr-lock" aria-hidden="true"></i> Senha
-                    </a>
-                </li>
-                <li>
-                    <a href="/configuracoes?aba=privacidade" role="tab" aria-selected="<%= aba === 'privacidade' %>" class="<%= aba === 'privacidade' ? 'ativa' : '' %>">
-                        <i class="fi fi-rr-shield-check" aria-hidden="true"></i> Privacidade
-                    </a>
-                </li>
-                <li>
-                    <a href="/configuracoes?aba=ajuda" role="tab" aria-selected="<%= aba === 'ajuda' %>" class="<%= aba === 'ajuda' ? 'ativa' : '' %>">
-                        <i class="fi fi-rr-interrogation" aria-hidden="true"></i> Ajuda
-                    </a>
-                </li>
-                <li class="config-abas-separador">
                     <a href="/logout" class="config-aba-sair">
                         <i class="fi fi-rr-sign-out-alt" aria-hidden="true"></i> Sair da conta
                     </a>
@@ -65,32 +118,40 @@
 
         <div class="config-conteudo">
 
+            <% if (mensagem) { %>
+                <p class="config-aviso <%= mensagem.tipo %>" role="<%= mensagem.tipo === 'erro' ? 'alert' : 'status' %>"><%= mensagem.texto %></p>
+            <% } %>
+
             <% if (aba === "conta") { %>
 
-                <section class="config-card" aria-labelledby="titulo-conta">
-                    <h2 id="titulo-conta">Informações da conta</h2>
-
+                <!-- ============ MINHA CONTA ============ -->
+                <section class="config-card" aria-labelledby="titulo-tipo">
+                    <h2 id="titulo-tipo">Tipo de conta</h2>
                     <div class="categoria-conta">
                         <div class="categoria-icone">
-                            <i class="fi <%= usuario.tipo === 'escola' ? 'fi-rr-graduation-cap' : 'fi-rr-heart' %>" aria-hidden="true"></i>
+                            <i class="fi <%= ehEscola ? 'fi-rr-graduation-cap' : 'fi-rr-heart' %>" aria-hidden="true"></i>
                         </div>
                         <div class="categoria-texto">
-                            <span class="categoria-rotulo">Categoria da conta</span>
                             <strong class="categoria-nome"><%= badgeTexto %></strong>
                             <p class="categoria-descricao">
-                                <% if (usuario.tipo === "escola") { %>
-                                    Contas de Instituição podem montar um carrinho de solicitações e acompanhar o histórico de pedidos enviados.
+                                <% if (ehEscola) { %>
+                                    Contas de Instituição podem montar um carrinho de solicitações, acompanhar o histórico de pedidos, repassar livros para outras escolas e publicar relatos.
                                 <% } else { %>
-                                    Contas de Doador podem doar livros e acompanhar sua posição no ranking de doadores.
+                                    Contas de Doador podem doar livros, escolher a escola que vai receber e acompanhar sua posição no ranking de doadores.
                                 <% } %>
                             </p>
                         </div>
                     </div>
+                    <p class="config-nota">O tipo de conta é definido no cadastro e não pode ser trocado. Precisa de outro tipo? Fale com o suporte na aba <a href="/configuracoes?aba=ajuda">Ajuda</a>.</p>
+                </section>
 
-                    <hr class="config-divisor">
+                <section class="config-card" aria-labelledby="titulo-perfil">
+                    <div class="config-card-topo">
+                        <h2 id="titulo-perfil">Perfil público</h2>
+                        <a href="<%= linkEditar %>" class="config-botao-secundario"><i class="fi fi-rr-pencil" aria-hidden="true"></i> Editar perfil</a>
+                    </div>
+                    <p class="config-ajuda-texto">Isto aparece para outras pessoas no DiscoverBook.</p>
 
-                    <h3 class="config-subtitulo">Informações públicas</h3>
-                    <p class="config-ajuda-texto">Visível para outras pessoas no DiscoverBook.</p>
                     <dl class="config-lista-info">
                         <dt>Nome de perfil</dt>
                         <dd><%= nomeExibido %></dd>
@@ -102,110 +163,311 @@
                         <dd><%= dataFormatada %></dd>
                     </dl>
 
-                    <hr class="config-divisor">
+                    <div class="config-progresso" aria-label="Completude do perfil">
+                        <div class="config-progresso-topo">
+                            <strong><%= porcentagem === 100 ? "Perfil completo" : "Perfil " + porcentagem + "% completo" %></strong>
+                            <span><%= feitos %> de <%= itensPerfil.length %></span>
+                        </div>
+                        <div class="config-barra" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="<%= porcentagem %>">
+                            <span style="width: <%= porcentagem %>%"></span>
+                        </div>
+                        <ul class="config-checklist">
+                            <% itensPerfil.forEach(function(item) { %>
+                                <li class="<%= item.ok ? 'feito' : '' %>">
+                                    <span class="config-check" aria-hidden="true"><%= item.ok ? "✓" : "" %></span>
+                                    <%= item.texto %>
+                                    <span class="sr-only"><%= item.ok ? "(preenchido)" : "(falta preencher)" %></span>
+                                </li>
+                            <% }); %>
+                        </ul>
+                        <% if (porcentagem < 100) { %>
+                            <p class="config-nota"><a href="<%= linkEditar %>">Completar meu perfil</a> ajuda <%= ehEscola ? "doadores a conhecerem melhor a escola" : "as escolas a conhecerem você" %>.</p>
+                        <% } %>
+                    </div>
+                </section>
 
-                    <h3 class="config-subtitulo">Informações privadas</h3>
-                    <p class="config-ajuda-texto">Só você consegue ver.</p>
+                <section class="config-card" aria-labelledby="titulo-privado">
+                    <h2 id="titulo-privado">Dados de acesso</h2>
+                    <p class="config-ajuda-texto"><i class="fi fi-rr-lock" aria-hidden="true"></i> Só você consegue ver. Não aparecem no seu perfil.</p>
+
                     <dl class="config-lista-info">
+                        <dt>Nome no cadastro</dt>
+                        <dd><%= usuario.nome %></dd>
+
                         <dt>E-mail</dt>
                         <dd><%= usuario.email %></dd>
                     </dl>
 
-                    <p class="config-dica">
-                        Para alterar seu nome de perfil ou avatar, acesse
-                        <a href="/perfil?editar=1">Editar perfil</a>.
-                    </p>
+                    <details class="config-detalhes" <%= emailComErro ? "open" : "" %>>
+                        <summary>Alterar e-mail</summary>
+                        <form action="/configuracoes/email" method="POST" class="config-form">
+                            <label for="novo_email">Novo e-mail</label>
+                            <input type="email" id="novo_email" name="email" required maxlength="120" autocomplete="email" placeholder="voce@exemplo.com">
+
+                            <label for="senha_email">Sua senha <span class="config-label-aux">(para confirmar que é você)</span></label>
+                            <div class="config-campo-senha">
+                                <input type="password" id="senha_email" name="senha" required autocomplete="current-password">
+                                <button type="button" class="config-ver-senha" data-alvo="senha_email" aria-label="Mostrar senha">Mostrar</button>
+                            </div>
+
+                            <button type="submit" class="btn-salvar">Salvar e-mail</button>
+                        </form>
+                    </details>
                 </section>
 
-            <% } else if (aba === "senha") { %>
+            <% } else if (aba === "seguranca") { %>
 
+                <!-- ============ SEGURANÇA ============ -->
                 <section class="config-card" aria-labelledby="titulo-senha">
                     <h2 id="titulo-senha">Alterar senha</h2>
+                    <p class="config-ajuda-texto">Use uma senha que você não usa em outros sites.</p>
 
-                    <% if (erroSenha === "campos") { %>
-                        <p class="erro" role="alert">Preencha todos os campos.</p>
-                    <% } else if (erroSenha === "confirmacao") { %>
-                        <p class="erro" role="alert">A confirmação não confere com a nova senha.</p>
-                    <% } else if (erroSenha === "tamanho") { %>
-                        <p class="erro" role="alert">A nova senha deve ter pelo menos 6 caracteres.</p>
-                    <% } else if (erroSenha === "senha_atual") { %>
-                        <p class="erro" role="alert">A senha atual está incorreta.</p>
-                    <% } else if (erroSenha === "sistema") { %>
-                        <p class="erro" role="alert">Não foi possível alterar a senha. Tente novamente.</p>
-                    <% } %>
-
-                    <% if (sucessoSenha) { %>
-                        <p class="sucesso" role="status">Senha alterada com sucesso!</p>
-                    <% } %>
-
-                    <form action="/configuracoes/senha" method="POST" class="config-form">
+                    <form action="/configuracoes/senha" method="POST" class="config-form" id="form-senha">
 
                         <label for="senha_atual">Senha atual</label>
-                        <input type="password" id="senha_atual" name="senha_atual" required autocomplete="current-password">
+                        <div class="config-campo-senha">
+                            <input type="password" id="senha_atual" name="senha_atual" required autocomplete="current-password">
+                            <button type="button" class="config-ver-senha" data-alvo="senha_atual" aria-label="Mostrar senha atual">Mostrar</button>
+                        </div>
+                        <a href="/esqueci" class="config-link-pequeno">Esqueci minha senha atual</a>
 
                         <label for="nova_senha">Nova senha</label>
-                        <input type="password" id="nova_senha" name="nova_senha" required minlength="6" autocomplete="new-password">
+                        <div class="config-campo-senha">
+                            <input type="password" id="nova_senha" name="nova_senha" required minlength="6" autocomplete="new-password" aria-describedby="forca-senha requisitos-senha">
+                            <button type="button" class="config-ver-senha" data-alvo="nova_senha" aria-label="Mostrar nova senha">Mostrar</button>
+                        </div>
+
+                        <div class="config-forca" id="forca-senha" aria-live="polite">
+                            <div class="config-forca-barras" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+                            <span class="config-forca-texto">Digite uma senha para ver a força.</span>
+                        </div>
+
+                        <ul class="config-requisitos" id="requisitos-senha">
+                            <li data-req="tamanho"><span aria-hidden="true">○</span> Pelo menos 6 caracteres <small>(8 ou mais é melhor)</small></li>
+                            <li data-req="mistura"><span aria-hidden="true">○</span> Letras e números misturados</li>
+                            <li data-req="diferente"><span aria-hidden="true">○</span> Diferente da senha atual</li>
+                        </ul>
 
                         <label for="confirmar_senha">Confirmar nova senha</label>
-                        <input type="password" id="confirmar_senha" name="confirmar_senha" required minlength="6" autocomplete="new-password">
+                        <div class="config-campo-senha">
+                            <input type="password" id="confirmar_senha" name="confirmar_senha" required minlength="6" autocomplete="new-password" aria-describedby="aviso-confirmacao">
+                            <button type="button" class="config-ver-senha" data-alvo="confirmar_senha" aria-label="Mostrar confirmação da senha">Mostrar</button>
+                        </div>
+                        <p class="config-confirmacao" id="aviso-confirmacao" aria-live="polite"></p>
 
                         <button type="submit" class="btn-salvar">Alterar senha</button>
 
                     </form>
                 </section>
 
-            <% } else if (aba === "privacidade") { %>
+                <section class="config-card" aria-labelledby="titulo-sessao">
+                    <h2 id="titulo-sessao">Sessão neste aparelho</h2>
+                    <p>Está usando um computador ou celular compartilhado? Saia da conta quando terminar.</p>
+                    <a href="/logout" class="config-botao-secundario"><i class="fi fi-rr-sign-out-alt" aria-hidden="true"></i> Sair da conta</a>
+                </section>
 
-                <section class="config-card" aria-labelledby="titulo-privacidade">
-                    <h2 id="titulo-privacidade">Privacidade</h2>
+            <% } else if (aba === "preferencias") { %>
 
+                <!-- ============ PREFERÊNCIAS ============ -->
+                <section class="config-card" aria-labelledby="titulo-pref">
+                    <h2 id="titulo-pref">Preferências</h2>
+                    <p class="config-ajuda-texto">Escolha o que aparece e o que você quer receber. Tudo começa ligado.</p>
+
+                    <form action="/configuracoes/preferencias" method="POST" id="form-preferencias">
+
+                        <ul class="config-opcoes">
+
+                            <% if (ehEscola) { %>
+
+                                <li class="config-opcao">
+                                    <div class="config-opcao-texto">
+                                        <label for="pref_aceita_doacoes">Receber doações diretas de doadores</label>
+                                        <p>Quando ligado, sua escola aparece na lista de destinos da página <a href="/doar">Doar</a> e doadores podem escolher você para receber o livro. Desligado, você continua pedindo livros pelo acervo normalmente.</p>
+                                    </div>
+                                    <span class="config-switch">
+                                        <input type="checkbox" id="pref_aceita_doacoes" name="aceita_doacoes" value="1" <%= usuario.aceita_doacoes === 0 ? "" : "checked" %>>
+                                        <span class="config-switch-trilho" aria-hidden="true"></span>
+                                    </span>
+                                </li>
+
+                            <% } else { %>
+
+                                <li class="config-opcao">
+                                    <div class="config-opcao-texto">
+                                        <label for="pref_mostrar_ranking">Aparecer no ranking de doadores</label>
+                                        <p>Quando ligado, seu nome de perfil, avatar e livros doados aparecem no ranking para os outros doadores. Desligado, você some do ranking dos outros, mas continua vendo sua própria posição.</p>
+                                    </div>
+                                    <span class="config-switch">
+                                        <input type="checkbox" id="pref_mostrar_ranking" name="mostrar_ranking" value="1" <%= usuario.mostrar_ranking === 0 ? "" : "checked" %>>
+                                        <span class="config-switch-trilho" aria-hidden="true"></span>
+                                    </span>
+                                </li>
+
+                                <li class="config-opcao">
+                                    <div class="config-opcao-texto">
+                                        <label for="pref_mostrar_relatos">Mostrar relatos das escolas no meu perfil</label>
+                                        <p>Quando uma escola publica foto e frase de um livro que você doou, o relato aparece no seu perfil. Desligado, os relatos ficam escondidos do seu perfil.</p>
+                                    </div>
+                                    <span class="config-switch">
+                                        <input type="checkbox" id="pref_mostrar_relatos" name="mostrar_relatos" value="1" <%= usuario.mostrar_relatos === 0 ? "" : "checked" %>>
+                                        <span class="config-switch-trilho" aria-hidden="true"></span>
+                                    </span>
+                                </li>
+
+                            <% } %>
+
+                        </ul>
+
+                        <div class="config-barra-salvar">
+                            <button type="submit" class="btn-salvar" id="btn-salvar-pref" disabled>Salvar preferências</button>
+                            <span class="config-nota" id="aviso-pref">Nenhuma alteração ainda.</span>
+                        </div>
+
+                    </form>
+                </section>
+
+                <section class="config-card" aria-labelledby="titulo-perfil-atalho">
+                    <h2 id="titulo-perfil-atalho">Nome e avatar</h2>
+                    <p>Seu nome de perfil e seu avatar são editados direto no perfil.</p>
+                    <a href="<%= linkEditar %>" class="config-botao-secundario"><i class="fi fi-rr-pencil" aria-hidden="true"></i> Editar perfil</a>
+                </section>
+
+            <% } else if (aba === "dados") { %>
+
+                <!-- ============ MEUS DADOS (PRIVACIDADE) ============ -->
+                <section class="config-card" aria-labelledby="titulo-quais">
+                    <h2 id="titulo-quais">Quais dados guardamos</h2>
                     <p>
-                        Seus dados (nome, e-mail e histórico de doações ou solicitações) são usados
-                        apenas para o funcionamento da plataforma DiscoverBook e não são
+                        Seus dados são usados apenas para o funcionamento do DiscoverBook e não são
                         compartilhados com terceiros.
                     </p>
 
-                    <hr class="config-divisor">
+                    <div class="config-tabela-rolagem">
+                        <table class="config-tabela">
+                            <thead>
+                                <tr><th scope="col">Dado</th><th scope="col">Para que serve</th><th scope="col">Quem vê</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Nome de perfil e avatar</td><td>Identificar você no site</td><td><span class="config-pilula publico">Público</span></td></tr>
+                                <% if (ehEscola) { %>
+                                    <tr><td>Descrição, cidade, etapas, livros procurados e Instagram</td><td>Mostrar a escola para doadores</td><td><span class="config-pilula publico">Público</span></td></tr>
+                                <% } %>
+                                <tr><td>Nome no cadastro</td><td>Identificar a conta</td><td><span class="config-pilula privado">Só você e a equipe</span></td></tr>
+                                <tr><td>E-mail</td><td>Entrar na conta e entrar em contato</td><td><span class="config-pilula privado">Só você e a equipe</span></td></tr>
+                                <tr><td>Senha</td><td>Proteger o acesso (guardada de forma criptografada)</td><td><span class="config-pilula privado">Ninguém</span></td></tr>
+                                <% if (ehEscola) { %>
+                                    <tr><td>Pedidos de livros (responsável, telefone, quantidade)</td><td>Organizar a entrega</td><td><span class="config-pilula privado">Só você e a equipe</span></td></tr>
+                                <% } else { %>
+                                    <tr><td>Doações (livro, quantidade, telefone)</td><td>Organizar a entrega e montar seu ranking</td><td><span class="config-pilula privado">Só você e a equipe</span></td></tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
 
-                    <h3 class="config-subtitulo">Excluir minha conta</h3>
+                <section class="config-card" aria-labelledby="titulo-baixar">
+                    <h2 id="titulo-baixar">Baixar meus dados</h2>
+                    <p>Receba uma cópia de tudo que o DiscoverBook guarda sobre você, em um arquivo que você pode abrir e guardar. A senha nunca vai no arquivo.</p>
+                    <a href="/configuracoes/exportar" class="config-botao-secundario"><i class="fi fi-rr-download" aria-hidden="true"></i> Baixar meus dados</a>
+                </section>
+
+                <section class="config-card config-card-perigo" aria-labelledby="titulo-excluir">
+                    <h2 id="titulo-excluir">Excluir minha conta</h2>
                     <p>
-                        Essa ação apaga permanentemente sua conta e não pode ser desfeita.
+                        <strong>Essa ação é permanente e não pode ser desfeita.</strong>
+                        Sua conta, seu nome de perfil, seu avatar e sua posição no ranking serão apagados<%= ehEscola ? " e a página pública da escola deixa de existir" : "" %>.
+                        Se quiser guardar seus dados, <a href="/configuracoes/exportar">baixe uma cópia</a> antes.
                     </p>
 
-                    <% if (erroConta === "senha") { %>
-                        <p class="erro" role="alert">Digite sua senha para confirmar.</p>
-                    <% } else if (erroConta === "senha_incorreta") { %>
-                        <p class="erro" role="alert">Senha incorreta.</p>
-                    <% } else if (erroConta === "sistema") { %>
-                        <p class="erro" role="alert">Não foi possível excluir a conta. Tente novamente.</p>
-                    <% } %>
+                    <form action="/configuracoes/excluir-conta" method="POST" class="config-form" id="form-excluir">
+                        <label for="confirmacao_exclusao">Digite <strong>EXCLUIR</strong> para confirmar</label>
+                        <input type="text" id="confirmacao_exclusao" name="confirmacao" required autocomplete="off" autocapitalize="characters" spellcheck="false">
 
-                    <form action="/configuracoes/excluir-conta" method="POST" class="config-form" onsubmit="return confirm('Tem certeza que deseja excluir sua conta? Essa ação não pode ser desfeita.');">
-                        <label for="senha_exclusao">Confirme sua senha</label>
-                        <input type="password" id="senha_exclusao" name="senha" required autocomplete="current-password">
-                        <button type="submit" class="btn-perigo">Excluir minha conta</button>
+                        <label for="senha_exclusao">Sua senha</label>
+                        <div class="config-campo-senha">
+                            <input type="password" id="senha_exclusao" name="senha" required autocomplete="current-password">
+                            <button type="button" class="config-ver-senha" data-alvo="senha_exclusao" aria-label="Mostrar senha">Mostrar</button>
+                        </div>
+
+                        <button type="submit" class="btn-perigo" id="btn-excluir" disabled>Excluir minha conta</button>
                     </form>
                 </section>
 
             <% } else if (aba === "ajuda") { %>
 
+                <!-- ============ AJUDA ============ -->
                 <section class="config-card" aria-labelledby="titulo-ajuda">
-                    <h2 id="titulo-ajuda">Ajuda</h2>
+                    <h2 id="titulo-ajuda">Como podemos ajudar?</h2>
 
-                    <ul class="config-lista-ajuda">
+                    <ul class="config-atalhos">
                         <li>
-                            <a href="/sobre">Sobre o DiscoverBook</a>
-                            <p>Conheça mais sobre o projeto e sua missão.</p>
+                            <a href="/duvidas">
+                                <i class="fi fi-rr-interrogation" aria-hidden="true"></i>
+                                <strong>Dúvidas frequentes</strong>
+                                <span>Como doar, como pedir e onde está o seu livro.</span>
+                            </a>
                         </li>
                         <li>
-                            <a href="https://wa.me/5598999999999" target="_blank" rel="noopener">Falar com o suporte no WhatsApp</a>
-                            <p>Tire dúvidas sobre doações, solicitações ou sua conta.</p>
+                            <a href="https://wa.me/5598999999999" target="_blank" rel="noopener">
+                                <i class="fi fi-rr-comment" aria-hidden="true"></i>
+                                <strong>Suporte no WhatsApp</strong>
+                                <span>Fale com a equipe sobre doações, pedidos ou sua conta.</span>
+                            </a>
                         </li>
                         <li>
-                            <a href="/esqueci">Esqueci minha senha</a>
-                            <p>Recupere o acesso à sua conta.</p>
+                            <a href="/sobre">
+                                <i class="fi fi-rr-book" aria-hidden="true"></i>
+                                <strong>Sobre o DiscoverBook</strong>
+                                <span>Conheça o projeto e a nossa missão.</span>
+                            </a>
                         </li>
                     </ul>
+                </section>
+
+                <section class="config-card" aria-labelledby="titulo-faq">
+                    <h2 id="titulo-faq">Perguntas sobre a conta</h2>
+
+                    <div class="config-faq">
+                        <details>
+                            <summary>Como mudo meu nome de perfil ou avatar?</summary>
+                            <p>Vá em <a href="<%= linkEditar %>">Editar perfil</a>. O nome de perfil precisa ser único no site.</p>
+                        </details>
+                        <details>
+                            <summary>Como troco meu e-mail ou minha senha?</summary>
+                            <p>O e-mail fica em <a href="/configuracoes?aba=conta">Minha conta</a> e a senha em <a href="/configuracoes?aba=seguranca">Segurança</a>. Nos dois casos pedimos sua senha atual para confirmar que é você.</p>
+                        </details>
+                        <details>
+                            <summary>Esqueci minha senha. E agora?</summary>
+                            <p>Use a página <a href="/esqueci">Recuperar senha</a> para criar uma nova.</p>
+                        </details>
+                        <% if (ehEscola) { %>
+                            <details>
+                                <summary>Onde acompanho meus pedidos?</summary>
+                                <p>Na <a href="<%= linkPerfil %>">página da sua escola</a>. Cada pedido passa por Recebida, Confirmada, Pronta para retirada e Entregue. Você pode cancelar enquanto ele não foi entregue.</p>
+                            </details>
+                            <details>
+                                <summary>Quero deixar de receber doações diretas. É possível?</summary>
+                                <p>Sim. Desligue a opção em <a href="/configuracoes?aba=preferencias">Preferências</a>. Você continua podendo pedir livros pelo acervo.</p>
+                            </details>
+                        <% } else { %>
+                            <details>
+                                <summary>Onde vejo os livros que já doei?</summary>
+                                <p>No seu <a href="/perfil?aba=doados">perfil, na aba Livros doados</a>. Lá também fica o ranking de doadores.</p>
+                            </details>
+                            <details>
+                                <summary>Não quero aparecer no ranking. É possível?</summary>
+                                <p>Sim. Desligue a opção em <a href="/configuracoes?aba=preferencias">Preferências</a>. Você ainda vê sua própria posição.</p>
+                            </details>
+                        <% } %>
+                        <details>
+                            <summary>Quem vê meus dados?</summary>
+                            <p>Seu nome de perfil e avatar são públicos. E-mail e nome do cadastro só você e a equipe veem. Veja a lista completa em <a href="/configuracoes?aba=dados">Meus dados</a>.</p>
+                        </details>
+                        <details>
+                            <summary>Como excluo minha conta?</summary>
+                            <p>Em <a href="/configuracoes?aba=dados">Meus dados</a>, no fim da página. Você precisa digitar EXCLUIR e sua senha. Antes, é possível baixar uma cópia dos seus dados.</p>
+                        </details>
+                    </div>
                 </section>
 
             <% } %>

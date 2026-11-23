@@ -106,8 +106,10 @@
                 </div>
             </fieldset>
 
+            <%- include('partials/doar-escola', { numero: 3, escolas, selecionada: doacao.escola_destino_id }) %>
+
             <fieldset>
-                <legend><span class="doar-bolha">3</span> Foto do livro</legend>
+                <legend><span class="doar-bolha">4</span> Foto do livro</legend>
 
                 <% if (doacao.foto) { %>
                     <div class="doar-foto-atual">

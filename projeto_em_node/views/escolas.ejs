@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escolas cadastradas | DiscoverBook</title>
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/perfil.css">
+    <link rel="stylesheet" href="/css/relatos.css">
+    <link rel="stylesheet" href="/css/perfil-cores.css">
+    <link rel="stylesheet" href="/css/escolas-picker.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Karla:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css">
+    <style>
+        .le-grade { max-width: 1040px; margin: 0 auto 80px; padding: 28px 20px 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
+        .le-card { border-radius: 22px; padding: 22px; background: #fff; border-top: 8px solid #8472f4; box-shadow: 0 18px 30px -20px rgba(42, 31, 92, .7); display: flex; flex-direction: column; gap: 12px; }
+        .le-card:nth-child(4n+2) { border-top-color: #e9a65a; background: linear-gradient(180deg, #fff4e3, #fff 45%); }
+        .le-card:nth-child(4n+3) { border-top-color: #d46bc9; background: linear-gradient(180deg, #fbeaf8, #fff 45%); }
+        .le-card:nth-child(4n+1) { background: linear-gradient(180deg, #ece6fb, #fff 45%); }
+        .le-topo { display: flex; gap: 14px; align-items: center; }
+        .le-topo img { width: 62px; height: 62px; border-radius: 50%; object-fit: cover; border: 4px solid #fff; box-shadow: 0 8px 16px -8px rgba(0,0,0,.4); }
+        .le-topo h2 { font-size: 19px; line-height: 1.2; overflow-wrap: anywhere; }
+        .le-topo small { display: block; color: #5a5478; font-weight: 700; font-size: 13px; margin-top: 3px; }
+        .le-procura { font-size: 13.5px; color: #3a3355; line-height: 1.5; background: rgba(255,255,255,.75); border-radius: 12px; padding: 10px 12px; }
+        .le-nums { display: flex; gap: 8px; flex-wrap: wrap; }
+        .le-nums span { font-size: 12px; font-weight: 800; border-radius: 12px; padding: 4px 10px; background: #dcd2ff; color: #3b2a8c; }
+        .le-acoes { display: flex; gap: 8px; flex-wrap: wrap; margin-top: auto; }
+        .le-btn { text-decoration: none; font-weight: 800; font-size: 13.5px; padding: 10px 18px; border-radius: 20px; transition: .2s; }
+        .le-btn:hover { transform: translateY(-2px); }
+        .le-btn-1 { background: #4c37a3; color: #fff; }
+        .le-btn-2 { background: #fff; color: #4c37a3; border: 2px solid #d9d0ff; }
+        .le-vazio { grid-column: 1 / -1; }
+    </style>
+</head>
+<body>
+<a href="#conteudo-escolas" class="pular-conteudo">Pular para o conteúdo</a>
+
+<%- include('partials/topo') %>
+<%- include('partials/header') %>
+<%- include('partials/nav-categorias') %>
+
+<main id="conteudo-escolas" class="perfil-page">
+    <section class="rel-hero">
+        <div class="rel-hero-in">
+            <div>
+                <span class="rel-eyebrow">Escolas parceiras</span>
+                <h1>Escolas que querem <em>receber seus livros.</em></h1>
+                <p><%= escolas.length %> <%= escolas.length === 1 ? "escola cadastrada" : "escolas cadastradas" %> no DiscoverBook. Escolha uma e doe.</p>
+                <a class="rel-btn rel-btn-claro" href="/doar">Doar um livro</a>
+            </div>
+            <div class="rel-leque" aria-hidden="true">
+                <img class="a" src="/img/matilda.jpg" alt="">
+                <img class="b" src="/img/malala.webp" alt="">
+                <img class="c" src="/img/galinha.webp" alt="">
+            </div>
+        </div>
+        <div class="rel-estante" aria-hidden="true"><% for (let i = 0; i < 24; i++) { %><span></span><% } %></div>
+    </section>
+
+    <div class="le-grade">
+        <% if (escolas.length === 0) { %>
+            <div class="esc-vazio le-vazio"><i class="fi fi-rr-graduation-cap" aria-hidden="true"></i> Ainda não há escolas cadastradas. Volte em breve!</div>
+        <% } %>
+        <% escolas.forEach(function(e) { %>
+            <article class="le-card">
+                <div class="le-topo">
+                    <img src="<%= e.foto %>" alt="">
+                    <div>
+                        <h2><%= e.nome %></h2>
+                        <small><i class="fi fi-rr-marker" aria-hidden="true"></i> <%= e.cidade || "Cidade não informada" %></small>
+                    </div>
+                </div>
+                <% if (e.etapasLista.length || e.recebidos || e.relatos) { %>
+                <div class="le-nums">
+                    <% e.etapasLista.slice(0, 2).forEach(function(et) { %><span><%= et %></span><% }) %>
+                    <% if (e.recebidos > 0) { %><span><%= e.recebidos %> livros recebidos</span><% } %>
+                    <% if (e.relatos > 0) { %><span><%= e.relatos %> em uso</span><% } %>
+                </div>
+                <% } %>
+                <% if (e.necessidades && e.necessidades.trim()) { %>
+                    <p class="le-procura"><strong>Procura:</strong> <%= e.necessidades %></p>
+                <% } %>
+                <div class="le-acoes">
+                    <a class="le-btn le-btn-1" href="/escola/<%= e.id %>">Ver escola</a>
+                    <% if (usuarioTipo !== "escola") { %><a class="le-btn le-btn-2" href="/doar">Doar livro</a><% } %>
+                </div>
+            </article>
+        <% }) %>
+    </div>
+</main>
+
+<%- include('partials/footer') %>
+</body>
+</html>

@@ -16,23 +16,39 @@
     top: 0;
 }
 
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
 .config {
-    max-width: 900px;
+    max-width: 980px;
     margin: 40px auto 80px;
     padding: 0 20px;
 }
 
+/* ---------- TÍTULO ---------- */
 .config-titulo {
     display: flex;
     align-items: center;
     gap: 14px;
-    margin-bottom: 28px;
+    margin-bottom: 22px;
 }
 
 .config-titulo h1 {
     font-family: 'Poppins', Arial, Helvetica, sans-serif;
     font-size: 24px;
     color: #2b2140;
+}
+
+.config-subtitulo-pagina {
+    font-size: 14px;
+    color: #777;
+    margin-top: 2px;
 }
 
 .voltar-perfil {
@@ -53,6 +69,109 @@
     color: var(--cor-primaria, #8472f4);
 }
 
+/* ---------- RESUMO DA CONTA ---------- */
+.config-resumo {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    background: linear-gradient(135deg, #f1eeff, #faf9ff);
+    border: 1px solid #e7e2fb;
+    border-radius: 16px;
+    padding: 18px 22px;
+    margin-bottom: 26px;
+}
+
+.config-resumo-avatar {
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #fff;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 10px rgba(110, 91, 216, 0.25);
+}
+
+.config-resumo-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+    flex: 1;
+}
+
+.config-resumo-nome {
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    color: #2b2140;
+    overflow-wrap: anywhere;
+}
+
+.config-resumo-email {
+    font-size: 13px;
+    color: #666;
+    overflow-wrap: anywhere;
+}
+
+.config-resumo-tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 12px;
+    margin-top: 4px;
+}
+
+.config-selo {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--cor-primaria, #8472f4);
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 3px 10px;
+    border-radius: 20px;
+}
+
+.config-resumo-desde {
+    font-size: 12px;
+    color: #777;
+}
+
+.config-resumo-numero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 0 6px;
+}
+
+.config-resumo-numero strong {
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+    font-size: 26px;
+    line-height: 1;
+    color: var(--cor-primaria-escura, #6e5bd8);
+}
+
+.config-resumo-numero span {
+    font-size: 12px;
+    color: #666;
+    margin-top: 4px;
+}
+
+.config-resumo-link {
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--cor-primaria-escura, #6e5bd8);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.config-resumo-link:hover {
+    text-decoration: underline;
+}
+
+/* ---------- LAYOUT + MENU ---------- */
 .config-layout {
     display: grid;
     grid-template-columns: 220px 1fr;
@@ -60,12 +179,30 @@
     align-items: start;
 }
 
-/* ---------- ABAS ---------- */
+.config-abas {
+    position: sticky;
+    top: 16px;
+}
+
+.config-grupo-titulo {
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #9a93b8;
+    padding: 0 14px;
+    margin: 14px 0 4px;
+}
+
+.config-grupo-titulo:first-child {
+    margin-top: 0;
+}
+
 .config-abas ul {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 2px;
 }
 
 .config-abas a {
@@ -91,114 +228,76 @@
     color: #fff;
 }
 
-.config-abas-separador {
-    margin-top: 10px;
+.config-abas-sair {
+    margin-top: 14px;
     padding-top: 10px;
     border-top: 1px solid #eee;
 }
 
 .config-aba-sair {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 14px;
-    border-radius: 10px;
-    text-decoration: none;
-    color: #d33;
-    font-size: 14px;
-    font-weight: 500;
-    transition: 0.2s;
+    color: #d33 !important;
 }
 
 .config-aba-sair:hover {
-    background: #fdeaea;
+    background: #fdeaea !important;
 }
 
-/* ---------- CONTEÚDO ---------- */
+/* ---------- CARTÕES ---------- */
+.config-conteudo {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 0;
+}
+
 .config-card {
     background: #fff;
     border: 1px solid #eee;
     border-radius: 16px;
     box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
-    padding: 28px 30px 32px;
+    padding: 26px 30px 28px;
 }
 
 .config-card h2 {
     font-family: 'Poppins', Arial, Helvetica, sans-serif;
-    font-size: 19px;
+    font-size: 18px;
     color: #2b2140;
-    margin-bottom: 18px;
+    margin-bottom: 6px;
 }
 
-.categoria-conta {
+.config-card-topo {
     display: flex;
     align-items: center;
-    gap: 16px;
-    background: linear-gradient(135deg, #f1eeff, #faf9ff);
-    border: 1px solid #e7e2fb;
-    border-radius: 14px;
-    padding: 18px 20px;
-    margin-bottom: 4px;
-}
-
-.categoria-icone {
-    width: 48px;
-    height: 48px;
-    flex-shrink: 0;
-    border-radius: 50%;
-    background: var(--cor-primaria, #8472f4);
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-}
-
-.categoria-texto {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-
-.categoria-rotulo {
-    font-size: 11px;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 0.4px;
-    color: var(--cor-primaria, #8472f4);
-}
-
-.categoria-nome {
-    font-family: 'Poppins', Arial, Helvetica, sans-serif;
-    font-size: 17px;
-    color: #2b2140;
-}
-
-.categoria-descricao {
-    font-size: 13px;
-    color: #666;
-    margin-top: 2px;
-    margin-bottom: 0;
-}
-
-.config-ajuda-texto {
-    font-size: 12px;
-    color: #999;
-    margin-top: -4px;
-    margin-bottom: 10px;
-}
-
-.config-subtitulo {
-    font-size: 16px;
-    color: #2b2140;
-    margin-bottom: 8px;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
 }
 
 .config-card p {
     color: #555;
     font-size: 14px;
     line-height: 1.6;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+}
+
+.config-card p a,
+.config-nota a,
+.config-faq a {
+    color: var(--cor-primaria-escura, #6e5bd8);
+    font-weight: bold;
+}
+
+.config-ajuda-texto {
+    font-size: 13px !important;
+    color: #888 !important;
+    margin-bottom: 16px !important;
+}
+
+.config-nota {
+    font-size: 13px !important;
+    color: #777 !important;
+    margin-top: 12px;
+    margin-bottom: 0 !important;
 }
 
 .config-divisor {
@@ -207,10 +306,75 @@
     margin: 24px 0;
 }
 
+/* Avisos de sucesso / erro (topo do conteúdo) */
+.config-aviso {
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 14px;
+    font-weight: bold;
+    border: 1px solid;
+}
+
+.config-aviso.sucesso {
+    background: #eaf7ee;
+    border-color: #bfe5c9;
+    color: #1b6b34;
+}
+
+.config-aviso.erro {
+    background: #fdeeee;
+    border-color: #f3c3c3;
+    color: #b02a2a;
+}
+
+/* ---------- TIPO DE CONTA ---------- */
+.categoria-conta {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    background: linear-gradient(135deg, #f1eeff, #faf9ff);
+    border: 1px solid #e7e2fb;
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-top: 12px;
+}
+
+.categoria-icone {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--cor-primaria, #8472f4);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.categoria-texto {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.categoria-nome {
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    color: #2b2140;
+}
+
+.categoria-descricao {
+    font-size: 13px !important;
+    color: #666 !important;
+    margin: 2px 0 0 !important;
+}
+
+/* ---------- LISTA DE INFORMAÇÕES ---------- */
 .config-lista-info {
     display: grid;
     grid-template-columns: max-content 1fr;
-    gap: 8px 20px;
+    gap: 10px 24px;
 }
 
 .config-lista-info dt {
@@ -222,19 +386,85 @@
 .config-lista-info dd {
     font-size: 14px;
     color: #222;
+    overflow-wrap: anywhere;
 }
 
-.config-dica {
-    margin-top: 20px;
+/* ---------- PROGRESSO DO PERFIL ---------- */
+.config-progresso {
+    margin-top: 22px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.config-progresso-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #2b2140;
+}
+
+.config-progresso-topo span {
+    font-size: 12px;
+    color: #888;
+}
+
+.config-barra {
+    height: 8px;
+    background: #eee9ff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.config-barra span {
+    display: block;
+    height: 100%;
+    background: var(--cor-primaria, #8472f4);
+    border-radius: 8px;
+    transition: width 0.4s;
+}
+
+.config-checklist {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px 16px;
+    margin-top: 14px;
     font-size: 13px;
+    color: #777;
 }
 
-.config-dica a {
-    color: var(--cor-primaria, #8472f4);
+.config-checklist li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.config-checklist li.feito {
+    color: #2b2140;
+}
+
+.config-check {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    border: 2px solid #d4cff0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
     font-weight: bold;
-    text-decoration: none;
+    color: #fff;
 }
 
+.feito .config-check {
+    background: #2e9d52;
+    border-color: #2e9d52;
+}
+
+/* ---------- FORMULÁRIOS ---------- */
 .config-form {
     display: flex;
     flex-direction: column;
@@ -249,7 +479,15 @@
     margin-top: 10px;
 }
 
-.config-form input {
+.config-label-aux {
+    font-weight: normal;
+    color: #888;
+}
+
+.config-form input[type="text"],
+.config-form input[type="email"],
+.config-form input[type="password"] {
+    width: 100%;
     border: 1px solid #ddd;
     border-radius: 10px;
     padding: 10px 14px;
@@ -257,12 +495,45 @@
     font-family: inherit;
 }
 
+.config-campo-senha {
+    position: relative;
+}
+
+.config-campo-senha input {
+    padding-right: 84px !important;
+}
+
+.config-ver-senha {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--cor-primaria-escura, #6e5bd8);
+    font-size: 12px;
+    font-weight: bold;
+    padding: 6px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.config-ver-senha:hover {
+    background: #f1eeff;
+}
+
+.config-link-pequeno {
+    font-size: 12px;
+    color: var(--cor-primaria-escura, #6e5bd8);
+    align-self: flex-start;
+}
+
 .btn-salvar {
     margin-top: 20px;
     background: var(--cor-primaria, #8472f4);
     color: #fff;
     border: none;
-    padding: 12px;
+    padding: 12px 22px;
     border-radius: 10px;
     font-weight: bold;
     font-size: 15px;
@@ -270,8 +541,282 @@
     transition: 0.2s;
 }
 
-.btn-salvar:hover {
+.btn-salvar:hover:not(:disabled) {
     background: var(--cor-primaria-escura, #6e5bd8);
+}
+
+.btn-salvar:disabled {
+    background: #cfc9f3;
+    cursor: not-allowed;
+}
+
+.config-botao-secundario {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #fff;
+    color: var(--cor-primaria-escura, #6e5bd8);
+    border: 1px solid #d9d3f7;
+    padding: 9px 16px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 13px;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.config-botao-secundario:hover {
+    background: #f1eeff;
+}
+
+/* Alterar e-mail (abre/fecha) */
+.config-detalhes {
+    margin-top: 20px;
+    border-top: 1px solid #eee;
+    padding-top: 16px;
+}
+
+.config-detalhes summary,
+.config-faq summary {
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--cor-primaria-escura, #6e5bd8);
+}
+
+.config-detalhes .config-form {
+    margin-top: 10px;
+}
+
+/* ---------- FORÇA DA SENHA ---------- */
+.config-forca {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 2px;
+}
+
+.config-forca-barras {
+    display: flex;
+    gap: 4px;
+    flex: 1;
+    max-width: 160px;
+}
+
+.config-forca-barras span {
+    flex: 1;
+    height: 5px;
+    border-radius: 4px;
+    background: #e8e5f5;
+    transition: background 0.2s;
+}
+
+.config-forca[data-nivel="1"] .config-forca-barras span:nth-child(-n+1) { background: #d33; }
+.config-forca[data-nivel="2"] .config-forca-barras span:nth-child(-n+2) { background: #e69a1a; }
+.config-forca[data-nivel="3"] .config-forca-barras span:nth-child(-n+3) { background: #7ab51d; }
+.config-forca[data-nivel="4"] .config-forca-barras span:nth-child(-n+4) { background: #2e9d52; }
+
+.config-forca-texto {
+    font-size: 12px;
+    color: #777;
+}
+
+.config-requisitos {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 12px;
+    color: #888;
+    margin: 4px 0 2px;
+}
+
+.config-requisitos li.ok {
+    color: #1b6b34;
+}
+
+.config-requisitos li span {
+    display: inline-block;
+    width: 16px;
+    font-weight: bold;
+}
+
+.config-requisitos small {
+    color: #aaa;
+}
+
+.config-confirmacao {
+    font-size: 12px !important;
+    min-height: 16px;
+    margin: 0 !important;
+    font-weight: bold;
+}
+
+.config-confirmacao.ok { color: #1b6b34 !important; }
+.config-confirmacao.erro { color: #b02a2a !important; }
+
+/* ---------- PREFERÊNCIAS (interruptores) ---------- */
+.config-opcoes {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+}
+
+.config-opcao {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 18px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.config-opcao:first-child {
+    padding-top: 4px;
+}
+
+.config-opcao-texto {
+    flex: 1;
+}
+
+.config-opcao-texto label {
+    display: block;
+    font-size: 15px;
+    font-weight: bold;
+    color: #2b2140;
+    margin-bottom: 4px;
+    cursor: pointer;
+}
+
+.config-opcao-texto p {
+    margin: 0 !important;
+    font-size: 13px !important;
+    color: #666 !important;
+}
+
+.config-switch {
+    position: relative;
+    flex-shrink: 0;
+    width: 48px;
+    height: 28px;
+    margin-top: 2px;
+}
+
+.config-switch input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.config-switch-trilho {
+    position: absolute;
+    inset: 0;
+    background: #cfcbe0;
+    border-radius: 28px;
+    transition: 0.2s;
+}
+
+.config-switch-trilho::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 22px;
+    height: 22px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+    transition: 0.2s;
+}
+
+.config-switch input:checked + .config-switch-trilho {
+    background: var(--cor-primaria, #8472f4);
+}
+
+.config-switch input:checked + .config-switch-trilho::after {
+    transform: translateX(20px);
+}
+
+.config-switch input:focus-visible + .config-switch-trilho {
+    outline: 2px solid var(--cor-primaria-escura, #6e5bd8);
+    outline-offset: 3px;
+}
+
+.config-barra-salvar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 6px;
+}
+
+.config-barra-salvar .btn-salvar {
+    margin-top: 14px;
+}
+
+.config-barra-salvar .config-nota {
+    margin-top: 14px;
+}
+
+/* ---------- TABELA DE DADOS ---------- */
+.config-tabela-rolagem {
+    overflow-x: auto;
+    margin-top: 6px;
+}
+
+.config-tabela {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.config-tabela th {
+    text-align: left;
+    font-size: 12px;
+    color: #888;
+    padding: 8px 10px;
+    border-bottom: 2px solid #eee;
+}
+
+.config-tabela td {
+    padding: 11px 10px;
+    border-bottom: 1px solid #f0f0f0;
+    color: #333;
+    vertical-align: top;
+}
+
+.config-pilula {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+}
+
+.config-pilula.publico {
+    background: #e8f1ff;
+    color: #2b5cb0;
+}
+
+.config-pilula.privado {
+    background: #efecfa;
+    color: #5a4bb0;
+}
+
+/* ---------- ZONA DE PERIGO ---------- */
+.config-card-perigo {
+    border-color: #f1c7c7;
+    background: #fffafa;
+}
+
+.config-card-perigo h2 {
+    color: #b02a2a;
 }
 
 .btn-perigo {
@@ -287,59 +832,137 @@
     transition: 0.2s;
 }
 
-.btn-perigo:hover {
+.btn-perigo:hover:not(:disabled) {
     background: #d33;
     color: #fff;
 }
 
-.erro {
-    color: #d33;
-    font-size: 13px;
-    font-weight: bold;
+.btn-perigo:disabled {
+    color: #d9a0a0;
+    border-color: #ecc9c9;
+    cursor: not-allowed;
 }
 
-.sucesso {
-    color: #1b8a3d;
-    font-size: 13px;
-    font-weight: bold;
-}
-
-.config-lista-ajuda {
+/* ---------- AJUDA ---------- */
+.config-atalhos {
     list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.config-atalhos a {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 4px;
+    height: 100%;
+    padding: 16px;
+    border: 1px solid #e7e2fb;
+    border-radius: 14px;
+    background: #faf9ff;
+    text-decoration: none;
+    color: #2b2140;
+    transition: 0.2s;
 }
 
-.config-lista-ajuda a {
+.config-atalhos a:hover {
+    border-color: var(--cor-primaria, #8472f4);
+    transform: translateY(-2px);
+}
+
+.config-atalhos i {
+    font-size: 20px;
     color: var(--cor-primaria, #8472f4);
-    font-weight: bold;
-    text-decoration: none;
+}
+
+.config-atalhos strong {
     font-size: 14px;
 }
 
-.config-lista-ajuda p {
-    margin-top: 2px;
-    font-size: 13px;
+.config-atalhos span {
+    font-size: 12px;
+    color: #666;
+    line-height: 1.5;
+}
+
+.config-faq {
+    margin-top: 10px;
+}
+
+.config-faq details {
+    border-bottom: 1px solid #eee;
+    padding: 14px 0;
+}
+
+.config-faq details:last-child {
+    border-bottom: none;
+}
+
+.config-faq summary {
+    color: #2b2140;
+}
+
+.config-faq p {
+    margin: 10px 0 0 !important;
 }
 
 a:focus-visible,
 button:focus-visible,
-input:focus-visible {
+input:focus-visible,
+summary:focus-visible {
     outline: 2px solid var(--cor-primaria-escura, #6e5bd8);
     outline-offset: 2px;
 }
 
 /* ---------- RESPONSIVO ---------- */
+@media (max-width: 800px) {
+    .config-resumo {
+        flex-wrap: wrap;
+    }
+
+    /* avatar + nome na primeira linha; número e link do perfil logo abaixo */
+    .config-resumo-info {
+        flex: 1 1 calc(100% - 90px);
+    }
+
+    .config-resumo-numero {
+        align-items: flex-start;
+        text-align: left;
+        margin-left: 82px;
+    }
+
+    .config-atalhos {
+        grid-template-columns: 1fr;
+    }
+}
+
 @media (max-width: 700px) {
     .config-layout {
         grid-template-columns: 1fr;
     }
 
-    .config-abas ul {
+    .config-abas {
+        position: static;
+        display: flex;
         flex-direction: row;
         overflow-x: auto;
+        gap: 4px;
         padding-bottom: 4px;
+    }
+
+    .config-grupo-titulo {
+        display: none;
+    }
+
+    .config-abas ul {
+        flex-direction: row;
+    }
+
+    .config-abas-sair {
+        margin-top: 0;
+        padding-top: 0;
+        border-top: none;
     }
 
     .config-abas a {
@@ -348,5 +971,18 @@ input:focus-visible {
 
     .config-card {
         padding: 22px 18px 26px;
+    }
+
+    .config-checklist {
+        grid-template-columns: 1fr;
+    }
+
+    .config-lista-info {
+        grid-template-columns: 1fr;
+        gap: 2px;
+    }
+
+    .config-lista-info dd {
+        margin-bottom: 10px;
     }
 }

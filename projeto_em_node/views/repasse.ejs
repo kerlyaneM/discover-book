@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="/css/header.css">
     <link rel="stylesheet" href="/css/perfil.css">
     <link rel="stylesheet" href="/css/admin-pedidos.css">
+    <link rel="stylesheet" href="/css/relatos.css">
+    <link rel="stylesheet" href="/css/escola.css">
     <link rel="stylesheet" href="/css/repasse.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Karla:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -21,145 +23,209 @@
 <%- include('partials/header') %>
 <%- include('partials/nav-categorias') %>
 
+<%
+    const pendentes = ofertasRecebidas.filter((o) => o.status === "oferecido");
+    const totalEnviados = meusRepasses.filter((r) => r.status !== "cancelado").length;
+%>
+
 <main id="conteudo-repasse" class="perfil-page repasse-page">
 
-    <div class="repasse-intro">
-        <span class="selo-tipo repasse-selo"><i class="fi fi-rr-heart" aria-hidden="true"></i> Sua escola também pode doar</span>
-        <h1>Doe os livros que sua escola não usa mais</h1>
-        <p>
-            Tem livro duplicado ou parado na estante? Cadastre aqui pra que <strong>outra escola</strong>
-            possa pedir e usar. Isso é diferente das suas <a href="/perfil?aba=carrinho">solicitações normais</a> —
-            sua escola continua podendo pedir livros doados por pessoas físicas do jeito que sempre pediu,
-            aqui é só um jeito a mais dela também ajudar doando.
-        </p>
-    </div>
-
-    <% if (sucesso === "cadastrado") { %>
-        <p class="perfil-sucesso" role="status">Livro cadastrado para doação! Ele já está visível para outras escolas.</p>
-    <% } else if (sucesso === "solicitado") { %>
-        <p class="perfil-sucesso" role="status">Pedido enviado! Aguarde a escola doadora aprovar.</p>
-    <% } else if (sucesso === "aprovado") { %>
-        <p class="perfil-sucesso" role="status">Doação aprovada! Combine a entrega com a escola que pediu.</p>
-    <% } else if (sucesso === "recusado") { %>
-        <p class="perfil-sucesso" role="status">Pedido recusado. O livro voltou a ficar disponível.</p>
-    <% } else if (sucesso === "cancelado") { %>
-        <p class="perfil-sucesso" role="status">Doação cancelada.</p>
-    <% } %>
-
-    <% if (erro === "dados") { %>
-        <p class="perfil-erro" role="status">Preencha todos os campos obrigatórios.</p>
-    <% } else if (erro === "proprio_livro") { %>
-        <p class="perfil-erro" role="status">Você não pode pedir um livro que sua própria escola cadastrou.</p>
-    <% } else if (erro === "indisponivel") { %>
-        <p class="perfil-erro" role="status">Esse livro não está mais disponível.</p>
-    <% } else if (erro) { %>
-        <p class="perfil-erro" role="status">Não foi possível concluir essa ação.</p>
-    <% } %>
-
-    <!-- ===================== CADASTRAR LIVRO PARA DOAÇÃO ===================== -->
-    <section class="repasse-secao">
-        <h2 class="secao-titulo">Cadastrar um livro para doar</h2>
-        <p class="secao-subtitulo">Ele vai aparecer pra outras escolas na lista abaixo, e você aprova quem pedir.</p>
-
-        <form action="/repasse" method="POST" class="repasse-form">
-            <div class="repasse-form-grid">
-                <div>
-                    <label for="livro">Título do livro *</label>
-                    <input type="text" id="livro" name="livro" placeholder="Ex: Sítio do Picapau Amarelo" required>
-                </div>
-                <div>
-                    <label for="quantidade">Quantidade *</label>
-                    <input type="number" id="quantidade" name="quantidade" min="1" value="1" required>
-                </div>
+    <!-- ===================== FAIXA ROXA ===================== -->
+    <section class="rel-hero rp-hero" aria-labelledby="t-rp">
+        <div class="rel-hero-in">
+            <div>
+                <span class="rel-eyebrow">Escola doadora</span>
+                <h1 id="t-rp">Dê um novo lar<br>para os <em>seus livros.</em></h1>
+                <p>Escolha a escola, conte qual livro vai e pronto.</p>
+                <a class="rel-btn rel-btn-claro" href="#doar" data-rp-ir="doar"><i class="fi fi-rr-paper-plane" aria-hidden="true"></i> Começar a doar</a>
             </div>
-
-            <label for="categoria">Categoria *</label>
-            <select id="categoria" name="categoria" required>
-                <option value="" disabled selected>Selecione</option>
-                <option value="infantil">Infantil</option>
-                <option value="fundamental">Ensino Fundamental</option>
-                <option value="medio">Ensino Médio</option>
-                <option value="leituras">Leituras</option>
-            </select>
-
-            <label for="descricao">Observações (opcional)</label>
-            <textarea id="descricao" name="descricao" rows="3" placeholder="Estado de conservação, edição, etc."></textarea>
-
-            <button type="submit" class="admin-btn-avancar repasse-btn-cadastrar">
-                <i class="fi fi-rr-plus" aria-hidden="true"></i> Cadastrar doação
-            </button>
-        </form>
+            <div class="rel-leque" aria-hidden="true">
+                <img class="a" src="/img/matilda.jpg" alt="">
+                <img class="b" src="/img/malala.webp" alt="">
+                <img class="c" src="/img/galinha.webp" alt="">
+            </div>
+        </div>
+        <div class="rel-estante" aria-hidden="true"><% for (let i = 0; i < 24; i++) { %><span></span><% } %></div>
     </section>
 
-    <!-- ===================== LIVROS QUE MINHA ESCOLA CADASTROU PRA DOAR ===================== -->
-    <section class="repasse-secao">
-        <h2 class="secao-titulo">Livros que minha escola cadastrou pra doar</h2>
+    <div class="rp-miolo">
 
-        <% if (meusRepasses.length === 0) { %>
-            <p class="vazio">Sua escola ainda não cadastrou nenhum livro pra doar.</p>
-        <% } else { %>
-            <ul class="lista-hist">
-                <% meusRepasses.forEach(function(r) { %>
-                    <li class="hist-item">
-                        <div class="hist-icone"><i class="fi fi-rr-book" aria-hidden="true"></i></div>
-                        <div class="hist-texto">
-                            <strong><%= r.livro %> — <%= r.quantidade %> <%= r.quantidade == 1 ? "exemplar" : "exemplares" %></strong>
-                            <span>Cadastrado em <%= r.dataFormatada %><% if (r.status === "solicitado" && r.escolaDestinoNome) { %> · Pedido por <%= r.escolaDestinoUsername || r.escolaDestinoNome %><% } %></span>
+        <% if (sucesso === "enviado") { %>
+            <p class="perfil-sucesso" role="status">Doação enviada! A escola escolhida já pode aceitar o livro.</p>
+        <% } else if (sucesso === "aceita") { %>
+            <p class="perfil-sucesso" role="status">Doação aceita! Combine a entrega com a escola que enviou.</p>
+        <% } else if (sucesso === "rejeitada") { %>
+            <p class="perfil-sucesso" role="status">Doação recusada.</p>
+        <% } else if (sucesso === "solicitado") { %>
+            <p class="perfil-sucesso" role="status">Pedido enviado! Aguarde a escola doadora aprovar.</p>
+        <% } else if (sucesso === "aprovado") { %>
+            <p class="perfil-sucesso" role="status">Doação aprovada! Combine a entrega com a escola que pediu.</p>
+        <% } else if (sucesso === "recusado") { %>
+            <p class="perfil-sucesso" role="status">Pedido recusado. O livro voltou a ficar disponível.</p>
+        <% } else if (sucesso === "cancelado") { %>
+            <p class="perfil-sucesso" role="status">Doação cancelada.</p>
+        <% } %>
+
+        <% if (erro === "dados") { %>
+            <p class="perfil-erro" role="alert">Preencha o título, a categoria e a quantidade.</p>
+        <% } else if (erro === "escola") { %>
+            <p class="perfil-erro" role="alert">Escolha a escola que vai receber o livro.</p>
+        <% } else if (erro === "proprio_livro") { %>
+            <p class="perfil-erro" role="alert">Você não pode pedir um livro que sua própria escola cadastrou.</p>
+        <% } else if (erro === "indisponivel") { %>
+            <p class="perfil-erro" role="alert">Esse livro não está mais disponível.</p>
+        <% } else if (erro) { %>
+            <p class="perfil-erro" role="alert">Não foi possível concluir essa ação.</p>
+        <% } %>
+
+        <!-- ===================== ABAS ===================== -->
+        <nav class="rp-abas" aria-label="Seções da doação entre escolas">
+            <a href="#doar" class="rp-aba" data-rp-aba="doar"><i class="fi fi-rr-paper-plane" aria-hidden="true"></i> Doar um livro</a>
+            <a href="#recebidas" class="rp-aba" data-rp-aba="recebidas">
+                <i class="fi fi-rr-inbox-in" aria-hidden="true"></i> Recebidas
+                <% if (pendentes.length > 0) { %><span class="rp-badge" aria-label="<%= pendentes.length %> aguardando resposta"><%= pendentes.length %></span><% } %>
+            </a>
+            <a href="#enviadas" class="rp-aba" data-rp-aba="enviadas"><i class="fi fi-rr-box-open" aria-hidden="true"></i> Meus envios <span class="rp-conta"><%= totalEnviados %></span></a>
+            <% if (disponiveis.length > 0) { %>
+                <a href="#avulsos" class="rp-aba" data-rp-aba="avulsos"><i class="fi fi-rr-book" aria-hidden="true"></i> Livros avulsos <span class="rp-conta"><%= disponiveis.length %></span></a>
+            <% } %>
+        </nav>
+
+        <!-- ===================== ABA: DOAR UM LIVRO ===================== -->
+        <section class="rp-painel" id="painel-doar" data-rp-painel="doar" aria-labelledby="t-doar">
+            <h2 id="t-doar" class="rp-titulo">Doar um livro para outra escola</h2>
+
+            <form action="/repasse" method="POST" class="rp-form">
+
+                <div class="rp-bloco rp-bloco-roxo">
+                    <h3><span class="rp-bol">1</span> Qual livro?</h3>
+                    <div class="rp-grid">
+                        <div>
+                            <label for="livro">Título do livro</label>
+                            <input type="text" id="livro" name="livro" placeholder="Ex: Sítio do Picapau Amarelo" required>
                         </div>
+                        <div>
+                            <label for="quantidade">Quantos exemplares</label>
+                            <input type="number" id="quantidade" name="quantidade" min="1" value="1" required>
+                        </div>
+                    </div>
 
-                        <% if (r.status === "disponivel") { %>
-                            <span class="hist-status hist-status-amarelo"><i class="fi fi-rr-hourglass" aria-hidden="true"></i> Disponível para doação</span>
-                            <form action="/repasse/<%= r.id %>/cancelar" method="POST" class="hist-form-cancelar">
-                                <button type="submit" class="hist-btn-cancelar" onclick="return confirm('Cancelar esta doação?')">
-                                    <i class="fi fi-rr-cross-small" aria-hidden="true"></i> Cancelar
-                                </button>
-                            </form>
-                        <% } else if (r.status === "solicitado") { %>
-                            <span class="hist-status hist-status-azul"><i class="fi fi-rr-inbox-in" aria-hidden="true"></i> Aguardando sua aprovação</span>
-                            <div class="repasse-acoes-dupla">
-                                <form action="/repasse/<%= r.id %>/aprovar" method="POST">
-                                    <button type="submit" class="admin-btn-avancar" onclick="return confirm('Aprovar esta doação?')">Aprovar</button>
-                                </form>
-                                <form action="/repasse/<%= r.id %>/recusar" method="POST">
-                                    <button type="submit" class="admin-btn-cancelar" onclick="return confirm('Recusar este pedido?')">Recusar</button>
-                                </form>
+                    <fieldset class="rp-cats">
+                        <legend>Para qual etapa?</legend>
+                        <% [["infantil", "Infantil", "fi-rr-child-head"], ["fundamental", "Fundamental", "fi-rr-pencil"], ["medio", "Médio", "fi-rr-graduation-cap"], ["leituras", "Leituras", "fi-rr-book"]].forEach(function(c, i) { %>
+                            <label class="rp-cat">
+                                <input type="radio" name="categoria" value="<%= c[0] %>" <%= i === 0 ? "required" : "required" %>>
+                                <span><i class="fi <%= c[2] %>" aria-hidden="true"></i> <%= c[1] %></span>
+                            </label>
+                        <% }) %>
+                    </fieldset>
+
+                    <label for="descricao">Observação <small>(opcional)</small></label>
+                    <input type="text" id="descricao" name="descricao" maxlength="160" placeholder="Estado do livro, edição…">
+                </div>
+
+                <div class="rp-bloco rp-bloco-ocre">
+                    <%- include('partials/doar-escola', { numero: 2, escolas, selecionada: escolaSelecionada, dica: "Estas são as escolas que estão no DiscoverBook. A escolhida recebe o aviso e aceita ou recusa." }) %>
+                </div>
+
+                <button type="submit" class="rp-enviar"><i class="fi fi-rr-paper-plane" aria-hidden="true"></i> Enviar doação</button>
+            </form>
+        </section>
+
+        <!-- ===================== ABA: RECEBIDAS ===================== -->
+        <section class="rp-painel" id="painel-recebidas" data-rp-painel="recebidas" aria-labelledby="t-rec" hidden>
+            <h2 id="t-rec" class="rp-titulo">Doações que outras escolas enviaram para você</h2>
+
+            <% if (ofertasRecebidas.length === 0) { %>
+                <div class="rp-vazio"><i class="fi fi-rr-inbox-in" aria-hidden="true"></i> Nenhuma escola enviou livro para a sua ainda.</div>
+            <% } else { %>
+                <ul class="rp-lista">
+                    <% ofertasRecebidas.forEach(function(r) { %>
+                        <li class="rp-item rp-item-<%= r.status %>">
+                            <img class="rp-av" src="<%= r.escolaOrigemAvatar ? '/img/avatars/' + r.escolaOrigemAvatar : '/img/perfil-padrao.jpg' %>" alt="">
+                            <div class="rp-txt">
+                                <strong><%= r.livro %> · <%= r.quantidade %> <%= r.quantidade == 1 ? "exemplar" : "exemplares" %></strong>
+                                <span>De <a class="escola-origem" href="/escola/<%= r.escola_origem_id %>"><%= r.escolaOrigemNome %></a> · <%= r.dataFormatada %><% if (r.descricao) { %> · <%= r.descricao %><% } %></span>
                             </div>
-                        <% } else if (r.status === "aprovado") { %>
-                            <span class="hist-status hist-status-verde"><i class="fi fi-rr-check-double" aria-hidden="true"></i> Doado</span>
-                        <% } else { %>
-                            <span class="hist-status hist-status-vermelho"><i class="fi fi-rr-cross-circle" aria-hidden="true"></i> Cancelado</span>
-                        <% } %>
-                    </li>
-                <% }) %>
-            </ul>
-        <% } %>
-    </section>
+                            <% if (r.status === "oferecido") { %>
+                                <div class="rp-acoes">
+                                    <form action="/repasse/<%= r.id %>/aceitar" method="POST"><button type="submit" class="rp-btn rp-btn-ok"><i class="fi fi-rr-check" aria-hidden="true"></i> Aceitar</button></form>
+                                    <form action="/repasse/<%= r.id %>/rejeitar" method="POST" onsubmit="return confirm('Recusar esta doação?');"><button type="submit" class="rp-btn rp-btn-nao">Recusar</button></form>
+                                </div>
+                            <% } else if (r.status === "aprovado") { %>
+                                <span class="rp-selo rp-selo-verde"><i class="fi fi-rr-check-double" aria-hidden="true"></i> Aceita</span>
+                            <% } else { %>
+                                <span class="rp-selo rp-selo-verm">Recusada</span>
+                            <% } %>
+                        </li>
+                    <% }) %>
+                </ul>
+            <% } %>
+        </section>
 
-    <!-- ===================== LIVROS DISPONÍVEIS DE OUTRAS ESCOLAS ===================== -->
-    <section class="repasse-secao">
-        <h2 class="secao-titulo">Livros disponíveis de outras escolas</h2>
-        <p class="secao-subtitulo">Peça direto com a escola que está doando. Veja também o <a href="/perfil?aba=ranking">ranking de escolas doadoras</a>.</p>
+        <!-- ===================== ABA: MEUS ENVIOS ===================== -->
+        <section class="rp-painel" id="painel-enviadas" data-rp-painel="enviadas" aria-labelledby="t-env" hidden>
+            <h2 id="t-env" class="rp-titulo">Livros que minha escola doou</h2>
 
-        <% if (disponiveis.length === 0) { %>
-            <p class="vazio">Nenhuma escola tem livros disponíveis pra doação no momento.</p>
-        <% } else { %>
-            <ul class="lista-hist">
+            <% if (meusRepasses.length === 0) { %>
+                <div class="rp-vazio"><i class="fi fi-rr-box-open" aria-hidden="true"></i> Sua escola ainda não doou nenhum livro. <a href="#doar" data-rp-ir="doar">Doar o primeiro</a></div>
+            <% } else { %>
+                <ul class="rp-lista">
+                    <% meusRepasses.forEach(function(r) { %>
+                        <li class="rp-item rp-item-<%= r.status %>">
+                            <div class="rp-ico"><i class="fi fi-rr-book" aria-hidden="true"></i></div>
+                            <div class="rp-txt">
+                                <strong><%= r.livro %> · <%= r.quantidade %> <%= r.quantidade == 1 ? "exemplar" : "exemplares" %></strong>
+                                <span>
+                                    <% if (r.escola_destino_id && r.escolaDestinoNome) { %>Para <a class="escola-origem" href="/escola/<%= r.escola_destino_id %>"><%= r.escolaDestinoNome %></a> · <% } %><%= r.dataFormatada %>
+                                </span>
+                            </div>
+
+                            <% if (r.status === "oferecido") { %>
+                                <span class="rp-selo rp-selo-azul"><i class="fi fi-rr-hourglass" aria-hidden="true"></i> Aguardando resposta</span>
+                                <form action="/repasse/<%= r.id %>/cancelar" method="POST" onsubmit="return confirm('Cancelar esta doação?');"><button type="submit" class="rp-btn rp-btn-nao">Cancelar</button></form>
+                            <% } else if (r.status === "aprovado") { %>
+                                <span class="rp-selo rp-selo-verde"><i class="fi fi-rr-check-double" aria-hidden="true"></i> Doado</span>
+                            <% } else if (r.status === "recusado") { %>
+                                <span class="rp-selo rp-selo-verm">Recusada</span>
+                            <% } else if (r.status === "solicitado") { %>
+                                <span class="rp-selo rp-selo-azul"><i class="fi fi-rr-inbox-in" aria-hidden="true"></i> Pedido de <%= r.escolaDestinoNome || "outra escola" %></span>
+                                <div class="rp-acoes">
+                                    <form action="/repasse/<%= r.id %>/aprovar" method="POST" onsubmit="return confirm('Aprovar esta doação?');"><button type="submit" class="rp-btn rp-btn-ok">Aprovar</button></form>
+                                    <form action="/repasse/<%= r.id %>/recusar" method="POST" onsubmit="return confirm('Recusar este pedido?');"><button type="submit" class="rp-btn rp-btn-nao">Recusar</button></form>
+                                </div>
+                            <% } else if (r.status === "disponivel") { %>
+                                <span class="rp-selo rp-selo-ocre"><i class="fi fi-rr-hourglass" aria-hidden="true"></i> Disponível</span>
+                                <form action="/repasse/<%= r.id %>/cancelar" method="POST" onsubmit="return confirm('Cancelar esta doação?');"><button type="submit" class="rp-btn rp-btn-nao">Cancelar</button></form>
+                            <% } else { %>
+                                <span class="rp-selo rp-selo-verm">Cancelada</span>
+                            <% } %>
+                        </li>
+                    <% }) %>
+                </ul>
+            <% } %>
+        </section>
+
+        <!-- ===================== ABA: LIVROS AVULSOS (cadastrados antes, sem escola escolhida) ===================== -->
+        <% if (disponiveis.length > 0) { %>
+        <section class="rp-painel" id="painel-avulsos" data-rp-painel="avulsos" aria-labelledby="t-av" hidden>
+            <h2 id="t-av" class="rp-titulo">Livros de outras escolas que ainda não têm destino</h2>
+            <ul class="rp-lista">
                 <% disponiveis.forEach(function(r) { %>
-                    <li class="hist-item">
-                        <div class="hist-icone"><i class="fi fi-rr-book" aria-hidden="true"></i></div>
-                        <div class="hist-texto">
-                            <strong><%= r.livro %> — <%= r.quantidade %> <%= r.quantidade == 1 ? "exemplar" : "exemplares" %></strong>
-                            <span>Doado por <%= r.escolaOrigemUsername || r.escolaOrigemNome %> em <%= r.dataFormatada %><% if (r.descricao) { %> · <%= r.descricao %><% } %></span>
+                    <li class="rp-item">
+                        <div class="rp-ico"><i class="fi fi-rr-book" aria-hidden="true"></i></div>
+                        <div class="rp-txt">
+                            <strong><%= r.livro %> · <%= r.quantidade %> <%= r.quantidade == 1 ? "exemplar" : "exemplares" %></strong>
+                            <span>De <a href="/escola/<%= r.escola_origem_id %>" class="escola-origem"><%= r.escolaOrigemNome %></a> · <%= r.dataFormatada %><% if (r.descricao) { %> · <%= r.descricao %><% } %></span>
                         </div>
-                        <form action="/repasse/<%= r.id %>/solicitar" method="POST">
-                            <button type="submit" class="admin-btn-avancar">Pedir este livro</button>
-                        </form>
+                        <form action="/repasse/<%= r.id %>/solicitar" method="POST"><button type="submit" class="rp-btn rp-btn-ok">Pedir este livro</button></form>
                     </li>
                 <% }) %>
             </ul>
+        </section>
         <% } %>
-    </section>
 
+    </div>
 </main>
 
 <%- include('partials/footer') %>
@@ -168,5 +234,40 @@
     <img src="/img/whatsapp.png" alt="WhatsApp">
 </a>
 
+<script>
+(function () {
+    var abas = document.querySelectorAll("[data-rp-aba]");
+    var paineis = document.querySelectorAll("[data-rp-painel]");
+    function mostrar(nome) {
+        var existe = Array.prototype.some.call(paineis, function (p) { return p.getAttribute("data-rp-painel") === nome; });
+        if (!existe) nome = "doar";
+        paineis.forEach(function (p) { p.hidden = p.getAttribute("data-rp-painel") !== nome; });
+        abas.forEach(function (a) {
+            var ativa = a.getAttribute("data-rp-aba") === nome;
+            a.classList.toggle("ativa", ativa);
+            if (ativa) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+        });
+    }
+    abas.forEach(function (a) {
+        a.addEventListener("click", function (e) {
+            e.preventDefault();
+            var nome = a.getAttribute("data-rp-aba");
+            history.replaceState(null, "", "#" + nome);
+            mostrar(nome);
+        });
+    });
+    document.querySelectorAll("[data-rp-ir]").forEach(function (l) {
+        l.addEventListener("click", function (e) {
+            e.preventDefault();
+            var nome = l.getAttribute("data-rp-ir");
+            history.replaceState(null, "", "#" + nome);
+            mostrar(nome);
+            var alvo = document.querySelector(".rp-abas");
+            if (alvo) alvo.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+    });
+    mostrar((location.hash || "#doar").slice(1));
+})();
+</script>
 </body>
 </html>

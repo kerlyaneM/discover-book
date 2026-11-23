@@ -205,6 +205,18 @@
     color: var(--escola);
 }
 
+/* Precisa vir DEPOIS da regra acima: ela tem a mesma força e deixava o texto
+   roxo em cima do banner roxo (sem leitura). Aqui o texto volta a ser branco. */
+.banner-escola .btn-repasse-perfil {
+    color: #fff;
+    background: rgba(255, 255, 255, .16);
+    border-color: rgba(255, 255, 255, .85);
+}
+
+.banner-escola .btn-repasse-perfil:hover {
+    background: rgba(255, 255, 255, .3);
+}
+
 .btn-editar-perfil:hover {
     transform: translateY(-2px);
     box-shadow: var(--sombra);
@@ -705,150 +717,6 @@ a.tab:hover {
     background: #fbe0df;
 }
 
-/* ---------- CARD DE EDIÇÃO ---------- */
-.form-editar-card {
-    background: var(--papel);
-    border: 1px solid var(--linha);
-    border-radius: 16px;
-    box-shadow: var(--sombra);
-    padding: 28px 30px 32px;
-    max-width: 520px;
-}
-
-.form-editar {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.form-editar label,
-.avatares-fieldset legend {
-    font-size: 13px;
-    font-weight: bold;
-    color: var(--tinta);
-    margin-top: 10px;
-}
-
-.form-editar input[type="text"] {
-    border: 1px solid var(--linha);
-    border-radius: 10px;
-    padding: 10px 14px;
-    font-size: 14px;
-    font-family: inherit;
-    width: 100%;
-}
-
-.erro {
-    color: #d33;
-    font-size: 13px;
-    font-weight: bold;
-}
-
-.sugestoes-username {
-    margin-top: 8px;
-    background: var(--roxo-suave);
-    border: 1px solid #e7e2fb;
-    border-radius: 10px;
-    padding: 10px 12px;
-}
-
-.sugestoes-titulo {
-    display: block;
-    font-size: 12px;
-    color: var(--roxo);
-    font-weight: bold;
-    margin-bottom: 8px;
-}
-
-.sugestoes-lista {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-}
-
-.sugestao-item {
-    background: #fff;
-    border: 1px solid #cabdfb;
-    color: var(--roxo);
-    font-size: 13px;
-    font-weight: 600;
-    padding: 6px 12px;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: .2s;
-}
-
-.sugestao-item:hover,
-.sugestao-item:focus-visible {
-    background: var(--roxo-claro);
-    color: #fff;
-    border-color: var(--roxo-claro);
-}
-
-.avatares-fieldset {
-    border: none;
-    padding: 0;
-    margin-top: 10px;
-}
-
-.avatares-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 6px;
-}
-
-.avatar-opcao {
-    position: relative;
-    cursor: pointer;
-    width: 56px;
-    height: 56px;
-}
-
-.avatar-opcao input {
-    position: absolute;
-    opacity: 0;
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    cursor: pointer;
-}
-
-.avatar-opcao img {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid transparent;
-    transition: .2s;
-}
-
-.avatar-opcao input:checked + img {
-    border-color: var(--roxo-claro);
-}
-
-.avatar-opcao input:focus-visible + img {
-    outline: 2px solid var(--roxo);
-    outline-offset: 2px;
-}
-
-.btn-salvar {
-    margin-top: 20px;
-    background: var(--roxo-claro);
-    color: #fff;
-    border: none;
-    padding: 12px;
-    border-radius: 10px;
-    font-weight: bold;
-    font-size: 15px;
-    cursor: pointer;
-    transition: .2s;
-}
-
-.btn-salvar:hover {
-    background: var(--roxo);
-}
-
 /* ===== MENU DE CATEGORIAS (mesmo padrão da home) ===== */
 .barra-categorias {
     width: 100%;
@@ -947,9 +815,6 @@ a.tab:hover {
         justify-content: center;
     }
 
-    .form-editar-card {
-        padding: 22px 18px 26px;
-    }
 
     .podio {
         gap: 8px;
@@ -964,3 +829,6 @@ a.tab:hover {
         flex-wrap: wrap;
     }
 }
+
+.mini-destino { display: inline-flex; gap: 6px; align-items: center; font-size: 12.5px; font-weight: 700; color: var(--escola, #6c4fd6); text-decoration: none; margin: 2px 0 4px; }
+.mini-destino:hover { text-decoration: underline; }

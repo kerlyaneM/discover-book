@@ -1,0 +1,167 @@
+/* =========================================================
+   CARRINHO — destaque para a retirada dos livros pela escola
+   ========================================================= */
+
+.cr-banner {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 22px;
+    flex-wrap: wrap;
+    margin: 0 0 18px;
+    padding: 28px 32px;
+    border-radius: 26px;
+    color: #fff;
+    background: linear-gradient(120deg, #3b2a8c 0%, #6a54e6 60%, #9a86ff 100%);
+    box-shadow: 0 24px 40px -24px rgba(59, 42, 140, .85);
+}
+
+.cr-bolha { position: absolute; border-radius: 50%; background: rgba(255, 255, 255, .1); pointer-events: none; }
+.cr-b1 { width: 220px; height: 220px; right: -60px; top: -90px; }
+.cr-b2 { width: 120px; height: 120px; left: 38%; bottom: -60px; background: rgba(255, 201, 77, .18); }
+
+.cr-banner-texto { position: relative; z-index: 1; min-width: 0; }
+
+.cr-banner h2 {
+    font-size: clamp(22px, 3.4vw, 30px);
+    line-height: 1.15;
+    color: #fff;
+}
+
+.cr-info {
+    list-style: none;
+    margin: 12px 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 10px;
+}
+
+.cr-info li {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .17);
+    font-size: 14.5px;
+    font-weight: 600;
+}
+
+.cr-info i { color: #ffc94d; display: inline-flex; }
+
+/* botão principal — chama atenção */
+.cr-botao {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 17px 32px;
+    border-radius: 999px;
+    background: #ffc94d;
+    color: #2a1d6b;
+    font-size: 18px;
+    font-weight: 800;
+    text-decoration: none;
+    white-space: nowrap;
+    box-shadow: 0 0 0 0 rgba(255, 201, 77, .6);
+    animation: cr-pulso 2.6s ease-out infinite;
+    transition: transform .2s;
+}
+
+.cr-botao i { font-size: 21px; line-height: 1; display: inline-flex; }
+.cr-botao:hover { transform: translateY(-3px) scale(1.03); }
+.cr-botao:focus-visible { outline: 3px solid #fff; outline-offset: 4px; }
+.cr-botao-claro { background: #fff; animation: none; }
+
+@keyframes cr-pulso {
+    0%   { box-shadow: 0 0 0 0 rgba(255, 201, 77, .6); }
+    70%  { box-shadow: 0 0 0 18px rgba(255, 201, 77, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 201, 77, 0); }
+}
+
+/* 3 passos */
+.cr-passos {
+    list-style: none;
+    margin: 0 0 22px;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.cr-passos li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 14px 24px -18px rgba(59, 42, 140, .6);
+}
+
+.cr-passos b { font-size: 15px; font-weight: 800; color: #2a1d6b; line-height: 1.2; }
+
+.cr-passo-ico {
+    flex: none;
+    width: 46px;
+    height: 46px;
+    border-radius: 15px;
+    display: grid;
+    place-items: center;
+    font-size: 22px;
+    color: #fff;
+}
+.cr-passo-ico i { display: inline-flex; line-height: 1; }
+.cr-p1 { background: linear-gradient(135deg, #8472f4, #5a43d6); }
+.cr-p2 { background: linear-gradient(135deg, #e86fc4, #c13fa0); }
+.cr-p3 { background: linear-gradient(135deg, #3fb7a3, #1f8a7a); }
+
+/* botão de finalizar dentro do formulário */
+.btn-finalizar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: linear-gradient(135deg, #8472f4, #4c37a3);
+    font-weight: 800;
+    font-size: 17px;
+    box-shadow: 0 16px 26px -14px rgba(76, 55, 163, .85);
+}
+.btn-finalizar i { display: inline-flex; font-size: 20px; line-height: 1; }
+
+/* barra fixa — só no celular */
+.cr-barra-fixa { display: none; }
+
+@media (max-width: 760px) {
+    .cr-banner { padding: 22px 20px; }
+    .cr-banner .cr-botao { width: 100%; }
+    .cr-passos { grid-template-columns: 1fr; gap: 8px; }
+
+    .cr-barra-fixa {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 60;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+        background: #2a1d6b;
+        color: #fff;
+        box-shadow: 0 -10px 24px -10px rgba(20, 8, 70, .6);
+    }
+    .cr-barra-fixa strong { font-size: 20px; }
+    .cr-barra-fixa .cr-botao { padding: 12px 24px; font-size: 16px; animation: none; }
+    .pagina-carrinho { padding-bottom: 84px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cr-botao { animation: none; transition: none; }
+}

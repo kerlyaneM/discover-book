@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= nomeExibido %> | DiscoverBook</title>
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/perfil.css">
+    <link rel="stylesheet" href="/css/admin-pedidos.css">
+    <link rel="stylesheet" href="/css/escola.css">
+    <link rel="stylesheet" href="/css/relatos.css">
+    <link rel="stylesheet" href="/css/perfil-cores.css">
+    <link rel="stylesheet" href="/css/form-perfil.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Karla:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css">
+</head>
+<body>
+
+<a href="#conteudo-escola" class="pular-conteudo">Pular para o conteúdo</a>
+
+<%- include('partials/topo') %>
+<%- include('partials/header') %>
+<%- include('partials/nav-categorias') %>
+
+<main id="conteudo-escola" class="perfil-page">
+
+    <% if (!editar) { %>
+    <section class="rel-hero" aria-labelledby="t-hero">
+        <div class="rel-hero-in">
+            <div>
+                <span class="rel-eyebrow">Escola parceira</span>
+                <h1 id="t-hero"><%= nomeExibido %><br>e seus <em>livros em uso.</em></h1>
+                <p>Cada livro que chegou, lido de verdade.</p>
+                <% if (ehDona) { %>
+                    <a class="rel-btn rel-btn-claro" href="#publicar">Publicar foto e frase</a>
+                <% } else { %>
+                    <a class="rel-btn rel-btn-claro" href="#mural">Ver os livros em uso</a>
+                <% } %>
+            </div>
+            <div class="rel-leque" aria-hidden="true">
+                <img class="a" src="/img/matilda.jpg" alt="">
+                <img class="b" src="/img/malala.webp" alt="">
+                <img class="c" src="/img/galinha.webp" alt="">
+            </div>
+        </div>
+        <div class="rel-estante" aria-hidden="true"><% for (let i = 0; i < 24; i++) { %><span></span><% } %></div>
+    </section>
+    <% } %>
+
+    <div class="perfil-banner-wrap banner-escola">
+        <div class="perfil-banner">
+            <div class="avatar-anel"><img src="<%= fotoEscola %>" alt="Avatar de <%= nomeExibido %>"></div>
+
+            <div class="perfil-id">
+                <span class="selo-tipo"><i class="fi fi-rr-graduation-cap" aria-hidden="true"></i> Escola/Instituição</span>
+                <h1><%= nomeExibido %></h1>
+                <p>No DiscoverBook desde <%= desde %></p>
+            </div>
+
+            <% if (ehDona) { %>
+                <div class="perfil-banner-acoes">
+                    <a href="/escola/<%= escola.id %>?editar=<%= editar ? '0' : '1' %>#<%= editar ? 'mural' : 'editar' %>" class="btn-editar-perfil" aria-expanded="<%= editar ? 'true' : 'false' %>">
+                        <i class="fi fi-rr-pencil" aria-hidden="true"></i> <%= editar ? "Fechar edição" : "Editar perfil" %>
+                    </a>
+                </div>
+            <% } %>
+
+        </div>
+    </div>
+
+
+<% if (editar) { %>
+    <div class="escola-page">
+        <div class="perfil-conteudo">
+            <%- include('partials/form-editar-perfil', { u: escola, nomeExibido, ehEscola: true }) %>
+        </div>
+    </div>
+<% } else { %>
+
+
+    <div class="escola-page">
+        <div class="perfil-conteudo">
+
+            <% if (ehDona) { %>
+            <div class="esc-acoes">
+                <a href="/repasse" class="esc-acao esc-acao-roxo">
+                    <span class="esc-acao-ico"><i class="fi fi-rr-paper-plane" aria-hidden="true"></i></span>
+                    <span><strong>Doar livro para outra escola</strong><small>Escolha a escola que vai receber</small></span>
+                </a>
+                <a href="#publicar" class="esc-acao esc-acao-ocre" data-esc-ir="uso">
+                    <span class="esc-acao-ico"><i class="fi fi-rr-camera" aria-hidden="true"></i></span>
+                    <span><strong>Mostrar livro em uso</strong><small>Uma foto e uma frase</small></span>
+                </a>
+                <% if (ofertasPendentes > 0) { %>
+                <a href="/repasse#recebidas" class="esc-acao esc-acao-rosa">
+                    <span class="esc-acao-ico"><i class="fi fi-rr-inbox-in" aria-hidden="true"></i></span>
+                    <span><strong><%= ofertasPendentes %> <%= ofertasPendentes == 1 ? "doação esperando" : "doações esperando" %> você</strong><small>Aceitar ou recusar</small></span>
+                </a>
+                <% } %>
+            </div>
+            <% } %>
+
+            <div class="esc-numeros">
+                <div class="esc-num esc-num-1"><i class="fi fi-rr-book" aria-hidden="true"></i><strong><%= totalRecebido %></strong><span>livros recebidos</span></div>
+                <div class="esc-num esc-num-2"><i class="fi fi-rr-refresh" aria-hidden="true"></i><strong><%= disponiveis.length %></strong><span>para repasse</span></div>
+                <div class="esc-num esc-num-3"><i class="fi fi-rr-heart" aria-hidden="true"></i><strong><%= totalDoado %></strong><span>doados a escolas</span></div>
+            </div>
+
+            <nav class="esc-abas" aria-label="Seções da página da escola">
+                <a href="#sobre" class="esc-aba" data-esc-aba="sobre"><i class="fi fi-rr-info" aria-hidden="true"></i> Sobre</a>
+                <a href="#mural" class="esc-aba" data-esc-aba="uso"><i class="fi fi-rr-camera" aria-hidden="true"></i> Em uso</a>
+                <% if (ehDona) { %><a href="#pedidos" class="esc-aba" data-esc-aba="pedidos"><i class="fi fi-rr-shopping-cart" aria-hidden="true"></i> Pedidos</a><% } %>
+                <a href="#recebidos" class="esc-aba" data-esc-aba="recebidos"><i class="fi fi-rr-box-open" aria-hidden="true"></i> Recebidos</a>
+                <a href="#repasse" class="esc-aba" data-esc-aba="repasse"><i class="fi fi-rr-refresh" aria-hidden="true"></i> Repasse</a>
+                <% if (ehDona) { %><a href="#ranking" class="esc-aba" data-esc-aba="ranking"><i class="fi fi-rr-trophy" aria-hidden="true"></i> Ranking</a><% } %>
+            </nav>
+
+            <% if (ehDona) { %>
+                <% if (sucesso === "solicitacao") { %><p class="perfil-sucesso" role="status">Solicitação enviada com sucesso! Acompanhe em "Meus pedidos".</p>
+                <% } else if (sucesso === "pedido_cancelado") { %><p class="perfil-sucesso" role="status">Pedido cancelado com sucesso.</p><% } %>
+                <% if (erroPerfil === "nao_cancelavel") { %><p class="perfil-erro" role="status">Esse pedido já está pronto/entregue e não pode mais ser cancelado.</p>
+                <% } else if (erroPerfil === "sem_permissao" || erroPerfil === "nao_encontrada" || erroPerfil === "sistema") { %><p class="perfil-erro" role="status">Não foi possível concluir essa ação.</p><% } %>
+            <% } %>
+
+            <section class="escola-secao escola-sobre" id="sobre" data-esc-painel="sobre" aria-labelledby="t-sobre">
+                <h2 id="t-sobre" class="secao-titulo">Sobre a escola</h2>
+                <% const etapasLista = (escola.etapas || "").split(",").filter(Boolean);
+                   const temInfo = escola.cidade || etapasLista.length || escola.instagram; %>
+
+                <% if (escola.bio && escola.bio.trim()) { %>
+                    <p><%= escola.bio %></p>
+                <% } else { %>
+                    <p class="vazio">Esta escola ainda não escreveu uma descrição.</p>
+                <% } %>
+
+                <% if (temInfo) { %>
+                    <ul class="sobre-fatos">
+                        <% if (escola.cidade) { %><li><i class="fi fi-rr-marker" aria-hidden="true"></i><span><small>Cidade</small><%= escola.cidade %></span></li><% } %>
+                        <% if (etapasLista.length) { %><li><i class="fi fi-rr-graduation-cap" aria-hidden="true"></i><span><small>Etapas de ensino</small><%= etapasLista.join(" · ") %></span></li><% } %>
+                        <% if (escola.instagram) { %><li><i class="fi fi-rr-link" aria-hidden="true"></i><span><small>Instagram</small><a class="escola-origem" href="https://instagram.com/<%= escola.instagram %>" target="_blank" rel="noopener noreferrer">@<%= escola.instagram %></a></span></li><% } %>
+                    </ul>
+                <% } %>
+
+                <% if (escola.necessidades && escola.necessidades.trim()) { %>
+                    <div class="sobre-procura">
+                        <strong><i class="fi fi-rr-book" aria-hidden="true"></i> Livros que a escola procura</strong>
+                        <p><%= escola.necessidades %></p>
+                    </div>
+                <% } %>
+
+                <% if (ehDona && (!temInfo || !escola.bio)) { %>
+                    <p class="sobre-completar"><a href="/escola/<%= escola.id %>?editar=1#editar">Complete o perfil da sua escola</a> para dar mais confiança a quem quer doar.</p>
+                <% } %>
+            </section>
+
+
+            <div data-esc-painel="uso" hidden>
+            <section class="escola-secao relatos-secao" id="mural" aria-labelledby="t-mural">
+                <h2 id="t-mural" class="secao-titulo">Chegou. E já está sendo lido.</h2>
+                
+                <% if (sucesso === "relato") { %>
+                    <p class="rel-aviso ok" role="status">Relato publicado! Os doadores desse livro já podem ver.</p>
+                <% } else if (sucesso === "relato_excluido") { %>
+                    <p class="rel-aviso ok" role="status">Relato excluído.</p>
+                <% } %>
+
+                <% if (relatos.length === 0) { %>
+                    <div class="esc-vazio"><i class="fi fi-rr-camera" aria-hidden="true"></i>
+                        <% if (ehDona) { %>Ainda não há fotos. Publique a primeira logo abaixo.<% } else { %>Esta escola ainda não publicou fotos dos livros em uso.<% } %>
+                    </div>
+                <% } else { %>
+                    <div class="mural">
+                        <% relatos.forEach(function(r) { %>
+                            <article class="pola">
+                                <span class="pola-fita" aria-hidden="true"></span>
+                                <div class="pola-foto">
+                                    <img class="pola-img" src="<%= r.foto %>" alt="Foto de <%= nomeExibido %> com o livro <%= r.livro %> em uso" loading="lazy">
+                                    <img class="pola-capa" data-capa-livro="<%= r.livro %>" alt="Capa de <%= r.livro %>" hidden>
+                                </div>
+                                <p class="pola-frase">“<%= r.frase %>”</p>
+                                <p class="pola-livro"><%= r.livro %></p>
+                                <div class="pola-rodape">
+                                    <div class="pola-meta">
+                                        <% if (r.doadores > 0) { %>
+                                            <span>Doado por <b><%= r.doadores %> <%= r.doadores == 1 ? "pessoa" : "pessoas" %></b></span>
+                                        <% } else { %>
+                                            <span><b>Acervo DiscoverBook</b></span>
+                                        <% } %>
+                                        <span><%= r.dataFormatada %></span>
+                                    </div>
+                                    <span class="pola-selo">Entregue</span>
+                                </div>
+                                <% if (podeExcluirRelato) { %>
+                                    <form class="pola-excluir" action="/escola/relato/<%= r.id %>/excluir" method="POST" onsubmit="return confirm('Excluir este relato? A foto também será apagada.');">
+                                        <button type="submit">Excluir relato</button>
+                                    </form>
+                                <% } %>
+                            </article>
+                        <% }) %>
+                    </div>
+                <% } %>
+            </section>
+
+            <% if (ehDona) { %>
+            <section class="escola-secao" id="publicar" aria-labelledby="t-publicar">
+                <h2 id="t-publicar" class="secao-titulo">Mostre o livro em uso</h2>
+                
+                <% if (erro) { %>
+                    <p class="rel-aviso erro" role="alert">
+                        <% if (erro === "foto") { %>Escolha uma foto (JPG, PNG ou WebP, até 5 MB).
+                        <% } else if (erro === "livro") { %>Escolha um livro que já foi entregue à sua escola.
+                        <% } else if (erro === "frase") { %>Escreva uma frase de 3 a <%= fraseMax %> caracteres.
+                        <% } else if (erro === "autorizacao") { %>Confirme que a foto não mostra rosto de aluno ou que você tem autorização.
+                        <% } else { %>Não foi possível publicar agora. Tente novamente.<% } %>
+                    </p>
+                <% } %>
+
+                <% { %>
+                    <div class="rel-pre-form esc-sem-aside">
+                        <form id="form-relato" class="rel-form" action="/escola/relato" method="POST" enctype="multipart/form-data">
+
+                            <div class="rel-passo">
+                                <h3><span class="rel-bol">1</span> Qual livro?</h3>
+                                <% if (paraRelatar.length === 0) { %>
+                                    <div class="rel-vazio-box">
+                                        <i class="fi fi-rr-box-open" aria-hidden="true"></i>
+                                        Assim que a equipe marcar um pedido seu como <strong>Entregue</strong>, os livros aparecem aqui para você escolher.
+                                        <br><a class="escola-origem" href="#pedidos">Ver meus pedidos</a>
+                                    </div>
+                                <% } %>
+                                <div class="rel-livros" role="radiogroup" aria-label="Livros entregues">
+                                    <% paraRelatar.forEach(function(p) { %>
+                                        <label class="rel-livro" data-capa-picker="<%= p.livro %>">
+                                            <input type="radio" name="solicitacao_id" value="<%= p.id %>" required>
+                                            <span class="rel-livro-corpo">
+                                                <img class="rel-livro-capa" alt="" hidden>
+                                                <span class="rel-livro-icone" aria-hidden="true"><i class="fi fi-rr-book"></i></span>
+                                                <%= p.livro %>
+                                                <span class="rel-livro-qtd"><%= p.quantidade %> <%= p.quantidade == 1 ? "exemplar" : "exemplares" %></span>
+                                            </span>
+                                        </label>
+                                    <% }) %>
+                                </div>
+                            </div>
+
+                            <div class="rel-passo">
+                                <h3><span class="rel-bol">2</span> Foto</h3>
+                                <label class="rel-drop" for="rel-foto">
+                                    <input type="file" id="rel-foto" name="foto" accept="image/jpeg,image/png,image/webp" required>
+                                    <img class="rel-drop-prev" alt="Prévia da foto escolhida">
+                                    <span class="rel-drop-texto">
+                                        <i class="fi fi-rr-camera" aria-hidden="true"></i>
+                                        Escolher foto
+                                        <small>JPG, PNG ou WebP · até 5 MB</small>
+                                    </span>
+                                    <span class="rel-drop-trocar">Trocar foto</span>
+                                </label>
+                                <p id="rel-foto-erro" class="vazio" style="color:#b3261e" role="alert"></p>
+                            </div>
+
+                            <div class="rel-passo">
+                                <h3><span class="rel-bol">3</span> Uma frase</h3>
+                                <label for="rel-frase" style="position:absolute;left:-9999px">Frase sobre o livro em uso</label>
+                                <textarea id="rel-frase" name="frase" maxlength="<%= fraseMax %>" placeholder="Ex.: A turma leu junto no recreio." required></textarea>
+                                <span class="rel-contador" id="rel-contador" aria-live="polite"></span>
+                            </div>
+
+                            <div class="rel-aut">
+                                <input type="checkbox" id="rel-aut" name="autorizacao">
+                                <label for="rel-aut">Esta foto não mostra rosto de aluno, ou tenho autorização dos responsáveis para publicá-la.</label>
+                            </div>
+
+                            <button type="submit" class="rel-btn" disabled><i class="fi fi-rr-paper-plane" aria-hidden="true"></i> Publicar</button>
+                        </form>
+
+                    </div>
+                <% } %>
+            </section>
+            <% } %>
+            </div>
+
+            <% if (ehDona) { %>
+            <div data-esc-painel="pedidos" hidden>
+            <section class="escola-secao" id="pedidos" aria-labelledby="t-pedidos">
+                <h2 id="t-pedidos" class="secao-titulo"><i class="fi fi-rr-shopping-cart" aria-hidden="true"></i> Meus pedidos</h2>
+                <%- include('partials/escola-pedidos', { itens }) %>
+            </section>
+            </div>
+            <% } %>
+
+            <div data-esc-painel="recebidos" hidden>
+            <section class="escola-secao" id="recebidos" aria-labelledby="t-recebeu">
+                <h2 id="t-recebeu" class="secao-titulo">O que já recebeu</h2>
+                                <% if (recebidos.length === 0) { %>
+                    <p class="vazio">Esta escola ainda não recebeu livros pela plataforma.</p>
+                <% } else { %>
+                    <div class="grid-livros">
+                        <% recebidos.forEach(function(r) { %>
+                            <article class="mini-livro">
+                                <div class="mini-capa"><i class="fi fi-rr-book" aria-hidden="true"></i></div>
+                                <div class="mini-corpo">
+                                    <h4><%= r.livro %></h4>
+                                    <span class="qtd"><%= r.quantidade %> <%= r.quantidade == 1 ? "exemplar" : "exemplares" %></span>
+                                    <span class="mini-status verde"><i class="fi fi-rr-check-double" aria-hidden="true"></i> Recebido</span>
+                                    <span class="data-item">
+                                        <% if (r.origemId) { %><a class="escola-origem" href="/escola/<%= r.origemId %>"><%= r.origem %></a><% } else { %><%= r.origem %><% } %>
+                                        · <%= r.dataFormatada %>
+                                    </span>
+                                </div>
+                            </article>
+                        <% }) %>
+                    </div>
+                <% } %>
+            </section>
+            </div>
+
+            <div data-esc-painel="repasse" hidden>
+            <section class="escola-secao" id="repasse" aria-labelledby="t-repasse">
+                <h2 id="t-repasse" class="secao-titulo">Livros disponíveis para repasse</h2>
+                                <% if (disponiveis.length === 0) { %>
+                    <p class="vazio">Nenhum livro disponível para repasse no momento.</p>
+                <% } else { %>
+                    <ul class="lista-hist">
+                        <% disponiveis.forEach(function(r) { %>
+                            <li class="hist-item">
+                                <div class="hist-icone"><i class="fi fi-rr-book" aria-hidden="true"></i></div>
+                                <div class="hist-texto">
+                                    <strong><%= r.livro %> — <%= r.quantidade %> <%= r.quantidade == 1 ? "exemplar" : "exemplares" %></strong>
+                                    <span><%= r.categoria %> · cadastrado em <%= r.dataFormatada %><% if (r.descricao) { %> · <%= r.descricao %><% } %></span>
+                                </div>
+                                <% if (podePedir) { %>
+                                    <form action="/repasse/<%= r.id %>/solicitar" method="POST">
+                                        <button type="submit" class="admin-btn-avancar">Pedir este livro</button>
+                                    </form>
+                                <% } else if (!ehDona && !usuarioTipo) { %>
+                                    <span class="escola-cta"><a href="/login">Entre</a> com a conta da sua escola para pedir</span>
+                                <% } %>
+                            </li>
+                        <% }) %>
+                    </ul>
+                <% } %>
+            </section>
+            </div>
+
+            <% if (ehDona) { %>
+            <div data-esc-painel="ranking" hidden>
+            <section class="escola-secao" id="ranking" aria-labelledby="t-ranking">
+                <%- include('partials/escola-ranking', { ranking, meuId: escola.id }) %>
+            </section>
+            </div>
+            <% } %>
+
+        </div>
+    </div>
+<% } %>
+</main>
+
+<%- include('partials/footer') %>
+
+<a href="https://wa.me/5599999999999" class="whatsapp" target="_blank" aria-label="Falar no WhatsApp">
+    <img src="/img/whatsapp.png" alt="WhatsApp">
+</a>
+
+<script src="/js/relato.js"></script>
+<script>
+(function () {
+    var abas = document.querySelectorAll("[data-esc-aba]");
+    var paineis = document.querySelectorAll("[data-esc-painel]");
+    if (!paineis.length) return;
+    var mapa = { publicar: "uso", mural: "uso", uso: "uso", pedidos: "pedidos", recebidos: "recebidos", repasse: "repasse", ranking: "ranking", sobre: "sobre" };
+    function mostrar(nome) {
+        var existe = Array.prototype.some.call(paineis, function (p) { return p.getAttribute("data-esc-painel") === nome; });
+        if (!existe) nome = "sobre";
+        paineis.forEach(function (p) { p.hidden = p.getAttribute("data-esc-painel") !== nome; });
+        abas.forEach(function (a) {
+            var ativa = a.getAttribute("data-esc-aba") === nome;
+            a.classList.toggle("ativa", ativa);
+            if (ativa) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+        });
+    }
+    function daHash() {
+        var h = (location.hash || "").slice(1);
+        mostrar(mapa[h] || "sobre");
+        var alvo = h && document.getElementById(h);
+        if (alvo && mapa[h] && h !== "sobre") alvo.scrollIntoView({ block: "start" });
+    }
+    window.addEventListener("hashchange", daHash);
+    daHash();
+})();
+</script>
+</body>
+</html>

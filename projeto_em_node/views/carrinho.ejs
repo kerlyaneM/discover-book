@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/header.css">
     <link rel="stylesheet" href="/css/carrinho.css">
+    <link rel="stylesheet" href="/css/carrinho-retirada.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap">
     <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css">
 </head>
@@ -34,6 +35,44 @@
     <% } else if (erro === "sistema") { %>
         <div class="carrinho-mensagem erro">Não foi possível enviar sua solicitação. Tente novamente.</div>
     <% } %>
+
+        <% if (itens.length > 0) { %>
+        <section class="cr-banner" aria-label="Retirada dos livros">
+            <span class="cr-bolha cr-b1" aria-hidden="true"></span>
+            <span class="cr-bolha cr-b2" aria-hidden="true"></span>
+
+            <div class="cr-banner-texto">
+                <h2>Seus livros estão te esperando!</h2>
+                <ul class="cr-info">
+                    <li><i class="fi fi-rr-marker" aria-hidden="true"></i> <%= retirada.local %></li>
+                    <li><i class="fi fi-rr-clock" aria-hidden="true"></i> <%= retirada.horario %></li>
+                </ul>
+            </div>
+
+            <% if (usuario && usuarioTipo === "escola") { %>
+                <a href="#finalizar-pedido" class="cr-botao" id="crBotaoRetirar">
+                    <i class="fi fi-rr-box-open" aria-hidden="true"></i>
+                    Retirar meus livros
+                </a>
+            <% } else if (usuario) { %>
+                <a href="/acervo" class="cr-botao cr-botao-claro">
+                    <i class="fi fi-rr-book" aria-hidden="true"></i>
+                    Ver acervo
+                </a>
+            <% } else { %>
+                <a href="/login" class="cr-botao">
+                    <i class="fi fi-rr-graduation-cap" aria-hidden="true"></i>
+                    Entrar como escola
+                </a>
+            <% } %>
+        </section>
+
+        <ol class="cr-passos" aria-label="Como retirar">
+            <li><span class="cr-passo-ico cr-p1"><i class="fi fi-rr-shopping-cart"></i></span><b>Escolha os livros</b></li>
+            <li><span class="cr-passo-ico cr-p2"><i class="fi fi-rr-paper-plane"></i></span><b>Envie o pedido</b></li>
+            <li><span class="cr-passo-ico cr-p3"><i class="fi fi-rr-box-open"></i></span><b>Retire no IFMA</b></li>
+        </ol>
+        <% } %>
 
     <div class="carrinho-layout" id="carrinhoLayout">
 
@@ -85,7 +124,7 @@
 
                 <% if (usuario && usuarioTipo === "escola") { %>
 
-                    <form action="/carrinho/finalizar" method="POST" class="carrinho-form">
+                    <form action="/carrinho/finalizar" method="POST" class="carrinho-form" id="finalizar-pedido">
                         <label for="escola">Nome da escola/instituição</label>
                         <input type="text" id="escola" name="escola" required>
 
@@ -109,7 +148,7 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn-finalizar">Finalizar solicitação</button>
+                        <button type="submit" class="btn-finalizar"><i class="fi fi-rr-box-open" aria-hidden="true"></i> Pedir meus livros</button>
                     </form>
 
                 <% } else if (usuario) { %>
@@ -134,6 +173,13 @@
     </div>
 
 </main>
+
+<% if (itens.length > 0 && usuario && usuarioTipo === "escola") { %>
+<div class="cr-barra-fixa">
+    <span><strong><%= totalItens %></strong> <%= totalItens === 1 ? "livro" : "livros" %> prontos</span>
+    <a href="#finalizar-pedido" class="cr-botao"><i class="fi fi-rr-box-open" aria-hidden="true"></i> Retirar</a>
+</div>
+<% } %>
 
 <%- include('partials/footer') %>
 

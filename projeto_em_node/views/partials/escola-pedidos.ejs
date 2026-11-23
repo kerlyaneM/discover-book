@@ -1,0 +1,29 @@
+<%# Histórico de pedidos da escola, com status e cancelar. Recebe: itens. %>
+                <p class="secao-subtitulo">Histórico dos pedidos enviados a partir do seu <a href="/carrinho">carrinho de compras</a>.</p>
+
+                <% if (itens.length === 0) { %>
+                    <p class="vazio">Você ainda não fez nenhuma solicitação de livros. <a href="/home">Explorar livros</a></p>
+                <% } else { %>
+                    <ul class="lista-hist">
+                        <% itens.forEach(function(item) { %>
+                            <li class="hist-item">
+                                <div class="hist-icone"><i class="fi fi-rr-book" aria-hidden="true"></i></div>
+                                <div class="hist-texto">
+                                    <strong><%= item.livro %> — <%= item.quantidade %> <%= item.quantidade == 1 ? "exemplar" : "exemplares" %></strong>
+                                    <span>Enviado em <%= paraDataUTC(item.data_envio).toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" }) %></span>
+                                </div>
+                                <span class="hist-status hist-status-<%= item.statusInfo.cor %>">
+                                    <i class="fi <%= item.statusInfo.icone %>" aria-hidden="true"></i>
+                                    <%= item.statusInfo.label %>
+                                </span>
+                                <% if (item.cancelavel) { %>
+                                    <form action="/carrinho/pedido/<%= item.id %>/cancelar" method="POST" class="hist-form-cancelar">
+                                        <button type="submit" class="hist-btn-cancelar" onclick="return confirm('Cancelar este pedido?')">
+                                            <i class="fi fi-rr-cross-circle" aria-hidden="true"></i> Cancelar pedido
+                                        </button>
+                                    </form>
+                                <% } %>
+                            </li>
+                        <% }) %>
+                    </ul>
+                <% } %>

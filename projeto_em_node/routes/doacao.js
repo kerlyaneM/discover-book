@@ -32,6 +32,22 @@ function autenticado(req, res, next) {
     res.redirect('/login');
 }
 
+// Escolas cadastradas no site (o doador escolhe pra qual delas o livro vai)
+function listarEscolas(callback) {
+  db.all(
+    `SELECT id, COALESCE(username, nome) AS nome, cidade, etapas, avatar, necessidades FROM usuarios
+     WHERE tipo = 'escola' AND COALESCE(aceita_doacoes, 1) = 1 ORDER BY LOWER(COALESCE(username, nome))`,
+    [],
+    (err, escolas) => callback(err ? [] : (escolas || []))
+  );
+}
+
+// Confere se o id recebido é mesmo de uma escola cadastrada (nunca confia só no formulário)
+function escolaValida(id, callback) {
+  if (!id) return callback(false);
+  db.get("SELECT id FROM usuarios WHERE id = ? AND tipo = 'escola' AND COALESCE(aceita_doacoes, 1) = 1", [id], (err, linha) => callback(Boolean(!err && linha)));
+}
+
 // Página de doação
 router.get('/doar', (req, res) => {
 
@@ -50,7 +66,9 @@ router.get('/doar', (req, res) => {
         titulos: (!err && linha) ? linha.totalTitulos : 0
       };
 
+      listarEscolas((escolas) => {
       res.render('doar', {
+        escolas,
         usuario: req.session.usuario_nome || null,
         sucesso: req.query.sucesso || null,
         erro: req.query.erro || null,
@@ -58,6 +76,7 @@ router.get('/doar', (req, res) => {
         statsAcervo: stats,
         doadorNome: req.session.usuario_nome || '',
         doadorEmail: req.session.email || ''
+      });
       });
     }
   );
@@ -81,12 +100,19 @@ router.post('/doar', (req, res, next) => {
     livro,
     categoria,
     quantidade,
-    descricao
+    descricao,
+    escola_destino_id
   } = req.body;
 
   // Foto agora é obrigatória
   if (!req.file) {
     return res.redirect('/doar?erro=foto');
+  }
+
+  escolaValida(escola_destino_id, (ok) => {
+  if (!ok) {
+    fs.unlink(req.file.path, () => {});
+    return res.redirect('/doar?erro=escola');
   }
 
   const caminhoFoto = '/uploads/' + req.file.filename;
@@ -97,9 +123,9 @@ router.post('/doar', (req, res, next) => {
   // "disponivel" automaticamente e passa a aparecer no acervo.
   db.run(
     `INSERT INTO doacoes
-    (usuario_id, nome, email, telefone, livro, categoria, quantidade, foto, descricao, status)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'pendente')`,
-    [req.session.usuario_id || null, nome, email, telefone, livro, categoria, quantidade, caminhoFoto, descricao || null],
+    (usuario_id, nome, email, telefone, livro, categoria, quantidade, foto, descricao, escola_destino_id, status)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pendente')`,
+    [req.session.usuario_id || null, nome, email, telefone, livro, categoria, quantidade, caminhoFoto, descricao || null, escola_destino_id],
     (err) => {
       if (err) {
         console.log(err);
@@ -109,6 +135,7 @@ router.post('/doar', (req, res, next) => {
       res.redirect('/doar?sucesso=1');
     }
   );
+  });
 });
 
 // Acervo: mostra os livros que já foram doados e estão disponíveis pra pedir.
@@ -124,8 +151,11 @@ router.get('/acervo', (req, res) => {
     `SELECT id, usuario_id, email, livro, categoria, quantidade, foto, data_envio
      FROM doacoes
      WHERE status = 'disponivel'
+       AND (escola_destino_id IS NULL OR escola_destino_id = ?)
      ORDER BY data_envio DESC`,
-    [],
+    // Livro doado PARA uma escola específica fica reservado pra ela: só essa escola
+    // o vê no acervo. Doações antigas (sem destino) continuam abertas pra todas.
+    [req.session?.usuario_tipo === 'escola' ? req.session.usuario_id : 0],
     (err, doacoes) => {
 
       if (err) {
@@ -218,11 +248,14 @@ router.get('/doar/:id/editar', autenticado, (req, res) => {
         return res.redirect('/perfil?aba=doados&erro=ja_confirmada');
       }
 
-      res.render('editar-doacao', {
-        usuario: req.session.usuario_nome || null,
-        doacao,
-        erro: req.query.erro || null,
-        horasPendente: HORAS_PENDENTE_DOACAO
+      listarEscolas((escolas) => {
+        res.render('editar-doacao', {
+          usuario: req.session.usuario_nome || null,
+          doacao,
+          escolas,
+          erro: req.query.erro || null,
+          horasPendente: HORAS_PENDENTE_DOACAO
+        });
       });
     }
   );
@@ -238,7 +271,7 @@ router.post('/doar/:id/editar', autenticado, (req, res, next) => {
   });
 }, (req, res) => {
 
-  const { livro, categoria, quantidade, descricao } = req.body;
+  const { livro, categoria, quantidade, descricao, escola_destino_id } = req.body;
 
   db.get(
     'SELECT * FROM doacoes WHERE id = ?',
@@ -261,11 +294,17 @@ router.post('/doar/:id/editar', autenticado, (req, res, next) => {
       const fotoFinal = req.file ? '/uploads/' + req.file.filename : doacao.foto;
       const fotoAntiga = req.file ? doacao.foto : null;
 
+      escolaValida(escola_destino_id, (okEscola) => {
+      if (!okEscola) {
+        if (req.file) fs.unlink(req.file.path, () => {});
+        return res.redirect('/doar/' + req.params.id + '/editar?erro=escola');
+      }
+
       db.run(
         `UPDATE doacoes
-         SET livro = ?, categoria = ?, quantidade = ?, descricao = ?, foto = ?
+         SET livro = ?, categoria = ?, quantidade = ?, descricao = ?, foto = ?, escola_destino_id = ?
          WHERE id = ?`,
-        [livro, categoria, quantidade, descricao || null, fotoFinal, req.params.id],
+        [livro, categoria, quantidade, descricao || null, fotoFinal, escola_destino_id, req.params.id],
         (err2) => {
 
           if (err2) {
@@ -281,6 +320,7 @@ router.post('/doar/:id/editar', autenticado, (req, res, next) => {
           res.redirect('/perfil?aba=doados&sucesso=editada');
         }
       );
+      });
     }
   );
 

@@ -1,0 +1,45 @@
+<%# Ranking de escolas doadoras (repasses aprovados). Recebe: ranking, meuId. %>
+<% const medalhas = ['ouro', 'prata', 'bronze']; %>
+<h2 class="secao-titulo">Ranking de escolas doadoras</h2>
+                    <p class="secao-subtitulo">Baseado na quantidade de livros que cada escola já <a href="/repasse">doou para outras escolas</a>. Não tem relação com o ranking de doadores (pessoas).</p>
+
+                    <% if (ranking.length === 0) { %>
+                        <p class="vazio">Ainda não há escolas doadoras suficientes para montar o ranking.</p>
+                    <% } else { %>
+
+                        <% const podioEscolas = ranking.slice(0, 3); const restoEscolas = ranking.slice(3); %>
+
+                        <% if (podioEscolas.length === 3) { %>
+                            <div class="podio">
+                                <% podioEscolas.forEach(function(e, i) { %>
+                                    <div class="posto <%= medalhas[i] %> <%= e.id === meuId ? 'posto-voce' : '' %>">
+                                        <img src="<%= e.foto %>" alt="Avatar de <%= e.nome %>">
+                                        <div class="medalha"><%= i + 1 %></div>
+                                        <strong><a href="/escola/<%= e.id %>" class="link-escola"><%= e.nome %></a><%= e.id === meuId ? " (você)" : "" %></strong>
+                                        <span><%= e.totalLivros %> livros</span>
+                                        <div class="base"></div>
+                                    </div>
+                                <% }) %>
+                            </div>
+                        <% } %>
+
+                        <% if (restoEscolas.length > 0) { %>
+                            <ol class="lista-ranking" start="4">
+                                <% restoEscolas.forEach(function(e, i) { %>
+                                    <li class="rank-item <%= e.id === meuId ? 'voce' : '' %>">
+                                        <span class="rank-pos">#<%= i + 4 %></span>
+                                        <img src="<%= e.foto %>" alt="Avatar de <%= e.nome %>">
+                                        <div class="rank-info">
+                                            <strong><a href="/escola/<%= e.id %>" class="link-escola"><%= e.nome %></a><%= e.id === meuId ? " (você)" : "" %></strong>
+                                            <span>Escola doadora</span>
+                                        </div>
+                                        <div class="rank-num">
+                                            <strong><%= e.totalLivros %></strong>
+                                            <span>livros</span>
+                                        </div>
+                                    </li>
+                                <% }) %>
+                            </ol>
+                        <% } %>
+
+                    <% } %>

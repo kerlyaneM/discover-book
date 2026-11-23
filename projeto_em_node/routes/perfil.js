@@ -12,15 +12,14 @@ function autenticado(req, res, next) {
     res.redirect("/login");
 }
 
-// Avatares pré-definidos que o usuário pode escolher (fica em public/img/avatars)
-const AVATARES_DISPONIVEIS = [
-    "avatar1.svg",
-    "avatar2.svg",
-    "avatar3.svg",
-    "avatar4.svg",
-    "avatar5.svg",
-    "avatar6.svg"
-];
+// Avatares e etapas de ensino ficam em database/perfil-config.js (compartilhado com a página da escola)
+const { AVATARES_DOADOR, AVATARES_ESCOLA, ETAPAS_ESCOLA } = require("../database/perfil-config");
+
+// Instagram: aceita "@escola", "escola" ou o link inteiro; guarda só o usuário
+function limparInstagram(valor) {
+    const v = String(valor || "").trim().replace(/^https?:\/\/(www\.)?instagram\.com\//i, "").replace(/^@/, "").replace(/[\/?].*$/, "");
+    return /^[A-Za-z0-9._]{1,30}$/.test(v) ? v : "";
+}
 
 // Define o "nível" de doador a partir da quantidade total de livros doados
 function calcularNivel(totalLivros) {
@@ -52,11 +51,23 @@ router.get("/perfil", autenticado, (req, res) => {
                 return res.redirect("/home");
             }
 
-            // Dados comuns às duas telas de perfil (escola e doador)
+            // A escola NÃO tem uma tela de perfil separada: a página dela já é pública
+            // (/escola/:id) e é lá que ela edita o perfil, vê pedidos e ranking.
+            // Os links antigos pra /perfil continuam funcionando (levam pra página dela).
+            if (usuario.tipo === "escola") {
+                const params = new URLSearchParams(req.query);
+                const ancora = req.query.aba === "ranking" ? "#ranking" : (req.query.editar === "1" ? "#editar" : "");
+                params.delete("aba");
+                const qs = params.toString();
+                return res.redirect("/escola/" + usuario.id + (qs ? "?" + qs : "") + ancora);
+            }
+
+            // Dados do perfil do doador
             const respostaComum = {
                 perfilUsuario: usuario,
                 editar: req.query.editar === "1",
-                avatares: AVATARES_DISPONIVEIS,
+                avatares: AVATARES_DOADOR,
+                etapasDisponiveis: ETAPAS_ESCOLA,
                 sucessoPerfil: req.query.sucesso || null,
                 erroPerfil: req.query.erro || null,
                 sugestoesPerfil: req.query.sugestoes ? req.query.sugestoes.split(",") : [],
@@ -124,14 +135,16 @@ router.get("/perfil", autenticado, (req, res) => {
                 const aba = req.query.aba === "ranking" ? "ranking" : "doados";
 
                 db.all(
-                    "SELECT * FROM doacoes WHERE usuario_id = ? OR email = ? ORDER BY data_envio DESC",
+                    `SELECT d.*, COALESCE(u.username, u.nome) AS escolaDestinoNome
+                     FROM doacoes d LEFT JOIN usuarios u ON u.id = d.escola_destino_id
+                     WHERE d.usuario_id = ? OR d.email = ? ORDER BY d.data_envio DESC`,
                     [usuario.id, usuario.email],
                     (err2, doacoes) => {
 
                         // O ranking é calculado sempre (não só na aba "ranking"), pois o
                         // banner do perfil também mostra o nível/posição atual do doador.
                         db.all(
-                            `SELECT u.id, u.username, u.nome, u.avatar, u.foto, u.data_criacao,
+                            `SELECT u.id, u.username, u.nome, u.avatar, u.foto, u.data_criacao, u.mostrar_ranking,
                                     COALESCE(SUM(d.quantidade), 0) AS totalLivros
                              FROM usuarios u
                              LEFT JOIN doacoes d ON d.usuario_id = u.id
@@ -148,20 +161,61 @@ router.get("/perfil", autenticado, (req, res) => {
                                             nome: d.username || d.nome,
                                             foto: d.avatar ? "/img/avatars/" + d.avatar : "/img/perfil-padrao.jpg",
                                             totalLivros: d.totalLivros,
+                                            mostrarRanking: d.mostrar_ranking !== 0,
                                             meses,
                                             nivel: calcularNivel(d.totalLivros),
                                             pontos: d.totalLivros * 10 + Math.min(meses, 36)
                                         };
                                     })
+                                    // Quem desligou "aparecer no ranking" some para os outros, mas continua vendo a própria posição
+                                    .filter((d) => d.mostrarRanking || d.id === usuario.id)
                                     .sort((a, b) => b.pontos - a.pontos);
 
-                                res.render("perfil", {
-                                    ...respostaComum,
-                                    itens: doacoes || [],
-                                    ranking,
-                                    totalLivrosRepassados: 0,
-                                    aba
-                                });
+                                // Relatos de escolas que receberam um título que este doador doou
+                                // (pedidos e doações se ligam pelo título, como no acervo). Só conta
+                                // doação já disponível e feita antes do relato.
+                                // (se o doador desligou "relatos" em Configurações, nem consulta)
+                                db.all(
+                                    usuario.mostrar_relatos === 0 ? `SELECT 1 WHERE 0` : `SELECT r.id, r.livro, r.foto, r.frase, r.data_criacao,
+                                            u.id AS escolaId, COALESCE(u.username, u.nome) AS escolaNome
+                                     FROM relatos r
+                                     JOIN usuarios u ON u.id = r.escola_id
+                                     WHERE EXISTS (
+                                         SELECT 1 FROM doacoes d
+                                         WHERE (d.usuario_id = ? OR d.email = ?)
+                                           AND d.status = 'disponivel'
+                                           AND LOWER(TRIM(d.livro)) = LOWER(TRIM(r.livro))
+                                           AND d.data_envio <= r.data_criacao
+                                           AND (d.escola_destino_id IS NULL OR d.escola_destino_id = r.escola_id)
+                                     )
+                                     ORDER BY r.data_criacao DESC, r.id DESC
+                                     LIMIT 12`,
+                                    usuario.mostrar_relatos === 0 ? [] : [usuario.id, usuario.email],
+                                    (err4, relatosBrutos) => {
+                                        if (err4) console.log(err4);
+
+                                        const umaSemana = 7 * 24 * 60 * 60 * 1000;
+                                        const relatosDoador = (relatosBrutos || []).map((r) => {
+                                            const data = paraDataUTC(r.data_criacao);
+                                            return {
+                                                ...r,
+                                                novo: data ? Date.now() - data.getTime() < umaSemana : false,
+                                                dataFormatada: data
+                                                    ? data.toLocaleDateString("pt-BR", { day: "2-digit", month: "short", year: "numeric", timeZone: "America/Sao_Paulo" })
+                                                    : "—"
+                                            };
+                                        });
+
+                                        res.render("perfil", {
+                                            ...respostaComum,
+                                            itens: doacoes || [],
+                                            ranking,
+                                            totalLivrosRepassados: 0,
+                                            relatosDoador,
+                                            aba
+                                        });
+                                    }
+                                );
                             }
                         );
                     }
@@ -205,14 +259,18 @@ function gerarSugestoesUsername(base, usuarioId, callback) {
 // ===================== EDITAR PERFIL =====================
 router.post("/perfil", autenticado, (req, res) => {
 
-    const { username, avatar } = req.body;
+    const { username, avatar, bio } = req.body;
 
     if (!username || !username.trim()) {
         return res.redirect("/perfil?editar=1&erro=username");
     }
 
     const usernameLimpo = username.trim();
-    const avatarEscolhido = avatar && AVATARES_DISPONIVEIS.includes(avatar) ? avatar : null;
+    // Descrição só se aplica a escolas (aparece em /escola/:id)
+    const bioLimpa = req.session.usuario_tipo === "escola" && typeof bio === "string" ? bio.trim().slice(0, 600) : null;
+    // Cada tipo de conta só pode escolher da própria lista (doador = pessoas, escola = ilustrações)
+    const listaAvatares = req.session.usuario_tipo === "escola" ? AVATARES_ESCOLA : AVATARES_DOADOR;
+    const avatarEscolhido = avatar && listaAvatares.includes(avatar) ? avatar : null;
 
     // Garante que não existe outro usuário com o mesmo nome de perfil
     db.get(
@@ -234,16 +292,27 @@ router.post("/perfil", autenticado, (req, res) => {
                 });
             }
 
+            // Campos extras só existem pra escola (aparecem em /escola/:id)
+            const ehEscola = req.session.usuario_tipo === "escola";
+            const campos = ["username = ?", "avatar = COALESCE(?, avatar)", "bio = COALESCE(?, bio)"];
+            const valores = [usernameLimpo, avatarEscolhido, bioLimpa];
+
+            if (ehEscola) {
+                const etapasMarcadas = [].concat(req.body.etapas || []).filter((e) => ETAPAS_ESCOLA.includes(e));
+                campos.push("cidade = ?", "etapas = ?", "necessidades = ?", "instagram = ?");
+                valores.push(
+                    String(req.body.cidade || "").trim().slice(0, 80) || null,
+                    etapasMarcadas.join(",") || null,
+                    String(req.body.necessidades || "").trim().slice(0, 400) || null,
+                    limparInstagram(req.body.instagram) || null
+                );
+            }
+
+            valores.push(req.session.usuario_id);
+
             db.run(
-                `UPDATE usuarios
-                 SET username = ?,
-                     avatar = COALESCE(?, avatar)
-                 WHERE id = ?`,
-                [
-                    usernameLimpo,
-                    avatarEscolhido,
-                    req.session.usuario_id
-                ],
+                `UPDATE usuarios SET ${campos.join(", ")} WHERE id = ?`,
+                valores,
                 function (err2) {
 
                     if (err2) {

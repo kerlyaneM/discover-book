@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/css/leitura.css">
     <link rel="stylesheet" href="/css/categorias-realce.css">
     <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css">
+    <link rel="stylesheet" href="/css/doador-cta.css">
 </head>
 
 <body class="tema-leitura">
@@ -86,31 +87,51 @@
             <div class="livro-card">
                 <img src="/img/matilda.jpg" alt="Matilda">
                 <h3>Matilda</h3>
+                <% if (usuarioTipo === "doador") { %>
+                    <a href="/doar" class="btn-doar-parecido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4.5A2.5 2.5 0 0 1 4.5 2H11a2 2 0 0 1 2 2v16a1.5 1.5 0 0 0-1.5-1.5H2z"/><path d="M22 4.5A2.5 2.5 0 0 0 19.5 2H13a2 2 0 0 0-2 2v16a1.5 1.5 0 0 1 1.5-1.5H22z"/></svg>Tem um parecido? Doe aqui</a>
+                <% } else { %>
                 <button type="button" class="btn-carrinho" onclick="adicionarAoCarrinho(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>Adicionar ao carrinho</button>
+                <% } %>
             </div>
 
             <div class="livro-card">
                 <img src="/img/oursinhoapavorado.jpg" alt="O Ursinho Apavorado">
                 <h3>O Ursinho Apavorado</h3>
+                <% if (usuarioTipo === "doador") { %>
+                    <a href="/doar" class="btn-doar-parecido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4.5A2.5 2.5 0 0 1 4.5 2H11a2 2 0 0 1 2 2v16a1.5 1.5 0 0 0-1.5-1.5H2z"/><path d="M22 4.5A2.5 2.5 0 0 0 19.5 2H13a2 2 0 0 0-2 2v16a1.5 1.5 0 0 1 1.5-1.5H22z"/></svg>Tem um parecido? Doe aqui</a>
+                <% } else { %>
                 <button type="button" class="btn-carrinho" onclick="adicionarAoCarrinho(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>Adicionar ao carrinho</button>
+                <% } %>
             </div>
 
             <div class="livro-card">
                 <img src="/img/perigoso.jpg" alt="Perigoso">
                 <h3>Perigoso</h3>
+                <% if (usuarioTipo === "doador") { %>
+                    <a href="/doar" class="btn-doar-parecido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4.5A2.5 2.5 0 0 1 4.5 2H11a2 2 0 0 1 2 2v16a1.5 1.5 0 0 0-1.5-1.5H2z"/><path d="M22 4.5A2.5 2.5 0 0 0 19.5 2H13a2 2 0 0 0-2 2v16a1.5 1.5 0 0 1 1.5-1.5H22z"/></svg>Tem um parecido? Doe aqui</a>
+                <% } else { %>
                 <button type="button" class="btn-carrinho" onclick="adicionarAoCarrinho(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>Adicionar ao carrinho</button>
+                <% } %>
             </div>
 
             <div class="livro-card">
                 <img src="/img/encontro.webp" alt="Um Encontro">
                 <h3>Um Encontro</h3>
+                <% if (usuarioTipo === "doador") { %>
+                    <a href="/doar" class="btn-doar-parecido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4.5A2.5 2.5 0 0 1 4.5 2H11a2 2 0 0 1 2 2v16a1.5 1.5 0 0 0-1.5-1.5H2z"/><path d="M22 4.5A2.5 2.5 0 0 0 19.5 2H13a2 2 0 0 0-2 2v16a1.5 1.5 0 0 1 1.5-1.5H22z"/></svg>Tem um parecido? Doe aqui</a>
+                <% } else { %>
                 <button type="button" class="btn-carrinho" onclick="adicionarAoCarrinho(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>Adicionar ao carrinho</button>
+                <% } %>
             </div>
 
             <div class="livro-card">
                 <img src="/img/animais.jpg" alt="Explorando com os Animais">
                 <h3>Explorando com os Animais</h3>
+                <% if (usuarioTipo === "doador") { %>
+                    <a href="/doar" class="btn-doar-parecido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4.5A2.5 2.5 0 0 1 4.5 2H11a2 2 0 0 1 2 2v16a1.5 1.5 0 0 0-1.5-1.5H2z"/><path d="M22 4.5A2.5 2.5 0 0 0 19.5 2H13a2 2 0 0 0-2 2v16a1.5 1.5 0 0 1 1.5-1.5H22z"/></svg>Tem um parecido? Doe aqui</a>
+                <% } else { %>
                 <button type="button" class="btn-carrinho" onclick="adicionarAoCarrinho(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>Adicionar ao carrinho</button>
+                <% } %>
             </div>
 
         </div>
@@ -139,25 +160,41 @@
             <div class="livro-card">
                 <img src="/img/galinha.webp" alt="A Galinha Vermelha">
                 <h3>A Galinha Vermelha</h3>
+                <% if (usuarioTipo === "doador") { %>
+                    <a href="/doar" class="btn-doar-parecido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4.5A2.5 2.5 0 0 1 4.5 2H11a2 2 0 0 1 2 2v16a1.5 1.5 0 0 0-1.5-1.5H2z"/><path d="M22 4.5A2.5 2.5 0 0 0 19.5 2H13a2 2 0 0 0-2 2v16a1.5 1.5 0 0 1 1.5-1.5H22z"/></svg>Tem um parecido? Doe aqui</a>
+                <% } else { %>
                 <button type="button" class="btn-carrinho" onclick="adicionarAoCarrinho(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>Adicionar ao carrinho</button>
+                <% } %>
             </div>
 
             <div class="livro-card">
                 <img src="/img/criancado6ao11anos.jpg" alt="A criança do 6 aos 10 anos">
                 <h3>A criança do 6 aos 10 anos</h3>
+                <% if (usuarioTipo === "doador") { %>
+                    <a href="/doar" class="btn-doar-parecido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4.5A2.5 2.5 0 0 1 4.5 2H11a2 2 0 0 1 2 2v16a1.5 1.5 0 0 0-1.5-1.5H2z"/><path d="M22 4.5A2.5 2.5 0 0 0 19.5 2H13a2 2 0 0 0-2 2v16a1.5 1.5 0 0 1 1.5-1.5H22z"/></svg>Tem um parecido? Doe aqui</a>
+                <% } else { %>
                 <button type="button" class="btn-carrinho" onclick="adicionarAoCarrinho(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>Adicionar ao carrinho</button>
+                <% } %>
             </div>
 
             <div class="livro-card">
                 <img src="/img/assimcomovoce.jpg" alt="Assim como você">
                 <h3>Assim como você</h3>
+                <% if (usuarioTipo === "doador") { %>
+                    <a href="/doar" class="btn-doar-parecido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4.5A2.5 2.5 0 0 1 4.5 2H11a2 2 0 0 1 2 2v16a1.5 1.5 0 0 0-1.5-1.5H2z"/><path d="M22 4.5A2.5 2.5 0 0 0 19.5 2H13a2 2 0 0 0-2 2v16a1.5 1.5 0 0 1 1.5-1.5H22z"/></svg>Tem um parecido? Doe aqui</a>
+                <% } else { %>
                 <button type="button" class="btn-carrinho" onclick="adicionarAoCarrinho(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>Adicionar ao carrinho</button>
+                <% } %>
             </div>
 
             <div class="livro-card">
                 <img src="/img/livro%20de%20coloracao.jpg" alt="Livro de Coloração">
                 <h3>Livro de Coloração</h3>
+                <% if (usuarioTipo === "doador") { %>
+                    <a href="/doar" class="btn-doar-parecido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4.5A2.5 2.5 0 0 1 4.5 2H11a2 2 0 0 1 2 2v16a1.5 1.5 0 0 0-1.5-1.5H2z"/><path d="M22 4.5A2.5 2.5 0 0 0 19.5 2H13a2 2 0 0 0-2 2v16a1.5 1.5 0 0 1 1.5-1.5H22z"/></svg>Tem um parecido? Doe aqui</a>
+                <% } else { %>
                 <button type="button" class="btn-carrinho" onclick="adicionarAoCarrinho(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>Adicionar ao carrinho</button>
+                <% } %>
             </div>
 
         </div>
@@ -186,25 +223,41 @@
             <div class="livro-card">
                 <img src="/img/malala.webp" alt="Malala">
                 <h3>Malala</h3>
+                <% if (usuarioTipo === "doador") { %>
+                    <a href="/doar" class="btn-doar-parecido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4.5A2.5 2.5 0 0 1 4.5 2H11a2 2 0 0 1 2 2v16a1.5 1.5 0 0 0-1.5-1.5H2z"/><path d="M22 4.5A2.5 2.5 0 0 0 19.5 2H13a2 2 0 0 0-2 2v16a1.5 1.5 0 0 1 1.5-1.5H22z"/></svg>Tem um parecido? Doe aqui</a>
+                <% } else { %>
                 <button type="button" class="btn-carrinho" onclick="adicionarAoCarrinho(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>Adicionar ao carrinho</button>
+                <% } %>
             </div>
 
             <div class="livro-card">
                 <img src="/img/ameninaquenaosabiaesperar.jpg" alt="A menina que não sabia esperar">
                 <h3>A menina que não sabia esperar</h3>
+                <% if (usuarioTipo === "doador") { %>
+                    <a href="/doar" class="btn-doar-parecido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4.5A2.5 2.5 0 0 1 4.5 2H11a2 2 0 0 1 2 2v16a1.5 1.5 0 0 0-1.5-1.5H2z"/><path d="M22 4.5A2.5 2.5 0 0 0 19.5 2H13a2 2 0 0 0-2 2v16a1.5 1.5 0 0 1 1.5-1.5H22z"/></svg>Tem um parecido? Doe aqui</a>
+                <% } else { %>
                 <button type="button" class="btn-carrinho" onclick="adicionarAoCarrinho(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>Adicionar ao carrinho</button>
+                <% } %>
             </div>
 
             <div class="livro-card">
                 <img src="/img/gatinhaharmonia.jpg" alt="A Gatinha Harmonia">
                 <h3>A Gatinha Harmonia</h3>
+                <% if (usuarioTipo === "doador") { %>
+                    <a href="/doar" class="btn-doar-parecido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4.5A2.5 2.5 0 0 1 4.5 2H11a2 2 0 0 1 2 2v16a1.5 1.5 0 0 0-1.5-1.5H2z"/><path d="M22 4.5A2.5 2.5 0 0 0 19.5 2H13a2 2 0 0 0-2 2v16a1.5 1.5 0 0 1 1.5-1.5H22z"/></svg>Tem um parecido? Doe aqui</a>
+                <% } else { %>
                 <button type="button" class="btn-carrinho" onclick="adicionarAoCarrinho(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>Adicionar ao carrinho</button>
+                <% } %>
             </div>
 
             <div class="livro-card">
                 <img src="/img/chapeuzinho.webp" alt="Chapeuzinho Vermelho">
                 <h3>Chapeuzinho Vermelho</h3>
+                <% if (usuarioTipo === "doador") { %>
+                    <a href="/doar" class="btn-doar-parecido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4.5A2.5 2.5 0 0 1 4.5 2H11a2 2 0 0 1 2 2v16a1.5 1.5 0 0 0-1.5-1.5H2z"/><path d="M22 4.5A2.5 2.5 0 0 0 19.5 2H13a2 2 0 0 0-2 2v16a1.5 1.5 0 0 1 1.5-1.5H22z"/></svg>Tem um parecido? Doe aqui</a>
+                <% } else { %>
                 <button type="button" class="btn-carrinho" onclick="adicionarAoCarrinho(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>Adicionar ao carrinho</button>
+                <% } %>
             </div>
 
         </div>

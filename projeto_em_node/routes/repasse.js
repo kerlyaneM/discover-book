@@ -14,45 +14,111 @@ function autenticadoEscola(req, res, next) {
 }
 
 // ===================== PÁGINA DE REPASSE =====================
-router.get("/repasse", autenticadoEscola, (req, res) => {
+const all = (sql, params = []) => new Promise((ok, falha) => db.all(sql, params, (e, r) => (e ? falha(e) : ok(r))));
+const get = (sql, params = []) => new Promise((ok, falha) => db.get(sql, params, (e, r) => (e ? falha(e) : ok(r))));
+
+const formatarData = (d) => {
+    const data = paraDataUTC(d);
+    return data
+        ? data.toLocaleDateString("pt-BR", { day: "2-digit", month: "short", year: "numeric", timeZone: "America/Sao_Paulo" })
+        : "—";
+};
+
+router.get("/repasse", autenticadoEscola, async (req, res) => {
 
     const escolaId = req.session.usuario_id;
 
-    // Livros excedentes que a própria escola cadastrou (qualquer status)
-    db.all(
-        `SELECT r.*, u.nome AS escolaDestinoNome, u.username AS escolaDestinoUsername
-         FROM repasses r
-         LEFT JOIN usuarios u ON u.id = r.escola_destino_id
-         WHERE r.escola_origem_id = ?
-         ORDER BY r.data_criacao DESC`,
-        [escolaId],
-        (err, meusRepasses) => {
-
-            // Livros excedentes de OUTRAS escolas, ainda disponíveis pra solicitar
-            db.all(
-                `SELECT r.*, u.nome AS escolaOrigemNome, u.username AS escolaOrigemUsername
+    try {
+        const [meusRepasses, disponiveis, ofertasRecebidas, escolas] = await Promise.all([
+            // Tudo que a própria escola cadastrou pra doar (qualquer status)
+            all(
+                `SELECT r.*, COALESCE(u.username, u.nome) AS escolaDestinoNome
+                 FROM repasses r
+                 LEFT JOIN usuarios u ON u.id = r.escola_destino_id
+                 WHERE r.escola_origem_id = ?
+                 ORDER BY r.data_criacao DESC`,
+                [escolaId]
+            ),
+            // Livros avulsos (modelo antigo, sem escola escolhida) de OUTRAS escolas
+            all(
+                `SELECT r.*, COALESCE(u.username, u.nome) AS escolaOrigemNome
                  FROM repasses r
                  JOIN usuarios u ON u.id = r.escola_origem_id
                  WHERE r.status = 'disponivel' AND r.escola_origem_id != ?
                  ORDER BY r.data_criacao DESC`,
-                [escolaId],
-                (err2, disponiveis) => {
+                [escolaId]
+            ),
+            // Doações que OUTRAS escolas escolheram mandar pra esta escola
+            all(
+                `SELECT r.*, COALESCE(u.username, u.nome) AS escolaOrigemNome, u.avatar AS escolaOrigemAvatar
+                 FROM repasses r
+                 JOIN usuarios u ON u.id = r.escola_origem_id
+                 WHERE r.escola_destino_id = ? AND r.status IN ('oferecido', 'aprovado', 'recusado')
+                 ORDER BY CASE r.status WHEN 'oferecido' THEN 0 ELSE 1 END, r.data_criacao DESC`,
+                [escolaId]
+            ),
+            // Escolas cadastradas (todas públicas) pra escolher quem vai receber
+            all(
+                `SELECT id, COALESCE(username, nome) AS nome, cidade, etapas, avatar, necessidades
+                 FROM usuarios
+                 WHERE tipo = 'escola' AND id != ?
+                 ORDER BY LOWER(COALESCE(username, nome))`,
+                [escolaId]
+            )
+        ]);
 
-                    const formatarData = (d) => {
-                        const data = paraDataUTC(d);
-                        return data
-                            ? data.toLocaleDateString("pt-BR", { day: "2-digit", month: "short", year: "numeric", timeZone: "America/Sao_Paulo" })
-                            : "—";
-                    };
+        res.render("repasse", {
+            usuario: req.session.usuario_nome || null,
+            pagina: "repasse",
+            sucesso: req.query.sucesso || null,
+            erro: req.query.erro || null,
+            escolaSelecionada: req.query.para || null,
+            meusRepasses: meusRepasses.map((r) => ({ ...r, dataFormatada: formatarData(r.data_criacao) })),
+            disponiveis: disponiveis.map((r) => ({ ...r, dataFormatada: formatarData(r.data_criacao) })),
+            ofertasRecebidas: ofertasRecebidas.map((r) => ({ ...r, dataFormatada: formatarData(r.data_criacao) })),
+            escolas
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send("Erro ao carregar a página de doação entre escolas.");
+    }
 
-                    res.render("repasse", {
-                        usuario: req.session.usuario_nome || null,
-                        pagina: "repasse",
-                        sucesso: req.query.sucesso || null,
-                        erro: req.query.erro || null,
-                        meusRepasses: (meusRepasses || []).map((r) => ({ ...r, dataFormatada: formatarData(r.data_criacao) })),
-                        disponiveis: (disponiveis || []).map((r) => ({ ...r, dataFormatada: formatarData(r.data_criacao) }))
-                    });
+});
+
+// ===================== DOAR LIVRO PARA UMA ESCOLA ESCOLHIDA =====================
+router.post("/repasse", autenticadoEscola, (req, res) => {
+
+    const { livro, categoria, quantidade, descricao, escola_destino_id } = req.body;
+    const qtd = parseInt(quantidade, 10);
+
+    if (!livro || !livro.trim() || !categoria || !(qtd > 0)) {
+        return res.redirect("/repasse?erro=dados");
+    }
+
+    if (!escola_destino_id) {
+        return res.redirect("/repasse?erro=escola");
+    }
+
+    // Nunca confia só no formulário: o destino precisa ser outra escola cadastrada
+    db.get(
+        "SELECT id FROM usuarios WHERE id = ? AND tipo = 'escola' AND id != ?",
+        [escola_destino_id, req.session.usuario_id],
+        (errEscola, escola) => {
+
+            if (errEscola || !escola) {
+                return res.redirect("/repasse?erro=escola");
+            }
+
+            db.run(
+                `INSERT INTO repasses (escola_origem_id, escola_destino_id, livro, categoria, quantidade, descricao, status)
+                 VALUES (?, ?, ?, ?, ?, ?, 'oferecido')`,
+                [req.session.usuario_id, escola.id, livro.trim(), categoria, qtd, (descricao || "").trim() || null],
+                (err) => {
+                    if (err) {
+                        console.log(err);
+                        return res.redirect("/repasse?erro=sistema");
+                    }
+                    res.redirect("/repasse?sucesso=enviado");
                 }
             );
         }
@@ -60,29 +126,36 @@ router.get("/repasse", autenticadoEscola, (req, res) => {
 
 });
 
-// ===================== CADASTRAR LIVRO EXCEDENTE =====================
-router.post("/repasse", autenticadoEscola, (req, res) => {
+// ===================== ACEITAR / RECUSAR UMA DOAÇÃO RECEBIDA (a escola escolhida responde) =====================
+function responderOferta(novoStatus, sucesso) {
+    return (req, res) => {
+        db.get("SELECT * FROM repasses WHERE id = ?", [req.params.id], (err, repasse) => {
 
-    const { livro, categoria, quantidade, descricao } = req.body;
-
-    if (!livro || !livro.trim() || !categoria || !quantidade) {
-        return res.redirect("/repasse?erro=dados");
-    }
-
-    db.run(
-        `INSERT INTO repasses (escola_origem_id, livro, categoria, quantidade, descricao, status)
-         VALUES (?, ?, ?, ?, ?, 'disponivel')`,
-        [req.session.usuario_id, livro.trim(), categoria, quantidade, descricao || null],
-        (err) => {
-            if (err) {
-                console.log(err);
-                return res.redirect("/repasse?erro=sistema");
+            if (err || !repasse) {
+                return res.redirect("/repasse?erro=nao_encontrado");
             }
-            res.redirect("/repasse?sucesso=cadastrado");
-        }
-    );
 
-});
+            if (repasse.escola_destino_id !== req.session.usuario_id || repasse.status !== "oferecido") {
+                return res.redirect("/repasse?erro=sem_permissao");
+            }
+
+            db.run(
+                "UPDATE repasses SET status = ?, data_atualizacao = CURRENT_TIMESTAMP WHERE id = ?",
+                [novoStatus, req.params.id],
+                (err2) => {
+                    if (err2) {
+                        console.log(err2);
+                        return res.redirect("/repasse?erro=sistema");
+                    }
+                    res.redirect("/repasse?sucesso=" + sucesso + "#recebidas");
+                }
+            );
+        });
+    };
+}
+
+router.post("/repasse/:id/aceitar", autenticadoEscola, responderOferta("aprovado", "aceita"));
+router.post("/repasse/:id/rejeitar", autenticadoEscola, responderOferta("recusado", "rejeitada"));
 
 // ===================== SOLICITAR REPASSE (outra escola pede o livro) =====================
 router.post("/repasse/:id/solicitar", autenticadoEscola, (req, res) => {
@@ -183,7 +256,7 @@ router.post("/repasse/:id/cancelar", autenticadoEscola, (req, res) => {
             return res.redirect("/repasse?erro=nao_encontrado");
         }
 
-        if (repasse.escola_origem_id !== req.session.usuario_id || repasse.status !== "disponivel") {
+        if (repasse.escola_origem_id !== req.session.usuario_id || !["disponivel", "oferecido"].includes(repasse.status)) {
             return res.redirect("/repasse?erro=sem_permissao");
         }
 

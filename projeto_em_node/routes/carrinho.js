@@ -31,6 +31,11 @@ router.get("/carrinho/dados", (req, res) => {
 
 // ===================== ADICIONAR ITEM =====================
 router.post("/carrinho/adicionar", (req, res) => {
+    // Doador só doa livros, não recebe: não pode montar carrinho
+    if (req.session.usuario_tipo === "doador") {
+        return res.status(403).json({ ok: false, erro: "Contas de Doador não solicitam livros." });
+    }
+
     const { nome, imagem, categoria, faixa } = req.body;
 
     if (!nome || !nome.trim()) {

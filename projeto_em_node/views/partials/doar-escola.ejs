@@ -1,0 +1,65 @@
+<%# Aba "Escolas": o livro vai para uma escola cadastrada no site, escolhida aqui.
+    Recebe: numero (bolha), escolas, selecionada (id ou null).
+    Opcional: dica (texto embaixo do título). O campo enviado é sempre escola_destino_id. %>
+<link rel="stylesheet" href="/css/escolas-picker.css">
+<fieldset class="ep" id="epEscolas">
+    <legend><span class="doar-bolha ep-bolha"><%= numero %></span> Para qual escola?</legend>
+
+    <% if (!escolas || escolas.length === 0) { %>
+        <p class="ep-vazio"><i class="fi fi-rr-graduation-cap" aria-hidden="true"></i> Ainda não há escolas cadastradas no site. Volte em breve!</p>
+    <% } else { %>
+        <p class="ep-dica"><%= typeof dica !== "undefined" && dica ? dica : "Estas são as escolas que estão no DiscoverBook e querem receber livros. Escolha uma." %></p>
+
+        <div class="ep-topo">
+            <div class="ep-busca">
+                <i class="fi fi-rr-search" aria-hidden="true"></i>
+                <label for="epBusca" class="ep-sr">Buscar escola por nome ou cidade</label>
+                <input type="search" id="epBusca" placeholder="Buscar escola ou cidade…" autocomplete="off">
+            </div>
+            <span class="ep-contagem" id="epContagem" aria-live="polite"><strong><%= escolas.length %></strong> <%= escolas.length === 1 ? "escola" : "escolas" %></span>
+        </div>
+
+        <div class="ep-grade" role="radiogroup" aria-label="Escolas cadastradas">
+            <% escolas.forEach(function(e, i) {
+                const foto = e.avatar ? "/img/avatars/" + e.avatar : "/img/perfil-padrao.jpg";
+                const etapas = (e.etapas || "").split(",").filter(Boolean);
+                const busca = ((e.nome || "") + " " + (e.cidade || "")).toLowerCase();
+            %>
+                <label class="ep-card ep-cor-<%= i % 4 %>" data-busca="<%= busca %>">
+                    <input type="radio" name="escola_destino_id" value="<%= e.id %>" <%= String(selecionada) === String(e.id) ? "checked" : "" %> required>
+                    <span class="ep-corpo">
+                        <img src="<%= foto %>" alt="" class="ep-foto">
+                        <span class="ep-texto">
+                            <strong><%= e.nome %></strong>
+                            <small><i class="fi fi-rr-marker" aria-hidden="true"></i> <%= e.cidade || "Cidade não informada" %></small>
+                            <% if (etapas.length) { %><span class="ep-etapas"><% etapas.slice(0, 2).forEach(function(et) { %><em><%= et %></em><% }) %></span><% } %>
+                        </span>
+                        <span class="ep-ok" aria-hidden="true"><i class="fi fi-rr-check"></i></span>
+                    </span>
+                </label>
+            <% }) %>
+        </div>
+        <p class="ep-sem-resultado" id="epSemResultado" hidden>Nenhuma escola encontrada com essa busca.</p>
+
+        <script>
+        (function () {
+            var campo = document.getElementById("epBusca");
+            if (!campo) return;
+            var cards = document.querySelectorAll("#epEscolas .ep-card");
+            var contagem = document.getElementById("epContagem");
+            var vazio = document.getElementById("epSemResultado");
+            campo.addEventListener("input", function () {
+                var termo = campo.value.trim().toLowerCase();
+                var visiveis = 0;
+                cards.forEach(function (c) {
+                    var mostra = !termo || c.getAttribute("data-busca").indexOf(termo) !== -1;
+                    c.hidden = !mostra;
+                    if (mostra) visiveis++;
+                });
+                contagem.innerHTML = "<strong>" + visiveis + "</strong> " + (visiveis === 1 ? "escola" : "escolas");
+                vazio.hidden = visiveis !== 0;
+            });
+        })();
+        </script>
+    <% } %>
+</fieldset>

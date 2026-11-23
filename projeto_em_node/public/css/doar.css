@@ -1365,3 +1365,22 @@ footer {
         width: 100%;
     }
 }
+/* ---------- Escolha da escola de destino ---------- */
+.doar-select-wrap { position: relative; }
+.doar-select-wrap > i {
+    position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+    color: #6e5bd8; font-size: 18px; pointer-events: none;
+}
+.doar-select {
+    width: 100%;
+    appearance: none;
+    -webkit-appearance: none;
+    border: 2px solid #cdbfff;
+    border-radius: 14px;
+    padding: 14px 44px 14px 46px;
+    font: 700 15px 'Karla', sans-serif;
+    color: #211c33;
+    background: #faf8ff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236e5bd8' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") right 16px center / 16px no-repeat;
+    cursor: pointer;
+}
+.doar-select:focus { outline: none; border-color: #8472f4; box-shadow: 0 0 0 4px rgba(132, 114, 244, .2); }

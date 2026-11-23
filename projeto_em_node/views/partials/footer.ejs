@@ -1,9 +1,10 @@
+<div class="vida-estante" aria-hidden="true"><% for (let i = 0; i < 40; i++) { %><span></span><% } %></div>
 <footer>
     <div class="footer-top">
         <div class="footer-links">
             <ul>
                 <li><a href="/sobre">Sobre nós</a></li>
-                <li><a href="/duvidas">Dúvidas</a></li>
+                <li><a href="/duvidas"<%- (typeof pagina !== 'undefined' && pagina === 'duvidas') ? ' class="atual"' : '' %>>Dúvidas</a></li>
                 <li><a href="/ajude">Nos ajude</a></li>
             </ul>
         </div>

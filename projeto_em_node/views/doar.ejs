@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,500&family=Karla:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/doar.css">
+    <link rel="stylesheet" href="/css/doar-impacto.css">
     <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css">
 </head>
 <body class="doar-page">
@@ -16,116 +17,64 @@
 <%- include('partials/nav-categorias') %>
 
 <!-- ================= HERO ================= -->
-<section class="doar-hero">
-    <div class="doar-blob doar-blob-1"></div>
-    <div class="doar-blob doar-blob-2"></div>
+<section class="di-hero">
+    <span class="di-bolha di-b1" aria-hidden="true"></span>
+    <span class="di-bolha di-b2" aria-hidden="true"></span>
+    <span class="di-bolha di-b3" aria-hidden="true"></span>
 
-    <div class="doar-hero-texto">
-        <span class="doar-eyebrow">Doação de livros</span>
-        <h1>Seu livro parado<br>vira <em>leitura viva</em><br>numa escola.</h1>
-        <p class="doar-lead">
-            Conte pra gente sobre o livro que você quer doar. Assim que você envia,
-            ele fica <strong>pendente por 48 horas</strong> — tempo em que você
-            ainda pode editar os dados ou cancelar — e depois entra automaticamente
-            no <a href="/acervo">acervo</a>, disponível para uma escola solicitar.
-        </p>
+    <div class="di-hero-inner">
+        <div class="di-hero-texto">
+            <h1>Doe um livro.<br>Mude uma sala de aula.</h1>
+            <p class="di-sub">Leva menos de 3 minutos.</p>
 
-        <div class="doar-hero-stats">
-            <div><strong><%= statsAcervo.exemplares %></strong><span>exemplares no acervo</span></div>
-            <div><strong><%= statsAcervo.titulos %></strong><span>títulos diferentes</span></div>
+            <a href="#form-doacao" class="di-cta">
+                <i class="fi fi-rr-book-alt" aria-hidden="true"></i>
+                Quero doar meu livro
+            </a>
+
+            <div class="di-contador" aria-label="Livros no acervo">
+                <i class="fi fi-rr-heart" aria-hidden="true"></i>
+                <span><strong><%= statsAcervo.exemplares %></strong> livros já esperam por uma escola</span>
+            </div>
         </div>
 
-        <a href="#form-doacao" class="doar-hero-cta">Quero doar agora ↓</a>
-    </div>
-
-    <div class="doar-explica-wrap">
-        <div class="doar-explica">
-            <div class="doar-explica-topo">
-                <span class="doar-explica-rotulo">Como funciona</span>
-                <h2>Do seu armário<br>pra sala de aula</h2>
-            </div>
-
-            <div class="doar-explica-passo">
-                <span class="doar-explica-icone">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                </span>
-                <div>
-                    <b>Você conta sobre o livro</b>
-                    <p>Título, quantidade e a faixa escolar dele.</p>
-                </div>
-            </div>
-
-            <div class="doar-explica-passo">
-                <span class="doar-explica-icone">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M8 6l2-3h4l2 3"/><circle cx="12" cy="13" r="3.5"/></svg>
-                </span>
-                <div>
-                    <b>Manda uma foto do livro</b>
-                    <p>Obrigatória — ajuda a escola a reconhecer o exemplar.</p>
-                </div>
-            </div>
-
-            <div class="doar-explica-passo">
-                <span class="doar-explica-icone">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10 12 4 2 10l10 6 10-6z"/><path d="M6 12v5c0 1.5 2.5 3 6 3s6-1.5 6-3v-5"/></svg>
-                </span>
-                <div>
-                    <b>O livro entra no acervo</b>
-                    <p>E fica visível para quem for solicitar.</p>
-                </div>
-            </div>
-
-            <span class="doar-explica-selo">✓ A gente combina a entrega com você depois</span>
+        <div class="di-pilha" aria-hidden="true">
+            <img class="di-capa di-capa-1" src="/img/matilda.jpg" alt="">
+            <img class="di-capa di-capa-2" src="/img/malala.webp" alt="">
+            <img class="di-capa di-capa-3" src="/img/chapeuzinho.webp" alt="">
+            <span class="di-selo"><i class="fi fi-rr-graduation-cap"></i></span>
         </div>
     </div>
+
+    <svg class="di-onda" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0,40 C240,90 480,0 720,30 C960,60 1200,90 1440,35 L1440,80 L0,80 Z" fill="#efeaff"/>
+    </svg>
 </section>
 
-<!-- ================= O QUE ACONTECE DEPOIS ================= -->
-<div class="doar-trilha">
-    <div class="doar-trilha-inner">
-
-        <div class="doar-passo">
-            <div class="doar-passo-img">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 6 9 17l-5-5"/></svg>
-            </div>
-            <div class="doar-passo-num">1</div>
-            <h3>Você envia a doação</h3>
-            <p>Preenche o formulário abaixo com os dados do livro e envia.</p>
-        </div>
-
-        <div class="doar-passo">
-            <div class="doar-passo-img">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 10 12 4 2 10l10 6 10-6z"/><path d="M6 12v5c0 1.5 2.5 3 6 3s6-1.5 6-3v-5"/></svg>
-            </div>
-            <div class="doar-passo-num">2</div>
-            <h3>O livro aparece no acervo</h3>
-            <p>Na hora, disponível para escolas verem e solicitarem.</p>
-        </div>
-
-        <div class="doar-passo">
-            <div class="doar-passo-img">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v12H5.17L4 17.17V4z"/><path d="M8 9h8M8 12h5"/></svg>
-            </div>
-            <div class="doar-passo-num">3</div>
-            <h3>A gente entra em contato</h3>
-            <p>Usamos seu telefone ou email só para combinar a entrega ou retirada.</p>
-        </div>
-
-    </div>
-</div>
+<!-- ================= 3 PASSOS ================= -->
+<ol class="di-passos" aria-label="Como funciona">
+    <li><span class="di-passo-ico di-p1"><i class="fi fi-rr-book-alt"></i></span><b>Conte do livro</b></li>
+    <li class="di-seta" aria-hidden="true"><i class="fi fi-rr-angle-small-right"></i></li>
+    <li><span class="di-passo-ico di-p2"><i class="fi fi-rr-camera"></i></span><b>Mande a foto</b></li>
+    <li class="di-seta" aria-hidden="true"><i class="fi fi-rr-angle-small-right"></i></li>
+    <li><span class="di-passo-ico di-p3"><i class="fi fi-rr-graduation-cap"></i></span><b>Ele vai pra uma escola</b></li>
+</ol>
 
 <!-- ================= FORMULÁRIO ================= -->
 <section class="doar-form-section" id="form-doacao">
 
     <div class="doar-cabecalho">
-        <span class="doar-cabecalho-eyebrow">Ficha de doação</span>
-        <h2>Vamos catalogar seu livro</h2>
-        <p>Leva menos de 3 minutos — os campos com * são obrigatórios.</p>
+        <h2>Ficha do livro</h2>
+        <p>Campos com * são obrigatórios.</p>
     </div>
 
     <% if (erro === "foto") { %>
         <p class="doar-mensagem doar-mensagem-erro">
             Não foi possível enviar a foto (verifique se ela foi selecionada e se é uma imagem de até 5MB). Tente novamente.
+        </p>
+    <% } else if (erro === "escola") { %>
+        <p class="doar-mensagem doar-mensagem-erro">
+            Escolha a escola que vai receber o livro.
         </p>
     <% } else if (erro) { %>
         <p class="doar-mensagem doar-mensagem-erro">
@@ -145,8 +94,8 @@
                 <label for="quantidade">Quantidade *</label>
                 <input class="doar-input-curto" type="number" id="quantidade" name="quantidade" min="1" value="1" required>
 
-                <label for="descricao">Descreva o livro *</label>
-                <textarea id="descricao" name="descricao" class="doar-textarea" rows="4" placeholder="Conte um pouco sobre o exemplar: estado de conservação (novo, seminovo, com marcas de uso), se está completo, se tem rabiscos ou páginas soltas, etc." required></textarea>
+                <label for="descricao">Estado do livro *</label>
+                <textarea id="descricao" name="descricao" class="doar-textarea" rows="4" placeholder="Como está o livro? (novo, seminovo, com marcas de uso…)" required></textarea>
             </fieldset>
 
             <fieldset>
@@ -199,15 +148,12 @@
                     </label>
 
                 </div>
-
-                <div class="doar-ajuda-dica">
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-                    <span>Não sabe qual categoria marcar? Escolha a que mais combina com o livro — a equipe pode ajustar depois se precisar.</span>
-                </div>
             </fieldset>
 
+            <%- include('partials/doar-escola', { numero: 3, escolas, selecionada: null }) %>
+
             <fieldset>
-                <legend><span class="doar-bolha">3</span> Seus dados</legend>
+                <legend><span class="doar-bolha">4</span> Seus dados</legend>
 
                 <div class="doar-grid-2">
                     <div>
@@ -222,51 +168,36 @@
 
                 <label for="email">Email *</label>
                 <input type="email" id="email" name="email" placeholder="Seu email" value="<%= doadorEmail %>" required>
-
-                <span class="doar-dica-campo">Usamos seu telefone ou email só se precisarmos combinar a entrega ou retirada do livro com você.</span>
+                <span class="doar-dica-campo">Só usamos para combinar a entrega.</span>
             </fieldset>
 
             <fieldset>
-                <legend><span class="doar-bolha">4</span> Foto do livro (obrigatória)</legend>
+                <legend><span class="doar-bolha">5</span> Foto da capa</legend>
 
                 <label class="doar-drop-foto" id="doarDropFoto">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M8 6l2-3h4l2 3"/><circle cx="12" cy="13" r="3.5"/></svg>
-                    <span><b>Toque para escolher uma foto</b> ou arraste a imagem da capa aqui</span>
+                    <span><b>Toque para escolher a foto</b> ou arraste aqui</span>
                     <input type="file" name="foto" id="foto" accept="image/png, image/jpeg, image/webp" required>
                     <span class="doar-nome-arquivo" id="doarNomeArquivo"></span>
                 </label>
-                <span class="doar-dica-campo">A foto da capa é obrigatória e ajuda a escola a reconhecer o exemplar (até 5MB).</span>
+                <span class="doar-dica-campo">Foto da capa, até 5MB.</span>
             </fieldset>
 
             <div class="doar-botoes-form">
-                <button type="submit" class="doar-btn-primario">Enviar doação</button>
+                <p class="di-motivo"><i class="fi fi-rr-sparkles" aria-hidden="true"></i> Seu livro vai ganhar uma nova história.</p>
+                <button type="submit" class="doar-btn-primario di-enviar"><i class="fi fi-rr-book-alt" aria-hidden="true"></i> Enviar minha doação</button>
             </div>
         </form>
     </div>
 
-    <div class="doar-faq">
-        <h3>O que acontece depois que eu enviar?</h3>
-
-        <div class="doar-faq-item">
-            <b>Meu livro já vai aparecer pra todo mundo?</b>
-            <p>Ele fica <strong>pendente por 48 horas</strong> primeiro — nesse tempo você pode editar os dados ou cancelar a doação pelo seu <a href="/perfil?aba=doados">perfil</a>. Depois disso, entra automaticamente no <a href="/acervo">acervo</a> como disponível.</p>
-        </div>
-
-        <div class="doar-faq-item">
-            <b>Preciso mesmo mandar foto?</b>
-            <p>Sim, a foto da capa é obrigatória: é o que ajuda a escola a reconhecer o exemplar exato quando ele chegar.</p>
-        </div>
-
-        <div class="doar-faq-item">
-            <b>Como a entrega acontece?</b>
-            <p>Depois que uma escola solicitar seu livro, entramos em contato pelo telefone ou email que você informou para combinar a melhor forma de entrega ou retirada.</p>
-        </div>
-
-        <div class="doar-faq-item">
-            <b>E se eu errar a faixa escolar?</b>
-            <p>Sem problema — é só uma referência para ajudar a organizar o acervo. A equipe do DiscoverBook pode ajustar depois, se precisar.</p>
-        </div>
-    </div>
+    <details class="di-duvidas">
+        <summary><i class="fi fi-rr-interrogation" aria-hidden="true"></i> E depois que eu enviar?</summary>
+        <ul>
+            <li><b>48h pra mudar de ideia:</b> edite ou cancele pelo seu <a href="/perfil?aba=doados">perfil</a>.</li>
+            <li><b>Depois disso</b> o livro entra no <a href="/acervo">acervo</a>.</li>
+            <li><b>Quando uma escola pedir,</b> a gente chama você pra combinar a entrega.</li>
+        </ul>
+    </details>
 
 </section>
 

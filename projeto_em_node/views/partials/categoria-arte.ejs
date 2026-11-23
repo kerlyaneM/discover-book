@@ -1,0 +1,117 @@
+<%# Ilustração do topo de cada faixa — só formas e livros (sem boneco). Recebe: nivel %>
+<svg class="pro-arte" viewBox="0 0 470 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Livros flutuando">
+  <defs>
+    <linearGradient id="gPag" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#e9e3ff"/></linearGradient>
+    <linearGradient id="gCapa" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5a44d8"/><stop offset="1" stop-color="#2f2288"/></linearGradient>
+    <symbol id="bk" viewBox="0 0 54 72">
+      <rect width="54" height="72" rx="9" fill="currentColor"/>
+      <path d="M9 0H12V72H9A9 9 0 0 1 0 63V9A9 9 0 0 1 9 0Z" fill="#000" opacity=".16"/>
+      <rect x="22" y="16" width="22" height="6" rx="3" fill="#fff" opacity=".78"/>
+      <rect x="22" y="28" width="15" height="6" rx="3" fill="#fff" opacity=".5"/>
+    </symbol>
+    <clipPath id="cL"><path d="M-156 -8 C-106 -30 -42 -28 -4 -2 L-4 92 C-42 68 -106 68 -156 90 Z"/></clipPath>
+  </defs>
+
+  <circle cx="235" cy="205" r="172" fill="#fff" opacity=".12"/>
+  <circle cx="235" cy="205" r="134" fill="none" stroke="#fff" stroke-opacity=".3" stroke-width="2" stroke-dasharray="2 10" stroke-linecap="round"/>
+  <ellipse cx="235" cy="352" rx="165" ry="14" fill="#1c0f55" opacity=".25"/>
+
+<% if (nivel === "infantil") { %>
+  <!-- livro aberto grande, com desenho pra colorir -->
+  <g transform="translate(235 222)">
+    <path d="M-170 -2 C-110 -28 -42 -30 0 -4 C42 -30 110 -28 170 -2 L170 104 C110 78 42 78 0 104 C-42 78 -110 78 -170 104 Z" fill="url(#gCapa)"/>
+    <path d="M-156 90 C-106 68 -42 68 -4 92 L-4 99 C-42 75 -106 75 -156 97Z" fill="#cfc6f7"/>
+    <path d="M156 90 C106 68 42 68 4 92 L4 99 C42 75 106 75 156 97Z" fill="#cfc6f7"/>
+    <path d="M-156 -8 C-106 -30 -42 -28 -4 -2 L-4 92 C-42 68 -106 68 -156 90 Z" fill="url(#gPag)"/>
+    <path d="M156 -8 C106 -30 42 -28 4 -2 L4 92 C42 68 106 68 156 90 Z" fill="url(#gPag)"/>
+    <g clip-path="url(#cL)">
+      <circle cx="-92" cy="16" r="15" fill="#ffc83d"/>
+      <path d="M-170 80 C-130 30 -90 46 -60 36 C-30 28 -10 40 0 50 V100 H-170Z" fill="#8ee0c3"/>
+      <path d="M-60 100 C-50 56 -20 50 0 56 V100Z" fill="#5fcfae"/>
+      <path d="M-140 22 q10 -12 20 0 t20 0" stroke="#ff8fab" stroke-width="4" fill="none" stroke-linecap="round"/>
+    </g>
+    <rect x="24" y="-6" width="62" height="10" rx="5" fill="#8472f4"/>
+    <rect x="24" y="14" width="100" height="7" rx="3.5" fill="#d9d0ff"/>
+    <rect x="24" y="31" width="84" height="7" rx="3.5" fill="#d9d0ff"/>
+    <rect x="24" y="48" width="96" height="7" rx="3.5" fill="#d9d0ff"/>
+    <rect x="24" y="65" width="58" height="7" rx="3.5" fill="#d9d0ff"/>
+    <path d="M0 -4 V104" stroke="#b8abf5" stroke-width="2"/>
+  </g>
+  <g transform="translate(60 112) rotate(-16)"><g class="flt flt-a"><use href="#bk" width="54" height="72" style="color:#ff8fab"/></g></g>
+  <g transform="translate(338 40) rotate(10)"><g class="flt flt-b"><use href="#bk" width="54" height="72" style="color:#ffc83d"/></g></g>
+  <g transform="translate(20 258) rotate(12) scale(.8)"><g class="flt flt-c"><use href="#bk" width="54" height="72" style="color:#d9d0ff"/></g></g>
+  <g transform="translate(400 150) rotate(24)"><g class="flt flt-c">
+    <rect x="-9" y="-60" width="18" height="100" rx="5" fill="#ff6b8a"/>
+    <rect x="-9" y="-30" width="18" height="16" fill="#fff" opacity=".7"/>
+    <path d="M-9 40H9L0 68Z" fill="#ffd9a8"/><path d="M-4.5 56H4.5L0 68Z" fill="#ff6b8a"/>
+  </g></g>
+
+<% } else if (nivel === "fundamental") { %>
+  <!-- pilha de livros com um livro aberto em cima -->
+  <g transform="translate(235 332)">
+    <rect x="-140" y="-42" width="280" height="42" rx="9" fill="#3f2386"/>
+    <rect x="-140" y="-42" width="12" height="42" rx="6" fill="#fff" opacity=".18"/>
+    <rect x="22" y="-30" width="76" height="18" rx="5" fill="#fff" opacity=".85"/>
+    <rect x="-104" y="-26" width="56" height="5" rx="2.5" fill="#fff" opacity=".4"/>
+    <rect x="-104" y="-15" width="38" height="5" rx="2.5" fill="#fff" opacity=".28"/>
+  </g>
+  <g transform="translate(247 290)">
+    <rect x="-120" y="-38" width="240" height="38" rx="9" fill="#9b6bd6"/>
+    <rect x="-120" y="-38" width="12" height="38" rx="6" fill="#fff" opacity=".2"/>
+    <rect x="-70" y="-27" width="70" height="16" rx="5" fill="#fff" opacity=".85"/>
+    <rect x="28" y="-24" width="56" height="5" rx="2.5" fill="#fff" opacity=".45"/>
+    <rect x="28" y="-14" width="36" height="5" rx="2.5" fill="#fff" opacity=".3"/>
+  </g>
+  <g transform="translate(227 254) rotate(-3)">
+    <rect x="-100" y="-34" width="200" height="34" rx="9" fill="#cdb0f5"/>
+    <rect x="-100" y="-34" width="12" height="34" rx="6" fill="#fff" opacity=".25"/>
+    <rect x="-50" y="-24" width="56" height="14" rx="5" fill="#fff" opacity=".9"/>
+    <rect x="30" y="-22" width="40" height="5" rx="2.5" fill="#fff" opacity=".6"/>
+  </g>
+  <g transform="translate(232 152) scale(.62)"><g class="flt flt-b">
+    <path d="M-170 -2 C-110 -28 -42 -30 0 -4 C42 -30 110 -28 170 -2 L170 104 C110 78 42 78 0 104 C-42 78 -110 78 -170 104 Z" fill="url(#gCapa)"/>
+    <path d="M-156 -8 C-106 -30 -42 -28 -4 -2 L-4 92 C-42 68 -106 68 -156 90 Z" fill="url(#gPag)"/>
+    <path d="M156 -8 C106 -30 42 -28 4 -2 L4 92 C42 68 106 68 156 90 Z" fill="url(#gPag)"/>
+    <g fill="#d9d0ff">
+      <rect x="-130" y="10" width="96" height="8" rx="4"/><rect x="-130" y="28" width="82" height="8" rx="4"/><rect x="-130" y="46" width="92" height="8" rx="4"/>
+      <rect x="34" y="10" width="96" height="8" rx="4"/><rect x="34" y="28" width="86" height="8" rx="4"/><rect x="34" y="46" width="94" height="8" rx="4"/>
+    </g>
+    <path d="M-14 -2 V44 l7 -7 7 7 V-2Z" fill="#ff6b8a"/>
+    <path d="M0 -4 V104" stroke="#b8abf5" stroke-width="2"/>
+  </g></g>
+  <g transform="translate(52 78) rotate(-12)"><g class="flt flt-a"><use href="#bk" width="54" height="72" style="color:#d9d0ff"/></g></g>
+  <g transform="translate(372 70) rotate(14)"><g class="flt flt-c"><use href="#bk" width="54" height="72" style="color:#ffc83d"/></g></g>
+  <g transform="translate(394 168) rotate(-10) scale(.75)"><g class="flt flt-a"><use href="#bk" width="54" height="72" style="color:#2ec4b6"/></g></g>
+
+<% } else { %>
+  <!-- estante cheia de livros + capelo -->
+  <g transform="translate(95 62)">
+    <rect width="280" height="280" rx="18" fill="#fff" opacity=".1"/>
+    <rect width="280" height="280" rx="18" fill="none" stroke="#fff" stroke-opacity=".38" stroke-width="2"/>
+<%
+  const prateleiras = [
+    [[24,66,'#c9b8ff'],[18,54,'#ff8fab'],[26,72,'#8472f4'],[20,60,'#fff'],[28,68,'#ffc83d'],[18,52,'#2ec4b6'],[24,64,'#e6defe'],[22,70,'#a996ff'],[20,58,'#ff8fab']],
+    [[20,60,'#2ec4b6'],[28,70,'#fff'],[18,54,'#8472f4'],[24,66,'#ffc83d'],[22,72,'#c9b8ff'],[26,58,'#ff8fab'],[18,64,'#e6defe'],[24,52,'#a996ff'],[22,68,'#fff']],
+    [[26,70,'#ffc83d'],[20,56,'#c9b8ff'],[24,66,'#fff'],[18,72,'#8472f4'],[28,60,'#2ec4b6'],[20,68,'#ff8fab'],[24,54,'#e6defe'],[22,64,'#a996ff'],[20,58,'#ffc83d']]
+  ];
+  prateleiras.forEach(function (livros, i) {
+    const base = 86 + i * 92;
+    let x = 16;
+%>
+    <rect x="8" y="<%= base %>" width="264" height="8" rx="4" fill="#fff" opacity=".88"/>
+<%  livros.forEach(function (b) { %>
+    <rect x="<%= x %>" y="<%= base - b[1] %>" width="<%= b[0] %>" height="<%= b[1] %>" rx="3" fill="<%= b[2] %>"/>
+    <rect x="<%= x %>" y="<%= base - b[1] + 9 %>" width="<%= b[0] %>" height="4" fill="#2f2288" opacity=".22"/>
+<%    x += b[0] + 4; }); }); %>
+  </g>
+  <g transform="translate(235 44)"><g class="flt flt-b">
+    <path d="M-34 6V30C-34 42 34 42 34 30V6L0 20Z" fill="#e6defe"/>
+    <path d="M0 -26L62 -4L0 18L-62 -4Z" fill="#fff"/>
+    <path d="M62 -4V26" stroke="#ffc83d" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="62" cy="30" r="5" fill="#ffc83d"/>
+  </g></g>
+  <g transform="translate(36 150) rotate(-12)"><g class="flt flt-a"><use href="#bk" width="54" height="72" style="color:#2ec4b6"/></g></g>
+  <g transform="translate(398 104) rotate(12)"><g class="flt flt-c"><use href="#bk" width="54" height="72" style="color:#ff8fab"/></g></g>
+  <g transform="translate(404 270) rotate(-8) scale(.85)"><g class="flt flt-b"><use href="#bk" width="54" height="72" style="color:#ffc83d"/></g></g>
+<% } %>
+</svg>

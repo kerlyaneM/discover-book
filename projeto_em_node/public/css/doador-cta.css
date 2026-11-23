@@ -1,0 +1,24 @@
+/* Doador não recebe livros: no lugar do carrinho, convite pra doar um parecido */
+.btn-doar-parecido {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    width: 100%;
+    margin-top: 18px;
+    padding: 12px 14px;
+    border-radius: 30px;
+    background: linear-gradient(135deg, #8472f4, #4c37a3);
+    color: #fff;
+    font-weight: 800;
+    font-size: 14.5px;
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: 0 12px 20px -12px rgba(76, 55, 163, .85);
+    transition: transform .2s, box-shadow .2s;
+}
+.btn-doar-parecido svg { width: 19px; height: 19px; flex: none; }
+.btn-doar-parecido:hover { transform: translateY(-2px); box-shadow: 0 16px 24px -12px rgba(76, 55, 163, .9); }
+.btn-doar-parecido:focus-visible { outline: 3px solid #ffc94d; outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .btn-doar-parecido { transition: none; } }

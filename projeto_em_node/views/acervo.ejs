@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/acervo.css">
     <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css">
+    <link rel="stylesheet" href="/css/doador-cta.css">
 </head>
 
 <body>
@@ -159,6 +160,8 @@
                                 Pedir pra escola
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
                             </button>
+                        <% } else if (usuarioTipo === "doador") { %>
+                            <a href="/doar" class="btn-doar-parecido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4.5A2.5 2.5 0 0 1 4.5 2H11a2 2 0 0 1 2 2v16a1.5 1.5 0 0 0-1.5-1.5H2z"/><path d="M22 4.5A2.5 2.5 0 0 0 19.5 2H13a2 2 0 0 0-2 2v16a1.5 1.5 0 0 1 1.5-1.5H22z"/></svg>Tem um parecido? Doe aqui</a>
                         <% } %>
                     </div>
                 </div>

@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/header.css">
     <link rel="stylesheet" href="/css/perfil.css">
+    <link rel="stylesheet" href="/css/escola.css">
+    <link rel="stylesheet" href="/css/relatos.css">
+    <link rel="stylesheet" href="/css/perfil-cores.css">
+    <link rel="stylesheet" href="/css/form-perfil.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Karla:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css">
@@ -60,6 +64,25 @@
 
 <main id="conteudo-principal" class="perfil-page">
 
+    <% if (!editar && !ehEscola) { %>
+    <section class="rel-hero" aria-labelledby="t-hero">
+        <div class="rel-hero-in">
+            <div>
+                <span class="rel-eyebrow">Doador do DiscoverBook</span>
+                <h1 id="t-hero"><%= nomeExibido %><br>e as <em>histórias que você espalhou.</em></h1>
+                <p>Cada livro doado vira leitura em uma escola de verdade.</p>
+                <a class="rel-btn rel-btn-claro" href="/doar">Doar um livro</a>
+            </div>
+            <div class="rel-leque" aria-hidden="true">
+                <img class="a" src="/img/matilda.jpg" alt="">
+                <img class="b" src="/img/malala.webp" alt="">
+                <img class="c" src="/img/galinha.webp" alt="">
+            </div>
+        </div>
+        <div class="rel-estante" aria-hidden="true"><% for (let i = 0; i < 24; i++) { %><span></span><% } %></div>
+    </section>
+    <% } %>
+
     <div class="perfil-banner-wrap <%= ehEscola ? 'banner-escola' : '' %>">
         <div class="perfil-banner">
 
@@ -86,27 +109,6 @@
                     <%= editar ? "Fechar" : "Editar perfil" %>
                 </a>
 
-                <% if (ehEscola) { %>
-                    <!-- Ação separada do fluxo normal de solicitação: aqui a ESCOLA doa um
-                         livro excedente pra outra escola (em vez de só receber doações). -->
-                    <a href="/repasse" class="btn-editar-perfil btn-repasse-perfil">
-                        <i class="fi fi-rr-heart" aria-hidden="true"></i>
-                        Doar livro para outra escola
-                    </a>
-                <% } %>
-            </div>
-
-            <div class="stats-mini">
-                <% if (ehEscola) { %>
-                    <div class="stat-mini"><strong><%= totalLivrosSolicitados %></strong><span>livros solicitados</span></div>
-                    <div class="stat-mini"><strong><%= totalSolicitacoes %></strong><span>pedidos enviados</span></div>
-                    <div class="stat-mini"><strong><%= totalLivrosRepassados %></strong><span>livros doados a escolas</span></div>
-                    <div class="stat-mini"><strong><%= minhaPosicao ? "#" + minhaPosicao : "—" %></strong><span>no ranking de doações</span></div>
-                <% } else { %>
-                    <div class="stat-mini"><strong><%= totalLivrosDoados %></strong><span>livros doados</span></div>
-                    <div class="stat-mini"><strong><%= nivelAtual %></strong><span>selo atual</span></div>
-                    <div class="stat-mini"><strong><%= minhaPosicao ? "#" + minhaPosicao : "—" %></strong><span>no ranking</span></div>
-                <% } %>
             </div>
 
         </div>
@@ -116,65 +118,31 @@
 
     <div class="perfil-conteudo">
 
+        <% if (!editar && !ehEscola) { %>
+        <div class="esc-acoes">
+            <a href="/doar" class="esc-acao esc-acao-roxo">
+                <span class="esc-acao-ico"><i class="fi fi-rr-book" aria-hidden="true"></i></span>
+                <span><strong>Doar um livro</strong><small>Escolha a escola que vai receber</small></span>
+            </a>
+            <a href="/escolas" class="esc-acao esc-acao-ocre">
+                <span class="esc-acao-ico"><i class="fi fi-rr-graduation-cap" aria-hidden="true"></i></span>
+                <span><strong>Ver escolas cadastradas</strong><small>Quem quer receber livros</small></span>
+            </a>
+            <a href="/perfil?aba=ranking" class="esc-acao esc-acao-rosa">
+                <span class="esc-acao-ico"><i class="fi fi-rr-trophy" aria-hidden="true"></i></span>
+                <span><strong>Ranking de doadores</strong><small>Veja sua posição</small></span>
+            </a>
+        </div>
+        <div class="esc-numeros">
+            <div class="esc-num esc-num-1"><i class="fi fi-rr-book" aria-hidden="true"></i><strong><%= totalLivrosDoados %></strong><span>livros doados</span></div>
+            <div class="esc-num esc-num-2"><i class="fi fi-rr-medal" aria-hidden="true"></i><strong><%= nivelAtual %></strong><span>selo atual</span></div>
+            <div class="esc-num esc-num-3"><i class="fi fi-rr-trophy" aria-hidden="true"></i><strong><%= minhaPosicao ? "#" + minhaPosicao : "—" %></strong><span>no ranking</span></div>
+        </div>
+        <% } %>
+
         <% if (editar) { %>
 
-            <section class="form-editar-card" aria-labelledby="titulo-editar">
-
-                <h2 id="titulo-editar" class="secao-titulo">Editar perfil</h2>
-
-                <form action="/perfil" method="POST" class="form-editar">
-
-                    <% if (erroPerfil === "username") { %>
-                        <p class="erro" role="alert">Digite um nome de perfil.</p>
-                    <% } else if (erroPerfil === "username_existe") { %>
-                        <p class="erro" role="alert">Esse nome de perfil já está em uso. Escolha outro.</p>
-                        <% if (sugestoesPerfil && sugestoesPerfil.length > 0) { %>
-                            <div class="sugestoes-username">
-                                <span class="sugestoes-titulo">Sugestões disponíveis:</span>
-                                <div class="sugestoes-lista">
-                                    <% sugestoesPerfil.forEach(function(s) { %>
-                                        <button type="button" class="sugestao-item" onclick="document.getElementById('username').value='<%= s %>'"><%= s %></button>
-                                    <% }) %>
-                                </div>
-                            </div>
-                        <% } %>
-                    <% } else if (erroPerfil === "sistema") { %>
-                        <p class="erro" role="alert">Não foi possível salvar. Tente novamente.</p>
-                    <% } %>
-
-                    <label for="username">Nome de perfil</label>
-                    <input
-                        type="text"
-                        id="username"
-                        name="username"
-                        placeholder="Como você quer aparecer no site"
-                        value="<%= nomeExibido %>"
-                        maxlength="40"
-                        required
-                    >
-
-                    <fieldset class="avatares-fieldset">
-                        <legend>Escolha um avatar</legend>
-                        <div class="avatares-grid">
-                            <% avatares.forEach(function(av, i) { %>
-                                <label class="avatar-opcao">
-                                    <input
-                                        type="radio"
-                                        name="avatar"
-                                        value="<%= av %>"
-                                        <%= (perfilUsuario.avatar === av) ? "checked" : "" %>
-                                    >
-                                    <img src="/img/avatars/<%= av %>" alt="Opção de avatar <%= i + 1 %>">
-                                </label>
-                            <% }) %>
-                        </div>
-                    </fieldset>
-
-                    <button type="submit" class="btn-salvar">Salvar alterações</button>
-
-                </form>
-
-            </section>
+            <%- include('partials/form-editar-perfil', { u: perfilUsuario, nomeExibido, ehEscola }) %>
 
         <% } else { %>
 
@@ -196,91 +164,8 @@
                 <p class="perfil-erro" role="status">Não foi possível concluir essa ação.</p>
             <% } %>
 
-            <% if (ehEscola) { %>
-
-                <nav class="tabs" aria-label="Seções do perfil">
-                    <a href="/perfil?aba=carrinho" class="tab <%= aba !== 'ranking' ? 'ativa' : '' %>"><i class="fi fi-rr-shopping-cart" aria-hidden="true"></i> Minhas solicitações</a>
-                    <a href="/perfil?aba=ranking" class="tab <%= aba === 'ranking' ? 'ativa' : '' %>"><i class="fi fi-rr-trophy" aria-hidden="true"></i> Escolas que mais doaram</a>
-                </nav>
-
-                <% if (aba === "ranking") { %>
-
-                    <h2 class="secao-titulo">Ranking de escolas doadoras</h2>
-                    <p class="secao-subtitulo">Baseado na quantidade de livros que cada escola já <a href="/repasse">doou para outras escolas</a>. Não tem relação com o ranking de doadores (pessoas).</p>
-
-                    <% if (ranking.length === 0) { %>
-                        <p class="vazio">Ainda não há escolas doadoras suficientes para montar o ranking.</p>
-                    <% } else { %>
-
-                        <% const podioEscolas = ranking.slice(0, 3); const restoEscolas = ranking.slice(3); %>
-
-                        <% if (podioEscolas.length === 3) { %>
-                            <div class="podio">
-                                <% podioEscolas.forEach(function(e, i) { %>
-                                    <div class="posto <%= medalhas[i] %> <%= e.id === perfilUsuario.id ? 'posto-voce' : '' %>">
-                                        <img src="<%= e.foto %>" alt="Avatar de <%= e.nome %>">
-                                        <div class="medalha"><%= i + 1 %></div>
-                                        <strong><%= e.nome %><%= e.id === perfilUsuario.id ? " (você)" : "" %></strong>
-                                        <span><%= e.totalLivros %> livros</span>
-                                        <div class="base"></div>
-                                    </div>
-                                <% }) %>
-                            </div>
-                        <% } %>
-
-                        <% if (restoEscolas.length > 0) { %>
-                            <ol class="lista-ranking" start="4">
-                                <% restoEscolas.forEach(function(e, i) { %>
-                                    <li class="rank-item <%= e.id === perfilUsuario.id ? 'voce' : '' %>">
-                                        <span class="rank-pos">#<%= i + 4 %></span>
-                                        <img src="<%= e.foto %>" alt="Avatar de <%= e.nome %>">
-                                        <div class="rank-info">
-                                            <strong><%= e.nome %><%= e.id === perfilUsuario.id ? " (você)" : "" %></strong>
-                                            <span>Escola doadora</span>
-                                        </div>
-                                        <div class="rank-num">
-                                            <strong><%= e.totalLivros %></strong>
-                                            <span>livros</span>
-                                        </div>
-                                    </li>
-                                <% }) %>
-                            </ol>
-                        <% } %>
-
-                    <% } %>
-
-                <% } else { %>
-
-                <p class="secao-subtitulo">Histórico dos pedidos enviados a partir do seu <a href="/carrinho">carrinho de compras</a>.</p>
-
-                <% if (itens.length === 0) { %>
-                    <p class="vazio">Você ainda não fez nenhuma solicitação de livros. <a href="/home">Explorar livros</a></p>
-                <% } else { %>
-                    <ul class="lista-hist">
-                        <% itens.forEach(function(item) { %>
-                            <li class="hist-item">
-                                <div class="hist-icone"><i class="fi fi-rr-book" aria-hidden="true"></i></div>
-                                <div class="hist-texto">
-                                    <strong><%= item.livro %> — <%= item.quantidade %> <%= item.quantidade == 1 ? "exemplar" : "exemplares" %></strong>
-                                    <span>Enviado em <%= paraDataUTC(item.data_envio).toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" }) %></span>
-                                </div>
-                                <span class="hist-status hist-status-<%= item.statusInfo.cor %>">
-                                    <i class="fi <%= item.statusInfo.icone %>" aria-hidden="true"></i>
-                                    <%= item.statusInfo.label %>
-                                </span>
-                                <% if (item.cancelavel) { %>
-                                    <form action="/carrinho/pedido/<%= item.id %>/cancelar" method="POST" class="hist-form-cancelar">
-                                        <button type="submit" class="hist-btn-cancelar" onclick="return confirm('Cancelar este pedido?')">
-                                            <i class="fi fi-rr-cross-circle" aria-hidden="true"></i> Cancelar pedido
-                                        </button>
-                                    </form>
-                                <% } %>
-                            </li>
-                        <% }) %>
-                    </ul>
-                <% } %>
-
-                <% } %>
+            <%# Escolas não passam por aqui: /perfil leva direto pra página da escola (/escola/:id). %>
+            <% if (false) { %>
 
             <% } else { %>
 
@@ -337,6 +222,34 @@
 
                 <% } else { %>
 
+                    <% if (typeof relatosDoador !== "undefined" && relatosDoador.length > 0) { %>
+                        <section class="relatos-doador" aria-labelledby="t-lido" style="margin-bottom:34px">
+                            <h2 id="t-lido" class="secao-titulo">Seu livro está sendo lido</h2>
+                            <p class="secao-subtitulo">Escolas que receberam um livro que você doou e mandaram uma foto.</p>
+                            <div class="mural">
+                                <% relatosDoador.forEach(function(r) { %>
+                                    <article class="pola">
+                                        <span class="pola-fita" aria-hidden="true"></span>
+                                        <% if (r.novo) { %><span class="pola-novo">Novo</span><% } %>
+                                        <div class="pola-foto">
+                                            <img class="pola-img" src="<%= r.foto %>" alt="Foto de <%= r.escolaNome %> com o livro <%= r.livro %> em uso" loading="lazy">
+                                            <img class="pola-capa" data-capa-livro="<%= r.livro %>" alt="Capa de <%= r.livro %>" hidden>
+                                        </div>
+                                        <p class="pola-frase">“<%= r.frase %>”</p>
+                                        <p class="pola-livro"><%= r.livro %></p>
+                                        <div class="pola-rodape">
+                                            <div class="pola-meta">
+                                                <a href="/escola/<%= r.escolaId %>"><%= r.escolaNome %></a>
+                                                <span><%= r.dataFormatada %></span>
+                                            </div>
+                                            <span class="pola-selo">Entregue</span>
+                                        </div>
+                                    </article>
+                                <% }) %>
+                            </div>
+                        </section>
+                    <% } %>
+
                     <h2 class="secao-titulo">Livros que você doou</h2>
 
                     <% if (itens.length === 0) { %>
@@ -350,6 +263,10 @@
                                         <h4><%= item.livro %></h4>
                                         <span class="qtd"><%= item.quantidade %> <%= item.quantidade == 1 ? "exemplar" : "exemplares" %> · <%= item.categoria %></span>
                                         <br>
+                                        <% if (item.escolaDestinoNome) { %>
+                                            <a class="mini-destino" href="/escola/<%= item.escola_destino_id %>"><i class="fi fi-rr-graduation-cap" aria-hidden="true"></i> Para: <%= item.escolaDestinoNome %></a>
+                                            <br>
+                                        <% } %>
                                         <span class="mini-status <%= item.status === 'disponivel' ? '' : 'pendente' %>">
                                             <i class="fi <%= item.status === 'disponivel' ? 'fi-rr-check' : 'fi-rr-hourglass' %>" aria-hidden="true"></i>
                                             <%= item.status === 'disponivel' ? 'Disponível no acervo' : 'Pendente · até ' + horasPendente + 'h para confirmar sozinho' %>
@@ -392,5 +309,6 @@
     <img src="/img/whatsapp.png" alt="WhatsApp">
 </a>
 
+<script src="/js/relato.js"></script>
 </body>
 </html>

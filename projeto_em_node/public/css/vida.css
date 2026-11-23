@@ -1,0 +1,153 @@
+/* =========================================================
+   TEMA ROXO + MOVIMENTO (carregado em todas as páginas via partials/vida.ejs)
+   Inspirado na faixa "e seus livros em uso" da página da escola:
+   roxo profundo, detalhes em ocre e prateleira de livros.
+   Respeita prefers-reduced-motion.
+   ========================================================= */
+:root {
+    --v-roxo-1: #3b2a8c;
+    --v-roxo-2: #4c37a3;
+    --v-roxo-3: #6e5bd8;
+    --v-roxo-4: #8472f4;
+    --v-lilas: #e9e2ff;
+    --v-ocre: #f1c887;
+    --v-cor: #8472f4;
+}
+
+/* ---------- fundo mais roxo (menos "branco") ---------- */
+body { background: var(--v-lilas); }
+.pagina-sobre, .doar-form-section { background: var(--v-lilas); }
+.acervo-hero, .acervo-filtros-wrap, .acervo-container, .acervo-vazio { background: transparent; }
+.perfil-page { background: transparent; }
+
+/* ---------- barra do topo: roxo liso (sem o degradê colorido) e sem a fita colorida do cabeçalho ---------- */
+.topo {
+    background: #4c37a3 !important;
+    animation: none !important;
+    font-weight: 700;
+}
+header {
+    border-bottom: 1px solid #ddd !important;
+    border-image: none !important;
+}
+
+/* ---------- faixas de seção roxas (mesma vibe da página da escola) ---------- */
+.hero-sobre, .acervo-hero {
+    background: linear-gradient(135deg, #5f4bc9, #7c69ec) !important;
+    color: #fff;
+    position: relative;
+}
+.hero-sobre::before { background: rgba(255, 255, 255, .12) !important; }
+.hero-sobre::after { background: rgba(241, 200, 135, .38) !important; }
+.hero-sobre h1, .acervo-hero h1 { color: #fff !important; }
+.hero-sobre h1 em, .acervo-hero h1 em { color: var(--v-ocre) !important; }
+.hero-sobre p, .acervo-hero p, .acervo-subtitulo { color: #e4dcff !important; }
+.hero-sobre .eyebrow, .acervo-hero .eyebrow, .acervo-eyebrow { color: var(--v-ocre) !important; }
+.acervo-hero a { color: #fff; }
+.acervo-hero { padding-bottom: 36px !important; margin-bottom: 8px; }
+
+/* rodapé roxo profundo, com a prateleira de livros em cima */
+footer .footer-top { background: linear-gradient(135deg, #3b2a8c, #5f4bc9) !important; }
+.vida-estante {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 48px;
+    padding: 0 12px;
+    background: transparent;
+    border-bottom: 10px solid #3b2a8c;
+    overflow: hidden;
+}
+.vida-estante span { flex: 1; border-radius: 3px 3px 0 0; min-width: 8px; }
+.vida-estante span:nth-child(5n+1) { height: 34px; background: #8472f4; }
+.vida-estante span:nth-child(5n+2) { height: 44px; background: #f1c887; }
+.vida-estante span:nth-child(5n+3) { height: 28px; background: #cdbfff; }
+.vida-estante span:nth-child(5n+4) { height: 40px; background: #a48cff; }
+.vida-estante span:nth-child(5n)   { height: 32px; background: #e9a65a; }
+
+/* ---------- títulos com grifo roxo e ocre ---------- */
+.secao-titulo, .titulo-livros, .doar-cabecalho h2, .secao-cabecalho h2 {
+    background-image: linear-gradient(90deg, var(--v-roxo-4), var(--v-ocre));
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 84px 6px;
+    padding-bottom: 12px;
+}
+.titulo-livros, .doar-cabecalho h2, .secao-cabecalho h2 { background-position: 50% 100%; }
+
+/* ---------- cartões: levantam com brilho roxo ---------- */
+.assinatura-card, .livro-card, .carrinho-card, .mini-livro, .valor-card, .membro-card,
+.idade-card, .acervo-stat-card, .doar-faixa-card, .rank-item, .hist-item {
+    transition: transform .25s, box-shadow .25s;
+}
+.assinatura-card:hover, .livro-card:hover, .carrinho-card:hover, .mini-livro:hover, .valor-card:hover,
+.membro-card:hover, .idade-card:hover, .acervo-stat-card:hover, .rank-item:hover, .hist-item:hover {
+    transform: translateY(-7px) rotate(-.5deg);
+    box-shadow: 0 22px 34px -14px rgba(76, 55, 163, .55) !important;
+}
+.assinatura-card img, .livro-card img { transition: transform .35s; }
+.assinatura-card:hover img, .livro-card:hover img { transform: scale(1.05); }
+
+/* ---------- botões principais: pulso e brilho ---------- */
+.segundo-cadastro, .doar-hero-cta, .btn-salvar, .rel-btn:not(:disabled):not(.rel-btn-claro), .btn-login a, .btn-banner {
+    position: relative;
+    overflow: hidden;
+    animation: v-pulso 2.8s ease-out infinite;
+    transition: transform .2s, filter .2s;
+}
+.segundo-cadastro:hover, .doar-hero-cta:hover, .btn-salvar:hover, .rel-btn:not(:disabled):hover, .btn-login a:hover, .btn-banner:hover {
+    transform: translateY(-3px) scale(1.04);
+    filter: brightness(1.06);
+}
+.segundo-cadastro::after, .doar-hero-cta::after, .btn-salvar::after, .rel-btn:not(.rel-btn-claro)::after, .btn-login a::after, .btn-banner::after {
+    content: "";
+    position: absolute;
+    top: 0; bottom: 0; left: -60%;
+    width: 40%;
+    background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .5), transparent);
+    transform: skewX(-20deg);
+    animation: v-brilho 4s ease-in-out infinite;
+    pointer-events: none;
+}
+@keyframes v-pulso {
+    0% { box-shadow: 0 0 0 0 rgba(132, 114, 244, .55); }
+    70%, 100% { box-shadow: 0 0 0 14px rgba(132, 114, 244, 0); }
+}
+@keyframes v-brilho { 0%, 55% { left: -60%; } 100% { left: 140%; } }
+
+/* ---------- LIVROS flutuando nas faixas de seção ---------- */
+/* isolation + z-index:-1 = os livros ficam ATRÁS do texto e dos cartões */
+.vida-host { position: relative; isolation: isolate; }
+.vida-livro {
+    position: absolute;
+    z-index: -1;
+    width: var(--w, 76px);
+    aspect-ratio: 3 / 4;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 16px 26px -10px rgba(42, 31, 92, .55);
+    border-left: 5px solid rgba(0, 0, 0, .22);
+    pointer-events: none;
+    rotate: var(--giro, 8deg);
+    animation: v-livro var(--d, 6s) ease-in-out infinite;
+    animation-delay: var(--atraso, 0s);
+}
+.vida-livro img { width: 100%; height: 100%; object-fit: cover; display: block; }
+@keyframes v-livro { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-16px); } }
+@media (max-width: 1100px) { .vida-livro { display: none; } }
+
+/* ---------- aparecer ao rolar ---------- */
+.vida-reveal { opacity: 0; translate: 0 34px; }
+.vida-reveal.vida-in { opacity: 1; translate: 0 0; transition: opacity .6s ease, translate .6s cubic-bezier(.2, .8, .2, 1); transition-delay: var(--atraso, 0s); }
+
+/* ---------- confete de comemoração ---------- */
+.vida-confete { position: fixed; top: -14px; width: 10px; height: 16px; z-index: 9999; pointer-events: none; border-radius: 2px; animation: v-cai var(--d) cubic-bezier(.3, .6, .5, 1) forwards; }
+@keyframes v-cai { to { transform: translate(var(--dx), 105vh) rotate(var(--r)); opacity: .9; } }
+
+@media (prefers-reduced-motion: reduce) {
+    .topo, .vida-livro,
+    .segundo-cadastro, .doar-hero-cta, .btn-salvar, .rel-btn, .btn-login a, .btn-banner,
+    .segundo-cadastro::after, .doar-hero-cta::after, .btn-salvar::after, .rel-btn::after, .btn-login a::after, .btn-banner::after { animation: none !important; }
+    .vida-reveal { opacity: 1; translate: none; }
+    .vida-confete { display: none; }
+}

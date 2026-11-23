@@ -1,0 +1,50 @@
+/* =========================================================
+   Aba "Escolas": escolher a escola que vai receber o livro
+   (usado em /doar, /doar/:id/editar e /repasse)
+   ========================================================= */
+.ep { border: 0; margin: 0; padding: 0; min-width: 0; font-family: 'Karla', Arial, sans-serif; }
+.ep legend { display: flex; align-items: center; gap: 10px; font-family: 'Fraunces', Georgia, serif; font-size: 20px; font-weight: 700; color: #3b2a8c; padding: 0; margin-bottom: 6px; }
+.ep-bolha { flex: none; }
+.ep-dica { font-size: 14px; color: #5a5478; margin: 0 0 14px; line-height: 1.5; }
+.ep-sr { position: absolute; left: -9999px; }
+
+.ep-topo { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.ep-busca { position: relative; flex: 1; min-width: 220px; max-width: 380px; }
+.ep-busca i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #6e5bd8; font-size: 16px; pointer-events: none; }
+.ep-busca input { width: 100%; border: 2px solid #d9d0ff; background: #fff; border-radius: 26px; padding: 12px 16px 12px 44px; font-size: 14.5px; font-family: inherit; color: #211c33; }
+.ep-busca input:focus { outline: none; border-color: #8472f4; box-shadow: 0 0 0 4px rgba(132, 114, 244, .2); }
+.ep-contagem { background: #ece6fb; color: #4c37a3; border-radius: 20px; padding: 7px 14px; font-size: 13px; font-weight: 700; }
+
+.ep-grade { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; }
+.ep-card { position: relative; display: block; cursor: pointer; }
+.ep-card[hidden] { display: none; }
+.ep-card input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+.ep-corpo {
+    --ep-cor: #8472f4; --ep-fundo: #f3efff;
+    position: relative; display: flex; align-items: center; gap: 14px;
+    background: var(--ep-fundo); border: 2px solid transparent; border-left: 7px solid var(--ep-cor);
+    border-radius: 16px; padding: 14px 44px 14px 14px;
+    transition: transform .2s, box-shadow .2s, border-color .2s, background .2s;
+}
+.ep-cor-1 .ep-corpo { --ep-cor: #e9a65a; --ep-fundo: #fff4e3; }
+.ep-cor-2 .ep-corpo { --ep-cor: #6e5bd8; --ep-fundo: #e9e2ff; }
+.ep-cor-3 .ep-corpo { --ep-cor: #a48cff; --ep-fundo: #f1ecff; }
+.ep-card:hover .ep-corpo { transform: translateY(-3px); box-shadow: 0 16px 26px -14px rgba(76, 55, 163, .55); }
+.ep-card input:focus-visible + .ep-corpo { outline: 3px solid #f1c887; outline-offset: 2px; }
+.ep-card input:checked + .ep-corpo { background: linear-gradient(135deg, #4c37a3, #7c69ec); border-color: #3b2a8c; color: #fff; box-shadow: 0 18px 30px -14px rgba(76, 55, 163, .75); }
+.ep-foto { width: 54px; height: 54px; border-radius: 50%; object-fit: cover; background: #fff; border: 3px solid #fff; flex: none; }
+.ep-texto { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.ep-texto strong { font-size: 15.5px; color: #211c33; overflow-wrap: anywhere; line-height: 1.2; }
+.ep-texto small { font-size: 12.5px; color: #5a5478; display: flex; align-items: center; gap: 4px; }
+.ep-etapas { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 2px; }
+.ep-etapas em { font-style: normal; font-size: 11px; font-weight: 700; background: rgba(255, 255, 255, .8); color: #4c37a3; border-radius: 10px; padding: 2px 8px; }
+.ep-card input:checked + .ep-corpo .ep-texto strong,
+.ep-card input:checked + .ep-corpo .ep-texto small { color: #fff; }
+.ep-card input:checked + .ep-corpo .ep-etapas em { background: rgba(255, 255, 255, .22); color: #fff; }
+.ep-ok { position: absolute; right: 14px; top: 50%; transform: translateY(-50%) scale(.6); width: 26px; height: 26px; border-radius: 50%; background: #f1c887; color: #3b2a8c; display: grid; place-items: center; font-size: 13px; opacity: 0; transition: .2s; }
+.ep-card input:checked + .ep-corpo .ep-ok { opacity: 1; transform: translateY(-50%) scale(1); }
+
+.ep-vazio, .ep-sem-resultado { background: #fff4e3; border-radius: 14px; padding: 18px; color: #7a4b00; font-weight: 700; font-size: 14px; display: flex; gap: 10px; align-items: center; margin: 0; }
+.ep-sem-resultado { margin-top: 12px; }
+
+.ep .ep-bolha { width: 30px; height: 30px; border-radius: 50%; background: #6e5bd8; color: #fff; font-size: 14px; font-weight: 800; display: flex; align-items: center; justify-content: center; }

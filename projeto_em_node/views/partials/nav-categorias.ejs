@@ -1,35 +1,44 @@
-<div class="barra-categorias">
-    <nav class="nav-menu">
-        <ul>
-            <li class="dropdown">
-                <a href="#">☰ Categorias</a>
+<%# Menu principal: funciona igual em TODAS as páginas (toque, clique e teclado).
+    O estilo e o comportamento vêm de public/css/menu.css e public/js/menu.js. %>
+<% const paginaAtual = typeof pagina !== "undefined" ? pagina : ""; %>
+<link rel="stylesheet" href="/css/menu.css">
 
-                <div class="mega-menu">
+<div class="menu-barra">
+    <nav class="menu-in" aria-label="Menu principal">
 
-                    <% const paginaAtual = typeof pagina !== "undefined" ? pagina : ""; %>
+        <div class="menu-drop" id="menuDrop">
+            <button type="button" class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menuPainel">
+                <span class="menu-hamb" aria-hidden="true"><i></i><i></i><i></i></span>
+                Menu
+            </button>
 
-                    <!-- FAIXAS ESCOLARES -->
-                    <div class="coluna">
-                        <h4>Faixas escolares</h4>
-
-                        <% if (paginaAtual !== "infantil") { %><a href="/infantil">Infantil</a><% } %>
-                        <% if (paginaAtual !== "fundamental") { %><a href="/idade3-5">Ensino Fundamental</a><% } %>
-                        <% if (paginaAtual !== "medio") { %><a href="/idade6-10">Ensino Médio</a><% } %>
-                        <a href="/leitura">Leituras</a>
-
-                    </div>
-
-                    <!-- OUTROS -->
-                    <div class="coluna">
-                        <h4>Outros</h4>
-                        <a href="/home">Página principal</a>
-                        <a href="/doar">Doe seu livro</a>
-                        <a href="/sobre">Sobre nós</a>
-                        <a href="/acervo">Acervo</a>
-                    </div>
-
+            <div class="menu-painel" id="menuPainel" hidden>
+                <div class="menu-col">
+                    <h4>Faixas escolares</h4>
+                    <a href="/infantil" <%- paginaAtual === "infantil" ? 'aria-current="page"' : "" %>><span class="menu-ponto" style="--p:#ff6b8a"></span> Infantil</a>
+                    <a href="/idade3-5" <%- paginaAtual === "fundamental" ? 'aria-current="page"' : "" %>><span class="menu-ponto" style="--p:#ffc83d"></span> Ensino Fundamental</a>
+                    <a href="/idade6-10" <%- paginaAtual === "medio" ? 'aria-current="page"' : "" %>><span class="menu-ponto" style="--p:#2ec4b6"></span> Ensino Médio</a>
+                    <a href="/leitura"><span class="menu-ponto" style="--p:#4cc9f0"></span> Leituras</a>
                 </div>
-            </li>
+                <div class="menu-col">
+                    <h4>Explorar</h4>
+                    <a href="/home" <%- paginaAtual === "home" ? 'aria-current="page"' : "" %>>Página principal</a>
+                    <a href="/doar" <%- paginaAtual === "doar" ? 'aria-current="page"' : "" %>>Doe seu livro</a>
+                    <a href="/acervo" <%- paginaAtual === "acervo" ? 'aria-current="page"' : "" %>>Acervo</a>
+                    <a href="/escolas" <%- paginaAtual === "escolas" ? 'aria-current="page"' : "" %>>Escolas</a>
+                    <a href="/sobre" <%- paginaAtual === "sobre" ? 'aria-current="page"' : "" %>>Quem somos</a>
+                </div>
+            </div>
+        </div>
+
+        <ul class="menu-atalhos">
+            <li><a href="/home" <%- paginaAtual === "home" ? 'aria-current="page"' : "" %>>Início</a></li>
+            <li><a href="/doar" <%- paginaAtual === "doar" ? 'aria-current="page"' : "" %>>Doe seu livro</a></li>
+            <li><a href="/acervo" <%- paginaAtual === "acervo" ? 'aria-current="page"' : "" %>>Acervo</a></li>
+            <li><a href="/escolas" <%- paginaAtual === "escolas" ? 'aria-current="page"' : "" %>>Escolas</a></li>
+            <li><a href="/sobre" <%- paginaAtual === "sobre" ? 'aria-current="page"' : "" %>>Quem somos</a></li>
         </ul>
+
     </nav>
 </div>
+<script src="/js/menu.js" defer></script>

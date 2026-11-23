@@ -34,6 +34,7 @@ const configuracoesRoutes = require('./routes/configuracoes');
 const carrinhoRoutes = require('./routes/carrinho');
 const adminRoutes = require('./routes/admin');
 const repasseRoutes = require('./routes/repasse');
+const escolaRoutes = require('./routes/escola');
 
 app.use('/', authRoutes);
 app.use('/', doacaoRoutes);
@@ -42,10 +43,16 @@ app.use('/', configuracoesRoutes);
 app.use('/', carrinhoRoutes);
 app.use('/', adminRoutes);
 app.use('/', repasseRoutes);
+app.use('/', escolaRoutes);
 
 /* HOME */
 app.get("/", (req, res) => {
     res.redirect("/home");
+});
+
+/* DÚVIDAS (FAQ) */
+app.get("/duvidas", (req, res) => {
+    res.render("duvidas", { pagina: "duvidas" });
 });
 
 /* SOLICITAÇÃO */

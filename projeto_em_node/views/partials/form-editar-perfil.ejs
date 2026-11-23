@@ -1,0 +1,150 @@
+<%# Formulário de editar perfil. Usado no perfil do doador e na página da escola.
+    Recebe: u (usuário), nomeExibido, ehEscola. Usa também erroPerfil, sugestoesPerfil,
+    avatares e etapasDisponiveis, que vêm da rota.
+    Estilos em /css/form-perfil.css %>
+<% const avatarAtual = (u.avatar && avatares.includes(u.avatar)) ? "/img/avatars/" + u.avatar : "/img/perfil-padrao.jpg"; %>
+<section class="fp-card" id="editar" aria-labelledby="titulo-editar">
+
+    <header class="fp-topo">
+        <h2 id="titulo-editar" class="fp-titulo">Editar perfil</h2>
+        <p class="fp-sub">
+            <% if (ehEscola) { %>
+                Tudo o que você preencher aparece na página pública da escola. E-mail e telefone nunca aparecem.
+            <% } else { %>
+                Escolha seu nome e um avatar. É assim que você aparece no ranking e nos relatos.
+            <% } %>
+        </p>
+    </header>
+
+    <form action="/perfil" method="POST" class="form-editar fp-form">
+
+        <% if (erroPerfil === "username") { %>
+            <p class="fp-erro" role="alert">Digite um nome de perfil.</p>
+        <% } else if (erroPerfil === "username_existe") { %>
+            <p class="fp-erro" role="alert">Esse nome de perfil já está em uso. Escolha outro.</p>
+            <% if (sugestoesPerfil && sugestoesPerfil.length > 0) { %>
+                <div class="fp-sugestoes">
+                    <span class="fp-sugestoes-titulo">Que tal um destes?</span>
+                    <div class="fp-sugestoes-lista">
+                        <% sugestoesPerfil.forEach(function(s) { %>
+                            <button type="button" class="fp-sugestao" onclick="document.getElementById('username').value='<%= s %>'"><%= s %></button>
+                        <% }) %>
+                    </div>
+                </div>
+            <% } %>
+        <% } else if (erroPerfil === "sistema") { %>
+            <p class="fp-erro" role="alert">Não foi possível salvar. Tente novamente.</p>
+        <% } %>
+
+        <%# ---------- Identidade: avatar + nome ---------- %>
+        <div class="fp-bloco fp-identidade">
+            <div class="fp-preview">
+                <img id="fp-preview-img" src="<%= avatarAtual %>" alt="Seu avatar atual">
+            </div>
+
+            <div class="fp-identidade-campos">
+                <div class="fp-campo">
+                    <label for="username">Nome de perfil</label>
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Como você quer aparecer no site"
+                        value="<%= nomeExibido %>"
+                        maxlength="40"
+                        required
+                    >
+                </div>
+
+                <fieldset class="fp-avatares">
+                    <legend>Avatar</legend>
+                    <div class="fp-avatares-grid">
+                        <% avatares.forEach(function(av, i) { %>
+                            <label class="fp-avatar">
+                                <input
+                                    type="radio"
+                                    name="avatar"
+                                    value="<%= av %>"
+                                    data-src="/img/avatars/<%= av %>"
+                                    <%= (u.avatar === av) ? "checked" : "" %>
+                                >
+                                <img src="/img/avatars/<%= av %>" alt="Avatar <%= i + 1 %>" loading="lazy">
+                            </label>
+                        <% }) %>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+
+        <% if (ehEscola) { %>
+
+            <%# ---------- Sobre a escola ---------- %>
+            <div class="fp-bloco">
+                <h3 class="fp-bloco-titulo">Sobre a escola</h3>
+
+                <div class="fp-campo">
+                    <label for="bio">Apresentação</label>
+                    <textarea id="bio" name="bio" rows="3" maxlength="600" data-contador placeholder="Conte quem vocês são e o que a escola faz."><%= u.bio || "" %></textarea>
+                    <span class="fp-contador" aria-hidden="true"></span>
+                </div>
+
+                <div class="fp-linha">
+                    <div class="fp-campo">
+                        <label for="cidade">Cidade / UF</label>
+                        <input type="text" id="cidade" name="cidade" maxlength="80" placeholder="Ex.: São José de Ribamar - MA" value="<%= u.cidade || '' %>">
+                    </div>
+                    <div class="fp-campo">
+                        <label for="instagram">Instagram <span class="fp-opcional">(opcional)</span></label>
+                        <input type="text" id="instagram" name="instagram" maxlength="60" placeholder="@suaescola" value="<%= u.instagram ? '@' + u.instagram : '' %>">
+                    </div>
+                </div>
+
+                <fieldset class="fp-etapas">
+                    <legend>Etapas de ensino <span class="fp-opcional">(marque as que a escola atende)</span></legend>
+                    <div class="fp-etapas-lista">
+                        <% const etapasAtuais = (u.etapas || "").split(","); %>
+                        <% etapasDisponiveis.forEach(function(e) { %>
+                            <label class="fp-chip">
+                                <input type="checkbox" name="etapas" value="<%= e %>" <%= etapasAtuais.includes(e) ? "checked" : "" %>>
+                                <span><%= e %></span>
+                            </label>
+                        <% }) %>
+                    </div>
+                </fieldset>
+            </div>
+
+            <%# ---------- Livros que a escola procura ---------- %>
+            <div class="fp-bloco">
+                <h3 class="fp-bloco-titulo">O que vocês procuram</h3>
+                <div class="fp-campo">
+                    <label for="necessidades">Que livros a escola precisa?</label>
+                    <textarea id="necessidades" name="necessidades" rows="2" maxlength="400" data-contador placeholder="Ex.: alfabetização, contos infantis, paradidáticos para o 6º ano."><%= u.necessidades || "" %></textarea>
+                    <span class="fp-contador" aria-hidden="true"></span>
+                </div>
+            </div>
+
+        <% } %>
+
+        <div class="fp-acoes">
+            <a href="<%= ehEscola ? '/escola/' + u.id : '/perfil' %>" class="fp-cancelar">Cancelar</a>
+            <button type="submit" class="fp-salvar">Salvar alterações</button>
+        </div>
+
+    </form>
+
+    <script>
+        (function () {
+            var img = document.getElementById("fp-preview-img");
+            document.querySelectorAll('.fp-avatar input[type="radio"]').forEach(function (r) {
+                r.addEventListener("change", function () { if (img) img.src = r.getAttribute("data-src"); });
+            });
+            document.querySelectorAll("textarea[data-contador]").forEach(function (t) {
+                var span = t.parentNode.querySelector(".fp-contador");
+                function atualizar() { if (span) span.textContent = t.value.length + "/" + t.maxLength; }
+                t.addEventListener("input", atualizar);
+                atualizar();
+            });
+        })();
+    </script>
+
+</section>

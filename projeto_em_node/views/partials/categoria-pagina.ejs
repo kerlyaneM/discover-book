@@ -1,0 +1,186 @@
+<%#
+  Página de faixa escolar (Infantil / Ensino Fundamental / Ensino Médio).
+  Tudo que é igual nas três fica aqui; cada view só informa os dados (cfg).
+  Estilo: public/css/categorias-pro.css  |  JS: public/js/categoria-pro.js
+%>
+<%
+const ICONES = {
+    lapis:   '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
+    livro:   '<path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 0 4 22.5V4.5Z"/>',
+    aberto:  '<path d="M2 4.5A2.5 2.5 0 0 1 4.5 2H11a2 2 0 0 1 2 2v16a1.5 1.5 0 0 0-1.5-1.5H2z"/><path d="M22 4.5A2.5 2.5 0 0 0 19.5 2H13a2 2 0 0 0-2 2v16a1.5 1.5 0 0 1 1.5-1.5H22z"/>',
+    lua:     '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/>',
+    bussola: '<circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5Z"/>',
+    carrinho:'<circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>',
+    seta:    '<path d="M5 12h14M13 6l6 6-6 6"/>',
+    esq:     '<path d="m15 18-6-6 6-6"/>',
+    dir:     '<path d="m9 18 6-6-6-6"/>'
+};
+const icone = function (nome, largura) {
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + (largura || 2.1) + '" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (ICONES[nome] || ICONES.livro) + '</svg>';
+};
+const NIVEIS = [
+    { id: "infantil",    img: "/img/infantil.png",      href: "/infantil",  nome: "Infantil",           curto: "Infantil",    idade: "até 5 anos",   desc: "Colorir, primeiras leituras e contos pra quem está começando." },
+    { id: "fundamental", img: "/img/idade3-5anos.png", href: "/idade3-5",  nome: "Ensino Fundamental", curto: "Fundamental", idade: "6 a 14 anos",  desc: "Leituras pra ganhar fluência, imaginar e pegar gosto." },
+    { id: "medio",       img: "/img/idade6-10anos.png", href: "/idade6-10", nome: "Ensino Médio",       curto: "Médio",       idade: "15 a 17 anos", desc: "Histórias marcantes pra quem está crescendo e escolhendo o que ler." }
+];
+const logado = typeof usuario !== "undefined" && usuario;
+%>
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= cfg.titulo %> - DiscoverBook</title>
+
+    <link rel="stylesheet" href="<%= cfg.css %>">
+    <link rel="stylesheet" href="/css/categorias-realce.css">
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css">
+    <link rel="stylesheet" href="/css/doador-cta.css">
+    <link rel="stylesheet" href="/css/categorias-pro.css">
+</head>
+
+<body class="tema-<%= cfg.nivel %> pro-pagina">
+
+<%- include("topo") %>
+<%- include("header") %>
+<%- include("nav-categorias") %>
+
+<!-- ================== TOPO DA FAIXA ================== -->
+<section class="pro-hero">
+    <div class="pro-hero-in">
+        <div class="pro-hero-texto">
+            <nav class="pro-nivel" aria-label="Trocar de faixa escolar">
+                <% NIVEIS.forEach(function (n) { %>
+                    <a href="<%= n.href %>"<%- n.id === cfg.nivel ? ' class="ativo" aria-current="page"' : '' %>><%= n.curto %></a>
+                <% }) %>
+            </nav>
+
+            <p class="pro-eyebrow"><%= cfg.eyebrow %></p>
+            <h1><%= cfg.titulo %></h1>
+            <p class="pro-hero-sub"><%= cfg.texto %></p>
+
+            <div class="pro-hero-acoes">
+                <a href="#<%= cfg.secoes[0].id %>" class="pro-btn-hero">Ver os livros</a>
+                <a href="/doar" class="pro-btn-hero ghost">Doar um livro</a>
+            </div>
+        </div>
+
+        <%- include("categoria-arte", { nivel: cfg.nivel }) %>
+    </div>
+</section>
+
+<!-- ================== ABAS: ATALHOS PARA AS CATEGORIAS ================== -->
+<nav class="pro-abas" aria-label="Categorias de livros">
+    <div class="pro-abas-grid">
+        <% cfg.secoes.forEach(function (s) { %>
+            <a href="#<%= s.id %>" class="pro-aba">
+                <span class="pro-aba-ic"><%- icone(s.icone) %><em title="<%= s.livros.length %> livros"><%= s.livros.length %></em></span>
+                <span class="pro-aba-txt">
+                    <b><%= s.curto %></b>
+                    <small><%= s.desc %></small>
+                </span>
+            </a>
+        <% }) %>
+        <a href="#outras-faixas" class="pro-aba">
+            <span class="pro-aba-ic"><%- icone("bussola") %></span>
+            <span class="pro-aba-txt">
+                <b>Outras faixas</b>
+                <small>Veja os livros das outras idades.</small>
+            </span>
+        </a>
+    </div>
+</nav>
+
+<!-- ================== CATEGORIAS ================== -->
+<% cfg.secoes.forEach(function (s) { %>
+<section class="pro-secao" id="<%= s.id %>">
+    <div class="area-carrossel">
+
+        <div class="pro-secao-topo">
+            <div class="pro-secao-tit">
+                <span class="pro-secao-ic"><%- icone(s.icone, 2.2) %></span>
+                <div>
+                    <h2><%= s.titulo %></h2>
+                    <p><%= s.desc %></p>
+                </div>
+            </div>
+            <div class="pro-setas">
+                <button type="button" class="pro-seta esquerda" aria-label="Livros anteriores"><%- icone("esq", 2.6) %></button>
+                <button type="button" class="pro-seta direita" aria-label="Próximos livros"><%- icone("dir", 2.6) %></button>
+            </div>
+        </div>
+
+        <div class="pro-trilho carrossel-livros">
+            <% s.livros.forEach(function (l) { %>
+            <article class="pro-card livro-card" data-livro="<%= l.titulo %>" data-imagem="<%= l.img %>" data-categoria="<%= s.titulo %>">
+                <div class="pro-capa">
+                    <span class="pro-tag"><%= s.tag %></span>
+                    <img src="<%= l.img %>" alt="Capa de <%= l.titulo %>" loading="lazy">
+                </div>
+                <h3><%= l.titulo %></h3>
+                <% if (usuarioTipo === "doador") { %>
+                    <a href="/doar" class="btn-doar-parecido"><%- icone("aberto") %>Tem um parecido? Doe aqui</a>
+                <% } else { %>
+                    <button type="button" class="pro-btn" onclick="adicionarAoCarrinho(this)"><%- icone("carrinho") %>Adicionar ao carrinho</button>
+                <% } %>
+            </article>
+            <% }) %>
+        </div>
+
+    </div>
+</section>
+<% }) %>
+
+<!-- ================== BANNER ================== -->
+<section class="pro-banner">
+    <div class="pro-banner-txt">
+        <h2>Livros selecionados por idade</h2>
+        <ul>
+            <li>Garanta seu livro para sua criança</li>
+            <li>A leitura transforma vidas</li>
+        </ul>
+        <% if (!logado) { %><a href="/cadastro" class="pro-btn-hero escuro">Cadastre-se</a><% } %>
+    </div>
+    <img src="/img/banner-infantil.png" alt="Menina lendo um livro" loading="lazy">
+</section>
+
+<!-- ================== OUTRAS FAIXAS ================== -->
+<section class="pro-faixas" id="outras-faixas">
+    <h2>Encontre também para:</h2>
+    <p class="pro-faixas-sub">Cada fase da leitura tem os livros certos. Troque de faixa quando quiser.</p>
+    <div class="pro-faixas-grid">
+        <% NIVEIS.filter(function (n) { return n.id !== cfg.nivel; }).forEach(function (n) { %>
+        <a href="<%= n.href %>" class="pro-faixa f-<%= n.id %> idade-card">
+            <span class="pro-faixa-foto"><img src="<%= n.img %>" alt="<%= n.nome %>" loading="lazy"></span>
+            <span class="pro-faixa-info">
+                <span class="pro-faixa-idade"><%= n.idade %></span>
+                <h3><%= n.nome %></h3>
+                <span class="pro-faixa-desc"><%= n.desc %></span>
+                <span class="pro-faixa-ir">Explorar <%- icone("seta", 2.6) %></span>
+            </span>
+        </a>
+        <% }) %>
+    </div>
+</section>
+
+<!-- ================== CHAMADA PARA DOAÇÃO ================== -->
+<section class="chamada-doacao">
+    <div class="cartao">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><path d="M9 9h.01M15 9h.01"/></svg>
+        <div>
+            <h3>Tem um livro parecido com esses aí em casa?</h3>
+            <p>Doe pra gente e ele entra direto nessa prateleira.</p>
+        </div>
+        <a href="/doar" class="btn-chamada">Quero doar</a>
+    </div>
+</section>
+
+<%- include("footer") %>
+
+<a href="https://wa.me/5599999999999" class="whatsapp" target="_blank" rel="noopener">
+    <img src="/img/whatsapp.png" alt="WhatsApp">
+</a>
+<script src="/js/categoria-pro.js" defer></script>
+</body>
+</html>
